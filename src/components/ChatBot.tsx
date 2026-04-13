@@ -66,11 +66,11 @@ const getAnswer = (question: string, lang: string): string => {
 
   for (const a of answers) {
     if (a.keywords.some((k) => q.includes(k))) {
-      return lang === "ar" ? a.ar : a.en;
+      return lang === "ar" || lang === "ur" ? a.ar : a.en;
     }
   }
 
-  return lang === "ar"
+  return lang === "ar" || lang === "ur"
     ? "مرحبًا! أنا مساعدك الذكي في فعالية علم. يمكنك سؤالي عن المواقع، المواعيد، المطاعم، دورات المياه، البوثات، أو أي شيء يخص الفعالية! 😊"
     : "Hi! I'm your smart assistant at the Elm event. Ask me about locations, schedules, restaurants, restrooms, booths, or anything about the event! 😊";
 };
