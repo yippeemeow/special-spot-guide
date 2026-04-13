@@ -12,6 +12,7 @@ import DiscoverAreas from "@/components/DiscoverAreas";
 import BottomNav from "@/components/BottomNav";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
 
+// Main page component
 const Index = () => {
   const [category, setCategory] = useState("all");
 
