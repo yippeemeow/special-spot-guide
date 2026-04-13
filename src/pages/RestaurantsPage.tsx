@@ -64,6 +64,7 @@ const RestaurantsContent = () => {
       </div>
 
       <BottomNav />
+      <ChatBot />
     </div>
   );
 };
