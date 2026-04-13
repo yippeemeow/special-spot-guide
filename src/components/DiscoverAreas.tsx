@@ -14,7 +14,7 @@ const DiscoverAreas = () => {
   ];
 
   return (
-    <div className="mt-6 px-5 pb-28">
+    <div className="mt-6 px-5 pb-8">
       <h2 className="mb-3 text-lg font-bold text-foreground">{t("discoverAreas")}</h2>
       <div className="grid grid-cols-3 gap-3">
         {areas.map((area) => {
@@ -22,9 +22,9 @@ const DiscoverAreas = () => {
           return (
             <button
               key={area.id}
-              className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:border-primary/30"
+              className="flex flex-col items-center gap-2 rounded-2xl border border-primary/15 bg-card p-4 shadow-sm transition-all hover:border-primary/30 hover:glow-primary"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
                 <Icon className="h-6 w-6" />
               </div>
               <span className="text-xs font-semibold text-foreground">{t(area.labelKey)}</span>

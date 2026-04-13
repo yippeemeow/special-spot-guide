@@ -76,7 +76,7 @@ const events: EventItem[] = [
 ];
 
 const statusStyles = {
-  live: "bg-event-live text-primary-foreground",
+  live: "bg-primary text-primary-foreground glow-primary",
   soon: "bg-event-soon text-primary-foreground",
   ended: "bg-muted text-muted-foreground",
 };
@@ -89,7 +89,6 @@ const EventsList = () => {
     navigate("/map", { state: { target } });
   };
 
-  // Sort: live first, then soon, then ended
   const sortedEvents = [...events].sort((a, b) => {
     const order = { live: 0, soon: 1, ended: 2 };
     return order[a.status] - order[b.status];
@@ -106,7 +105,9 @@ const EventsList = () => {
         {sortedEvents.map((event) => (
           <div
             key={event.id}
-            className={`flex w-[220px] shrink-0 flex-col rounded-2xl border border-border bg-card p-4 shadow-sm ${event.status === "ended" ? "opacity-60" : ""}`}
+            className={`flex w-[220px] shrink-0 flex-col rounded-2xl border bg-card p-4 shadow-sm transition-all ${
+              event.status === "ended" ? "opacity-50 border-border" : "border-primary/20 glow-primary"
+            }`}
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="text-[10px] text-muted-foreground">{event.distance}</span>
@@ -137,7 +138,8 @@ const EventsList = () => {
             {event.status !== "ended" ? (
               <button
                 onClick={() => handleNavigate(event.mapTarget)}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                style={{ background: "var(--gradient-cta)" }}
               >
                 <Navigation className="h-4 w-4" />
                 {t("startRoute")}
