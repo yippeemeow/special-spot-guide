@@ -22,9 +22,11 @@ const translations: Translations = {
   currentAndUpcoming: { ar: "الفعاليات الجارية والقادمة", en: "Current & Upcoming Events" },
   viewAll: { ar: "عرض الكل", en: "View All" },
   startRoute: { ar: "ابدأ المسار", en: "Start Route" },
+  navigate: { ar: "توجّه", en: "Navigate" },
   discoverAreas: { ar: "اكتشف المناطق", en: "Discover Areas" },
   now: { ar: "الآن", en: "Live" },
   soon: { ar: "قريبًا", en: "Soon" },
+  ended: { ar: "انتهى", en: "Ended" },
   home: { ar: "الرئيسية", en: "Home" },
   events: { ar: "الفعاليات", en: "Events" },
   map: { ar: "الخريطة", en: "Map" },
@@ -33,8 +35,7 @@ const translations: Translations = {
   event: { ar: "فعالية", en: "Event" },
   service: { ar: "خدمة", en: "Service" },
   information: { ar: "الاستعلامات", en: "Information" },
-  placesToVisit: { ar: "أماكن تريد زيارتها", en: "Places to Visit" },
-  nearbyEvents: { ar: "فعاليات قريبة منك", en: "Nearby Events" },
+  nearbyEvents: { ar: "الفعاليات القريبة", en: "Nearby Events" },
   mainStage: { ar: "المسرح الرئيسي", en: "Main Stage" },
   childrenArea: { ar: "منطقة الأطفال", en: "Children's Area" },
   restaurantArea: { ar: "منطقة المطاعم", en: "Restaurant Area" },
@@ -58,12 +59,28 @@ const translations: Translations = {
   womenRestroom: { ar: "دورة مياه نساء", en: "Women's Restroom" },
   menPrayer: { ar: "مصلى رجال", en: "Men's Prayer" },
   womenPrayer: { ar: "مصلى نساء", en: "Women's Prayer" },
+  inMinutes: { ar: "بعد {n} دقيقة", en: "In {n} min" },
+  showEnded: { ar: "انتهى العرض", en: "Show Ended" },
+  navigateToLocation: { ar: "التوجه للموقع", en: "Navigate to location" },
+  alBaik: { ar: "البيك", en: "Al Baik" },
+  alBaikDesc: { ar: "دجاج مقلي · بروستد · وجبات عائلية", en: "Fried chicken · Broasted · Family meals" },
+  kudu: { ar: "كودو", en: "Kudu" },
+  kuduDesc: { ar: "برجر · ساندويتشات · مشروبات", en: "Burgers · Sandwiches · Drinks" },
+  shawarmer: { ar: "شاورمر", en: "Shawarmer" },
+  shawarmerDesc: { ar: "شاورما · فلافل · عصائر طازجة", en: "Shawarma · Falafel · Fresh juices" },
+  maestro: { ar: "مايسترو بيتزا", en: "Maestro Pizza" },
+  maestroDesc: { ar: "بيتزا · باستا · مقبلات", en: "Pizza · Pasta · Appetizers" },
+  restrooms: { ar: "دورات المياه", en: "Restrooms" },
+  childrenActivities: { ar: "فعاليات الأطفال", en: "Children's Activities" },
+  navigating: { ar: "جاري التوجيه...", en: "Navigating..." },
+  open: { ar: "مفتوح", en: "Open" },
+  menu: { ar: "القائمة", en: "Menu" },
 };
 
 interface LanguageContextType {
   lang: Language;
   toggleLang: () => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   isRTL: boolean;
 }
 
@@ -73,7 +90,15 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [lang, setLang] = useState<Language>("ar");
 
   const toggleLang = () => setLang((prev) => (prev === "ar" ? "en" : "ar"));
-  const t = (key: string) => translations[key]?.[lang] || key;
+  const t = (key: string, params?: Record<string, string | number>) => {
+    let text = translations[key]?.[lang] || key;
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        text = text.replace(`{${k}}`, String(v));
+      });
+    }
+    return text;
+  };
   const isRTL = lang === "ar";
 
   return (
