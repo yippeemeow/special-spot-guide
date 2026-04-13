@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Home, Calendar, MapPin, Utensils, Settings } from "lucide-react";
-
-const navItems = [
-  { id: "settings", label: "الإعدادات", icon: Settings },
-  { id: "food", label: "المطاعم", icon: Utensils },
-  { id: "map", label: "الخريطة", icon: MapPin },
-  { id: "events", label: "الفعاليات", icon: Calendar },
-  { id: "home", label: "الرئيسية", icon: Home },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const BottomNav = () => {
   const [active, setActive] = useState("home");
+  const { t } = useLanguage();
+
+  const navItems = [
+    { id: "settings", label: t("settings"), icon: Settings },
+    { id: "food", label: t("restaurants"), icon: Utensils },
+    { id: "map", label: t("map"), icon: MapPin },
+    { id: "events", label: t("events"), icon: Calendar },
+    { id: "home", label: t("home"), icon: Home },
+  ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-md">
@@ -26,7 +28,7 @@ const BottomNav = () => {
                 isActive ? "text-primary" : "text-muted-foreground"
               }`}
             >
-              <Icon className={`h-5 w-5 ${isActive ? "text-primary" : ""}`} />
+              <Icon className="h-5 w-5" />
               <span className="text-[10px] font-medium">{item.label}</span>
             </button>
           );
