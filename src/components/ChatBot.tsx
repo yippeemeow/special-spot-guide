@@ -91,7 +91,7 @@ const ChatBot = () => {
       setMessages([
         {
           id: 1,
-          text: lang === "ar"
+          text: lang === "ar" || lang === "ur"
             ? "أهلاً! أنا مساعدك الذكي 🤖\nاسألني عن أي شيء يخص الفعالية: المواقع، المواعيد، المطاعم، الخدمات..."
             : "Hello! I'm your smart assistant 🤖\nAsk me about anything: locations, schedules, restaurants, services...",
           sender: "bot",
