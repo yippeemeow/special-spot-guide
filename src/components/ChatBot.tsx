@@ -8,7 +8,7 @@ interface Message {
   sender: "user" | "bot";
 }
 
-const getAnswer = (question: string, lang: "ar" | "en"): string => {
+const getAnswer = (question: string, lang: string): string => {
   const q = question.toLowerCase();
 
   const answers: { keywords: string[]; ar: string; en: string }[] = [
