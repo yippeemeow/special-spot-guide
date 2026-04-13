@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LayoutGrid, Mic2, Grid3X3, Baby, UtensilsCrossed, Wrench } from "lucide-react";
+import { LayoutGrid, Mic2, Grid3X3, Baby, Wrench } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CategoryTabsProps {
@@ -15,7 +15,6 @@ const CategoryTabs = ({ onCategoryChange }: CategoryTabsProps) => {
     { id: "stage", label: t("stage"), icon: Mic2 },
     { id: "booths", label: t("booths"), icon: Grid3X3 },
     { id: "kids", label: t("kids"), icon: Baby },
-    { id: "restaurants", label: t("restaurants"), icon: UtensilsCrossed },
     { id: "services", label: t("services"), icon: Wrench },
   ];
 
@@ -36,9 +35,10 @@ const CategoryTabs = ({ onCategoryChange }: CategoryTabsProps) => {
               onClick={() => handleClick(cat.id)}
               className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 isActive
-                  ? "bg-primary text-primary-foreground shadow-md glow-primary"
-                  : "bg-card text-muted-foreground border border-border hover:border-primary/30"
+                  ? "text-secondary-foreground shadow-md glow-cyan"
+                  : "bg-card text-muted-foreground border border-border hover:border-secondary/30"
               }`}
+              style={isActive ? { background: "var(--gradient-cta)" } : undefined}
             >
               <Icon className="h-4 w-4" />
               {cat.label}

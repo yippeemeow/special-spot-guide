@@ -11,6 +11,8 @@ const activities = [
     timeEn: "4:00 PM – 5:00 PM",
     emoji: "🎨",
     status: "live" as const,
+    ageAr: "٤ - ٨ سنوات",
+    ageEn: "4 - 8 years",
   },
   {
     id: 2,
@@ -21,6 +23,8 @@ const activities = [
     emoji: "🤖",
     status: "soon" as const,
     minutesUntil: 15,
+    ageAr: "٦ - ١٢ سنة",
+    ageEn: "6 - 12 years",
   },
   {
     id: 3,
@@ -31,6 +35,8 @@ const activities = [
     emoji: "🧩",
     status: "soon" as const,
     minutesUntil: 60,
+    ageAr: "٨ - ١٤ سنة",
+    ageEn: "8 - 14 years",
   },
 ];
 
@@ -53,14 +59,14 @@ const ChildrenActivities = () => {
           return (
             <div
               key={a.id}
-              className="rounded-2xl border border-primary/15 bg-card p-4 shadow-sm"
+              className="rounded-2xl border border-secondary/20 bg-card p-4 shadow-sm"
             >
               <div className="flex items-start justify-between">
                 <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                  a.status === "live" ? "bg-primary text-primary-foreground glow-primary" : "bg-event-soon text-primary-foreground"
+                  a.status === "live" ? "bg-secondary text-secondary-foreground glow-cyan" : "bg-event-soon text-primary-foreground"
                 }`}>
                   {a.status === "live" && (
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary-foreground animate-pulse-live me-1" />
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
                   )}
                   {a.status === "live" ? t("now") : t("inMinutes", { n: a.minutesUntil || 0 })}
                 </span>
@@ -71,6 +77,13 @@ const ChildrenActivities = () => {
               </div>
 
               <p className="mt-2 text-xs text-muted-foreground text-end">{desc}</p>
+
+              {/* Age badge */}
+              <div className="mt-2 flex justify-end">
+                <span className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold bg-event-soon/15 text-event-soon border border-event-soon/20">
+                  👶 {lang === "ar" ? a.ageAr : a.ageEn}
+                </span>
+              </div>
 
               <div className="mt-2 flex items-center justify-end gap-3 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
@@ -85,7 +98,7 @@ const ChildrenActivities = () => {
 
               <button
                 onClick={handleNavigate}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground transition-all hover:opacity-90"
                 style={{ background: "var(--gradient-cta)" }}
               >
                 <Navigation className="h-4 w-4" />
