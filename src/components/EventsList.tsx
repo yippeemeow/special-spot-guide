@@ -1,4 +1,5 @@
-import { Navigation, Clock, MapPin } from "lucide-react";
+import { useState } from "react";
+import { Navigation, Clock, MapPin, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
@@ -52,6 +53,7 @@ const statusStyles = {
 const EventsList = () => {
   const { t, lang } = useLanguage();
   const navigate = useNavigate();
+  const [showAll, setShowAll] = useState(false);
 
   const handleNavigate = (target?: string) => {
     navigate("/map", { state: { target } });
@@ -62,65 +64,120 @@ const EventsList = () => {
     return order[a.status] - order[b.status];
   });
 
+  const displayEvents = showAll ? sortedEvents : sortedEvents;
+
   return (
-    <div className="mt-6 px-5">
-      <div className="flex items-center justify-between mb-3">
-        <button className="text-sm font-semibold text-secondary">{t("viewAll")}</button>
-        <h2 className="text-lg font-bold text-foreground">{t("nearbyEvents")}</h2>
-      </div>
+    <>
+      <div className="mt-6 px-5">
+        <div className="flex items-center justify-between mb-3">
+          <button onClick={() => setShowAll(true)} className="text-sm font-semibold text-secondary">{t("viewAll")}</button>
+          <h2 className="text-lg font-bold text-foreground">{t("nearbyEvents")}</h2>
+        </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-2">
-        {sortedEvents.map((event) => (
-          <div
-            key={event.id}
-            className={`flex w-[220px] shrink-0 flex-col rounded-2xl border bg-card p-4 shadow-sm transition-all ${
-              event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20 glow-cyan"
-            }`}
-          >
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-[10px] text-muted-foreground">{event.distance}</span>
-              <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles[event.status]}`}>
-                {event.status === "live" && (
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
-                )}
-                {event.status === "live" && t("now")}
-                {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
-                {event.status === "ended" && t("ended")}
-              </span>
-            </div>
-
-            <h3 className="text-sm font-bold text-foreground leading-snug">{t(event.titleKey)}</h3>
-
-            <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-              <MapPin className="h-3 w-3 shrink-0" />
-              <span>{t(event.locationKey)}</span>
-            </div>
-
-            <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-              <Clock className="h-3 w-3 shrink-0" />
-              <span>{lang === "ar" ? event.timeAr : event.timeEn}</span>
-            </div>
-
-            <p className="mt-2 text-xs text-muted-foreground leading-relaxed line-clamp-2">{t(event.descKey)}</p>
-
-            {event.status !== "ended" ? (
-              <button
-                onClick={() => handleNavigate(event.mapTarget)}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground transition-all hover:opacity-90"
-                style={{ background: "var(--gradient-cta)" }}
-              >
-                <Navigation className="h-4 w-4" />
-                {t("startRoute")}
-              </button>
-            ) : (
-              <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-muted py-2.5 text-sm font-semibold text-muted-foreground">
-                {t("ended")}
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {sortedEvents.map((event) => (
+            <div
+              key={event.id}
+              className={`flex w-[220px] shrink-0 flex-col rounded-2xl border bg-card p-4 shadow-sm transition-all ${
+                event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20 glow-cyan"
+              }`}
+            >
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground">{event.distance}</span>
+                <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles[event.status]}`}>
+                  {event.status === "live" && (
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
+                  )}
+                  {event.status === "live" && t("now")}
+                  {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
+                  {event.status === "ended" && t("ended")}
+                </span>
               </div>
-            )}
-          </div>
-        ))}
+
+              <h3 className="text-sm font-bold text-foreground leading-snug">{t(event.titleKey)}</h3>
+
+              <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPin className="h-3 w-3 shrink-0" />
+                <span>{t(event.locationKey)}</span>
+              </div>
+
+              <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3 shrink-0" />
+                <span>{lang === "ar" ? event.timeAr : event.timeEn}</span>
+              </div>
+
+              <p className="mt-2 text-xs text-muted-foreground leading-relaxed line-clamp-2">{t(event.descKey)}</p>
+
+              {event.status !== "ended" ? (
+                <button
+                  onClick={() => handleNavigate(event.mapTarget)}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground transition-all hover:opacity-90"
+                  style={{ background: "var(--gradient-cta)" }}
+                >
+                  <Navigation className="h-4 w-4" />
+                  {t("startRoute")}
+                </button>
+              ) : (
+                <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-muted py-2.5 text-sm font-semibold text-muted-foreground">
+                  {t("ended")}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* View All Modal */}
+      {showAll && (
+        <div className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-md overflow-y-auto">
+          <div className="flex items-center justify-between px-5 pt-10 pb-4" style={{ background: "var(--gradient-header)" }}>
+            <div />
+            <h1 className="text-lg font-bold text-primary-foreground text-glow">{t("allEvents")}</h1>
+            <button onClick={() => setShowAll(false)} className="flex h-10 w-10 items-center justify-center rounded-full border border-secondary/30 bg-secondary/10 text-primary-foreground">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="px-5 py-4 space-y-3 pb-10">
+            {sortedEvents.map((event) => (
+              <div
+                key={event.id}
+                className={`rounded-2xl border bg-card p-4 shadow-sm ${
+                  event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles[event.status]}`}>
+                    {event.status === "live" && (
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
+                    )}
+                    {event.status === "live" && t("now")}
+                    {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
+                    {event.status === "ended" && t("ended")}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">{event.distance}</span>
+                </div>
+                <h3 className="text-sm font-bold text-foreground">{t(event.titleKey)}</h3>
+                <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{t(event.locationKey)}</span>
+                  <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{lang === "ar" ? event.timeAr : event.timeEn}</span>
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">{t(event.descKey)}</p>
+                {event.status !== "ended" && (
+                  <button
+                    onClick={() => { setShowAll(false); handleNavigate(event.mapTarget); }}
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground"
+                    style={{ background: "var(--gradient-cta)" }}
+                  >
+                    <Navigation className="h-4 w-4" />
+                    {t("startRoute")}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
