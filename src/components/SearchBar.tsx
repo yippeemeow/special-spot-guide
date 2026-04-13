@@ -6,7 +6,7 @@ const SearchBar = () => {
 
   return (
     <div className="-mt-5 px-5">
-      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-lg">
+      <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-card px-4 py-3 shadow-lg glow-primary backdrop-blur-sm">
         <Search className="h-5 w-5 text-muted-foreground" />
         <input
           type="text"

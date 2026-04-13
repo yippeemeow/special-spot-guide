@@ -36,8 +36,8 @@ const CategoryTabs = ({ onCategoryChange }: CategoryTabsProps) => {
               onClick={() => handleClick(cat.id)}
               className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 isActive
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "bg-card text-muted-foreground border border-border hover:bg-accent"
+                  ? "bg-primary text-primary-foreground shadow-md glow-primary"
+                  : "bg-card text-muted-foreground border border-border hover:border-primary/30"
               }`}
             >
               <Icon className="h-4 w-4" />

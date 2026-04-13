@@ -9,7 +9,7 @@ const BottomNav = () => {
 
   const navItems = [
     { id: "settings", label: t("settings"), icon: Settings, path: "/" },
-    { id: "food", label: t("restaurants"), icon: Utensils, path: "/", state: { tab: "restaurants" } },
+    { id: "food", label: t("restaurants"), icon: Utensils, path: "/" },
     { id: "map", label: t("map"), icon: MapPin, path: "/map" },
     { id: "events", label: t("events"), icon: Calendar, path: "/" },
     { id: "home", label: t("home"), icon: Home, path: "/" },
@@ -18,7 +18,7 @@ const BottomNav = () => {
   const currentPath = location.pathname;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-md">
+    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-primary/15 bg-card/95 backdrop-blur-xl">
       <div className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom)]">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -31,7 +31,7 @@ const BottomNav = () => {
                 isActive ? "text-primary" : "text-muted-foreground"
               }`}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className={`h-5 w-5 ${isActive ? "drop-shadow-[0_0_6px_hsla(270,80%,60%,0.6)]" : ""}`} />
               <span className="text-[10px] font-medium">{item.label}</span>
             </button>
           );

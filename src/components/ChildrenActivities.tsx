@@ -53,11 +53,11 @@ const ChildrenActivities = () => {
           return (
             <div
               key={a.id}
-              className="rounded-2xl border border-border bg-card p-4 shadow-sm"
+              className="rounded-2xl border border-primary/15 bg-card p-4 shadow-sm"
             >
               <div className="flex items-start justify-between">
                 <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                  a.status === "live" ? "bg-event-live text-primary-foreground" : "bg-event-soon text-primary-foreground"
+                  a.status === "live" ? "bg-primary text-primary-foreground glow-primary" : "bg-event-soon text-primary-foreground"
                 }`}>
                   {a.status === "live" && (
                     <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary-foreground animate-pulse-live me-1" />
@@ -85,7 +85,8 @@ const ChildrenActivities = () => {
 
               <button
                 onClick={handleNavigate}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                style={{ background: "var(--gradient-cta)" }}
               >
                 <Navigation className="h-4 w-4" />
                 {t("navigate")}

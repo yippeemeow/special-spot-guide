@@ -3,34 +3,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
 const restaurants = [
-  {
-    id: 1,
-    nameKey: "alBaik",
-    descKey: "alBaikDesc",
-    emoji: "🍗",
-    distance: "80م",
-  },
-  {
-    id: 2,
-    nameKey: "kudu",
-    descKey: "kuduDesc",
-    emoji: "🍔",
-    distance: "95م",
-  },
-  {
-    id: 3,
-    nameKey: "shawarmer",
-    descKey: "shawarmerDesc",
-    emoji: "🌯",
-    distance: "110م",
-  },
-  {
-    id: 4,
-    nameKey: "maestro",
-    descKey: "maestroDesc",
-    emoji: "🍕",
-    distance: "70م",
-  },
+  { id: 1, nameKey: "alBaik", descKey: "alBaikDesc", emoji: "🍗", distance: "80م" },
+  { id: 2, nameKey: "kudu", descKey: "kuduDesc", emoji: "🍔", distance: "95م" },
+  { id: 3, nameKey: "shawarmer", descKey: "shawarmerDesc", emoji: "🌯", distance: "110م" },
+  { id: 4, nameKey: "maestro", descKey: "maestroDesc", emoji: "🍕", distance: "70م" },
 ];
 
 const RestaurantsList = () => {
@@ -48,11 +24,12 @@ const RestaurantsList = () => {
         {restaurants.map((r) => (
           <div
             key={r.id}
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm"
+            className="flex items-center gap-3 rounded-2xl border border-primary/15 bg-card p-4 shadow-sm transition-all hover:border-primary/30 hover:glow-primary"
           >
             <button
               onClick={() => handleNavigate(r.nameKey)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-foreground"
+              style={{ background: "var(--gradient-cta)" }}
             >
               <Navigation className="h-4 w-4" />
             </button>
@@ -64,7 +41,7 @@ const RestaurantsList = () => {
               </div>
               <p className="text-xs text-muted-foreground mt-1">{t(r.descKey)}</p>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] rounded-full bg-accent text-accent-foreground px-2 py-0.5 font-semibold">{t("open")}</span>
+                <span className="text-[10px] rounded-full bg-primary/15 text-primary px-2 py-0.5 font-semibold">{t("open")}</span>
                 <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                   <MapPin className="h-3 w-3" />
                   <span>{r.distance}</span>

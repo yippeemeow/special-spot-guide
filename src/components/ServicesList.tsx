@@ -27,7 +27,7 @@ const ServicesList = () => {
           <button
             key={s.id}
             onClick={() => handleNavigate(s.mapTarget)}
-            className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:border-primary/30"
+            className="flex flex-col items-center gap-2 rounded-2xl border border-primary/15 bg-card p-4 shadow-sm transition-all hover:border-primary/30 hover:glow-primary"
           >
             <span className="text-2xl">{s.icon}</span>
             <span className="text-xs font-semibold text-foreground text-center">{t(s.nameKey)}</span>

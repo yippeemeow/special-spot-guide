@@ -8,7 +8,6 @@ interface Message {
   sender: "user" | "bot";
 }
 
-// Knowledge base for the chatbot
 const getAnswer = (question: string, lang: "ar" | "en"): string => {
   const q = question.toLowerCase();
 
@@ -82,7 +81,6 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -121,31 +119,28 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Floating Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl transition-transform hover:scale-110"
+          className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-primary-foreground shadow-xl transition-transform hover:scale-110 glow-neon"
+          style={{ background: "var(--gradient-neon)" }}
         >
           <Bot className="h-7 w-7" />
         </button>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 flex h-[70vh] flex-col rounded-t-3xl border-t border-border bg-card shadow-2xl">
-          {/* Header */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex h-[70vh] flex-col rounded-t-3xl border-t border-primary/20 bg-card shadow-2xl">
           <div className="flex items-center justify-between rounded-t-3xl px-5 py-4" style={{ background: "var(--gradient-header)" }}>
-            <button onClick={() => setIsOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-foreground/15 text-primary-foreground">
+            <button onClick={() => setIsOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary-foreground">
               <X className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-2 text-primary-foreground">
-              <span className="text-sm font-bold">{t("chatAssistant")}</span>
+              <span className="text-sm font-bold text-glow">{t("chatAssistant")}</span>
               <Bot className="h-5 w-5" />
             </div>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
             {messages.map((msg) => (
               <div
@@ -155,9 +150,10 @@ const ChatBot = () => {
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
                     msg.sender === "user"
-                      ? "bg-primary text-primary-foreground rounded-bl-sm"
-                      : "bg-accent text-accent-foreground rounded-br-sm"
+                      ? "text-primary-foreground rounded-bl-sm"
+                      : "bg-muted text-foreground rounded-br-sm"
                   }`}
+                  style={msg.sender === "user" ? { background: "var(--gradient-cta)" } : undefined}
                 >
                   {msg.text}
                 </div>
@@ -166,22 +162,21 @@ const ChatBot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
-          <div className="border-t border-border px-4 py-3 pb-[env(safe-area-inset-bottom)]">
+          <div className="border-t border-primary/15 px-4 py-3 pb-[env(safe-area-inset-bottom)]">
             <div className="flex items-center gap-2">
               <button
                 onClick={handleSend}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-foreground"
+                style={{ background: "var(--gradient-cta)" }}
               >
                 <Send className="h-4 w-4" />
               </button>
               <input
-                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder={t("chatPlaceholder")}
-                className="flex-1 rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+                className="flex-1 rounded-xl border border-primary/20 bg-muted px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
           </div>
