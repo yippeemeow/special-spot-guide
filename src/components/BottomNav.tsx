@@ -9,7 +9,6 @@ const BottomNav = () => {
 
   const navItems = [
     { id: "settings", label: t("settings"), icon: Settings, path: "/" },
-    { id: "food", label: t("restaurants"), icon: Utensils, path: "/restaurants" },
     { id: "map", label: t("map"), icon: MapPin, path: "/map" },
     { id: "events", label: t("events"), icon: Calendar, path: "/" },
     { id: "home", label: t("home"), icon: Home, path: "/" },
