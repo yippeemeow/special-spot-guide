@@ -1,5 +1,6 @@
 import { Navigation, Clock, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 interface EventItem {
   id: number;
@@ -8,8 +9,10 @@ interface EventItem {
   timeAr: string;
   timeEn: string;
   descKey: string;
-  status: "live" | "soon";
+  status: "live" | "soon" | "ended";
   distance: string;
+  minutesUntil?: number;
+  mapTarget?: string;
 }
 
 const events: EventItem[] = [
@@ -22,6 +25,18 @@ const events: EventItem[] = [
     descKey: "openingDesc",
     status: "live",
     distance: "50م",
+    mapTarget: "mainStage",
+  },
+  {
+    id: 5,
+    titleKey: "showEnded",
+    locationKey: "mainStage",
+    timeAr: "٣:٠٠ م – ٤:٠٠ م",
+    timeEn: "3:00 PM – 4:00 PM",
+    descKey: "openingDesc",
+    status: "ended",
+    distance: "50م",
+    mapTarget: "mainStage",
   },
   {
     id: 2,
@@ -32,6 +47,7 @@ const events: EventItem[] = [
     descKey: "techColoringDesc",
     status: "live",
     distance: "120م",
+    mapTarget: "childrenArea",
   },
   {
     id: 3,
@@ -42,6 +58,8 @@ const events: EventItem[] = [
     descKey: "digitalFutureDesc",
     status: "soon",
     distance: "50م",
+    minutesUntil: 10,
+    mapTarget: "mainStage",
   },
   {
     id: 4,
@@ -52,16 +70,30 @@ const events: EventItem[] = [
     descKey: "digitalServicesDesc",
     status: "soon",
     distance: "50م",
+    minutesUntil: 45,
+    mapTarget: "mainStage",
   },
 ];
 
 const statusStyles = {
   live: "bg-event-live text-primary-foreground",
   soon: "bg-event-soon text-primary-foreground",
+  ended: "bg-muted text-muted-foreground",
 };
 
 const EventsList = () => {
   const { t, lang } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleNavigate = (target?: string) => {
+    navigate("/map", { state: { target } });
+  };
+
+  // Sort: live first, then soon, then ended
+  const sortedEvents = [...events].sort((a, b) => {
+    const order = { live: 0, soon: 1, ended: 2 };
+    return order[a.status] - order[b.status];
+  });
 
   return (
     <div className="mt-6 px-5">
@@ -71,10 +103,10 @@ const EventsList = () => {
       </div>
 
       <div className="flex gap-3 overflow-x-auto pb-2">
-        {events.map((event) => (
+        {sortedEvents.map((event) => (
           <div
             key={event.id}
-            className="flex w-[220px] shrink-0 flex-col rounded-2xl border border-border bg-card p-4 shadow-sm"
+            className={`flex w-[220px] shrink-0 flex-col rounded-2xl border border-border bg-card p-4 shadow-sm ${event.status === "ended" ? "opacity-60" : ""}`}
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="text-[10px] text-muted-foreground">{event.distance}</span>
@@ -82,7 +114,9 @@ const EventsList = () => {
                 {event.status === "live" && (
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary-foreground animate-pulse-live me-1" />
                 )}
-                {t(event.status === "live" ? "now" : "soon")}
+                {event.status === "live" && t("now")}
+                {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
+                {event.status === "ended" && t("ended")}
               </span>
             </div>
 
@@ -100,10 +134,19 @@ const EventsList = () => {
 
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed line-clamp-2">{t(event.descKey)}</p>
 
-            <button className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">
-              <Navigation className="h-4 w-4" />
-              {t("startRoute")}
-            </button>
+            {event.status !== "ended" ? (
+              <button
+                onClick={() => handleNavigate(event.mapTarget)}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                <Navigation className="h-4 w-4" />
+                {t("startRoute")}
+              </button>
+            ) : (
+              <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-muted py-2.5 text-sm font-semibold text-muted-foreground">
+                {t("ended")}
+              </div>
+            )}
           </div>
         ))}
       </div>
