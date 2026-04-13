@@ -17,66 +17,34 @@ interface EventItem {
 
 const events: EventItem[] = [
   {
-    id: 1,
-    titleKey: "openingCeremony",
-    locationKey: "mainStage",
-    timeAr: "٤:٣٠ م – ٥:٠٠ م",
-    timeEn: "4:30 PM – 5:00 PM",
-    descKey: "openingDesc",
-    status: "live",
-    distance: "50م",
-    mapTarget: "mainStage",
+    id: 1, titleKey: "openingCeremony", locationKey: "mainStage",
+    timeAr: "٤:٣٠ م – ٥:٠٠ م", timeEn: "4:30 PM – 5:00 PM",
+    descKey: "openingDesc", status: "live", distance: "50م", mapTarget: "mainStage",
   },
   {
-    id: 5,
-    titleKey: "showEnded",
-    locationKey: "mainStage",
-    timeAr: "٣:٠٠ م – ٤:٠٠ م",
-    timeEn: "3:00 PM – 4:00 PM",
-    descKey: "openingDesc",
-    status: "ended",
-    distance: "50م",
-    mapTarget: "mainStage",
+    id: 5, titleKey: "showEnded", locationKey: "mainStage",
+    timeAr: "٣:٠٠ م – ٤:٠٠ م", timeEn: "3:00 PM – 4:00 PM",
+    descKey: "openingDesc", status: "ended", distance: "50م", mapTarget: "mainStage",
   },
   {
-    id: 2,
-    titleKey: "techColoring",
-    locationKey: "childrenArea",
-    timeAr: "٤:٠٠ م – ٥:٠٠ م",
-    timeEn: "4:00 PM – 5:00 PM",
-    descKey: "techColoringDesc",
-    status: "live",
-    distance: "120م",
-    mapTarget: "childrenArea",
+    id: 2, titleKey: "techColoring", locationKey: "childrenArea",
+    timeAr: "٤:٠٠ م – ٥:٠٠ م", timeEn: "4:00 PM – 5:00 PM",
+    descKey: "techColoringDesc", status: "live", distance: "120م", mapTarget: "childrenArea",
   },
   {
-    id: 3,
-    titleKey: "digitalFuture",
-    locationKey: "mainStage",
-    timeAr: "٥:١٥ م – ٦:٠٠ م",
-    timeEn: "5:15 PM – 6:00 PM",
-    descKey: "digitalFutureDesc",
-    status: "soon",
-    distance: "50م",
-    minutesUntil: 10,
-    mapTarget: "mainStage",
+    id: 3, titleKey: "digitalFuture", locationKey: "mainStage",
+    timeAr: "٥:١٥ م – ٦:٠٠ م", timeEn: "5:15 PM – 6:00 PM",
+    descKey: "digitalFutureDesc", status: "soon", distance: "50م", minutesUntil: 10, mapTarget: "mainStage",
   },
   {
-    id: 4,
-    titleKey: "digitalServices",
-    locationKey: "mainStage",
-    timeAr: "٦:١٥ م – ٧:٠٠ م",
-    timeEn: "6:15 PM – 7:00 PM",
-    descKey: "digitalServicesDesc",
-    status: "soon",
-    distance: "50م",
-    minutesUntil: 45,
-    mapTarget: "mainStage",
+    id: 4, titleKey: "digitalServices", locationKey: "mainStage",
+    timeAr: "٦:١٥ م – ٧:٠٠ م", timeEn: "6:15 PM – 7:00 PM",
+    descKey: "digitalServicesDesc", status: "soon", distance: "50م", minutesUntil: 45, mapTarget: "mainStage",
   },
 ];
 
 const statusStyles = {
-  live: "bg-primary text-primary-foreground glow-primary",
+  live: "bg-secondary text-secondary-foreground glow-cyan",
   soon: "bg-event-soon text-primary-foreground",
   ended: "bg-muted text-muted-foreground",
 };
@@ -97,7 +65,7 @@ const EventsList = () => {
   return (
     <div className="mt-6 px-5">
       <div className="flex items-center justify-between mb-3">
-        <button className="text-sm font-semibold text-primary">{t("viewAll")}</button>
+        <button className="text-sm font-semibold text-secondary">{t("viewAll")}</button>
         <h2 className="text-lg font-bold text-foreground">{t("nearbyEvents")}</h2>
       </div>
 
@@ -106,14 +74,14 @@ const EventsList = () => {
           <div
             key={event.id}
             className={`flex w-[220px] shrink-0 flex-col rounded-2xl border bg-card p-4 shadow-sm transition-all ${
-              event.status === "ended" ? "opacity-50 border-border" : "border-primary/20 glow-primary"
+              event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20 glow-cyan"
             }`}
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="text-[10px] text-muted-foreground">{event.distance}</span>
               <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles[event.status]}`}>
                 {event.status === "live" && (
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary-foreground animate-pulse-live me-1" />
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
                 )}
                 {event.status === "live" && t("now")}
                 {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
@@ -138,7 +106,7 @@ const EventsList = () => {
             {event.status !== "ended" ? (
               <button
                 onClick={() => handleNavigate(event.mapTarget)}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground transition-all hover:opacity-90"
                 style={{ background: "var(--gradient-cta)" }}
               >
                 <Navigation className="h-4 w-4" />
