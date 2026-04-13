@@ -75,6 +75,13 @@ const translations: Translations = {
   navigating: { ar: "جاري التوجيه...", en: "Navigating..." },
   open: { ar: "مفتوح", en: "Open" },
   menu: { ar: "القائمة", en: "Menu" },
+  crowdRadar: { ar: "📡 رادار الحشود", en: "📡 Crowd Radar" },
+  crowdLegend: { ar: "مستوى الازدحام", en: "Crowd Level" },
+  crowdLow: { ar: "غير مزدحم", en: "Low" },
+  crowdMedium: { ar: "متوسط", en: "Medium" },
+  crowdHigh: { ar: "مزدحم جدًا", en: "Crowded" },
+  chatAssistant: { ar: "المساعد الذكي", en: "Smart Assistant" },
+  chatPlaceholder: { ar: "اكتب سؤالك هنا...", en: "Type your question..." },
 };
 
 interface LanguageContextType {
