@@ -25,7 +25,7 @@ const VenueMap = () => {
 
         {/* SVG Map */}
         <div className="p-4">
-          <svg viewBox="0 0 400 300" className="w-full" dir="ltr">
+          <svg viewBox="0 0 400 300" className="w-full">
             {/* Background */}
             <rect x="20" y="10" width="360" height="280" rx="8" fill="hsl(220, 20%, 96%)" stroke="hsl(240, 10%, 90%)" strokeWidth="1" />
 
