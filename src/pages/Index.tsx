@@ -5,12 +5,13 @@ import EventHeader from "@/components/EventHeader";
 import SearchBar from "@/components/SearchBar";
 import CategoryTabs from "@/components/CategoryTabs";
 import EventsList from "@/components/EventsList";
+import RestaurantsList from "@/components/RestaurantsList";
 import ServicesList from "@/components/ServicesList";
 import ChildrenActivities from "@/components/ChildrenActivities";
 import BottomNav from "@/components/BottomNav";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
+import ChatBot from "@/components/ChatBot";
 
-// Main page component
 const Index = () => {
   const [category, setCategory] = useState("all");
 
@@ -25,6 +26,9 @@ const Index = () => {
           {(category === "all" || category === "stage" || category === "booths") && (
             <EventsList />
           )}
+          {(category === "all" || category === "restaurants") && (
+            <RestaurantsList />
+          )}
           {(category === "all" || category === "kids") && (
             <ChildrenActivities />
           )}
@@ -35,6 +39,7 @@ const Index = () => {
           <div className="pb-20" />
           <BottomNav />
           <AccessibilityPanel />
+          <ChatBot />
         </div>
       </LanguageProvider>
     </AccessibilityProvider>

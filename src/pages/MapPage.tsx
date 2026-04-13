@@ -5,6 +5,7 @@ import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import VenueMap from "@/components/VenueMap";
 import ChatBot from "@/components/ChatBot";
+import BottomNav from "@/components/BottomNav";
 
 const MapContent = () => {
   const { t, isRTL } = useLanguage();
@@ -15,7 +16,7 @@ const MapContent = () => {
   const [crowdRadar, setCrowdRadar] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-20">
       <div className="flex items-center justify-between px-5 pt-10 pb-4" style={{ background: "var(--gradient-header)" }}>
         <div />
         <h1 className="text-lg font-bold text-primary-foreground text-glow">{t("venueMap")}</h1>
@@ -69,6 +70,7 @@ const MapContent = () => {
 
       <VenueMap crowdRadar={crowdRadar} />
 
+      <BottomNav />
       <ChatBot />
     </div>
   );

@@ -3,6 +3,7 @@ import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ArrowLeft, Navigation, MapPin } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import ChatBot from "@/components/ChatBot";
 
 const restaurants = [
   { id: 1, nameKey: "alBaik", descKey: "alBaikDesc", emoji: "🍗", distance: "80م" },
@@ -63,6 +64,7 @@ const RestaurantsContent = () => {
       </div>
 
       <BottomNav />
+      <ChatBot />
     </div>
   );
 };

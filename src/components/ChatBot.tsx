@@ -8,7 +8,7 @@ interface Message {
   sender: "user" | "bot";
 }
 
-const getAnswer = (question: string, lang: "ar" | "en"): string => {
+const getAnswer = (question: string, lang: string): string => {
   const q = question.toLowerCase();
 
   const answers: { keywords: string[]; ar: string; en: string }[] = [
@@ -66,11 +66,11 @@ const getAnswer = (question: string, lang: "ar" | "en"): string => {
 
   for (const a of answers) {
     if (a.keywords.some((k) => q.includes(k))) {
-      return lang === "ar" ? a.ar : a.en;
+      return lang === "ar" || lang === "ur" ? a.ar : a.en;
     }
   }
 
-  return lang === "ar"
+  return lang === "ar" || lang === "ur"
     ? "مرحبًا! أنا مساعدك الذكي في فعالية علم. يمكنك سؤالي عن المواقع، المواعيد، المطاعم، دورات المياه، البوثات، أو أي شيء يخص الفعالية! 😊"
     : "Hi! I'm your smart assistant at the Elm event. Ask me about locations, schedules, restaurants, restrooms, booths, or anything about the event! 😊";
 };
@@ -91,7 +91,7 @@ const ChatBot = () => {
       setMessages([
         {
           id: 1,
-          text: lang === "ar"
+          text: lang === "ar" || lang === "ur"
             ? "أهلاً! أنا مساعدك الذكي 🤖\nاسألني عن أي شيء يخص الفعالية: المواقع، المواعيد، المطاعم، الخدمات..."
             : "Hello! I'm your smart assistant 🤖\nAsk me about anything: locations, schedules, restaurants, services...",
           sender: "bot",

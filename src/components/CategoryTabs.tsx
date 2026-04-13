@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LayoutGrid, Mic2, Grid3X3, Baby, Wrench } from "lucide-react";
+import { LayoutGrid, Mic2, Grid3X3, Baby, Wrench, Utensils } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CategoryTabsProps {
@@ -14,6 +14,7 @@ const CategoryTabs = ({ onCategoryChange }: CategoryTabsProps) => {
     { id: "all", label: t("all"), icon: LayoutGrid },
     { id: "stage", label: t("stage"), icon: Mic2 },
     { id: "booths", label: t("booths"), icon: Grid3X3 },
+    { id: "restaurants", label: t("restaurants"), icon: Utensils },
     { id: "kids", label: t("kids"), icon: Baby },
     { id: "services", label: t("services"), icon: Wrench },
   ];
