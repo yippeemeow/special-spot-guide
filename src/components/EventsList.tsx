@@ -98,7 +98,10 @@ const EventsList = ({ filterCategory }: EventsListProps) => {
       <div className="mt-6 px-5">
         <div className="flex items-center justify-between mb-3">
           <button onClick={() => setShowAll(true)} className="text-sm font-semibold text-secondary">{t("viewAll")}</button>
-          <h2 className="text-lg font-bold text-foreground">{t("nearbyEvents")}</h2>
+          <div className="text-end">
+            <h2 className="text-lg font-bold text-foreground">{t("currentEvents")}</h2>
+            <p className="text-xs text-muted-foreground">{t("nearbyEventsSubtitle")}</p>
+          </div>
         </div>
 
         <div className="flex gap-3 overflow-x-auto pb-2">

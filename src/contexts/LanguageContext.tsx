@@ -37,6 +37,8 @@ const translations: Translations = {
   service: { ar: "خدمة", en: "Service", es: "Servicio", it: "Servizio", ur: "سروس" },
   information: { ar: "الاستعلامات", en: "Information", es: "Información", it: "Informazioni", ur: "معلومات" },
   nearbyEvents: { ar: "الفعاليات القريبة", en: "Nearby Events", es: "Eventos cercanos", it: "Eventi vicini", ur: "قریبی ایونٹس" },
+  currentEvents: { ar: "الفعاليات الجارية الآن", en: "Current Events", es: "Eventos actuales", it: "Eventi in corso", ur: "موجودہ ایونٹس" },
+  nearbyEventsSubtitle: { ar: "الفعاليات القريبة لك", en: "Events near you", es: "Eventos cerca de ti", it: "Eventi vicino a te", ur: "آپ کے قریب ایونٹس" },
   mainStage: { ar: "المسرح الرئيسي", en: "Main Stage", es: "Escenario principal", it: "Palco principale", ur: "مین اسٹیج" },
   childrenArea: { ar: "منطقة الأطفال", en: "Children's Area", es: "Área infantil", it: "Area bambini", ur: "بچوں کا علاقہ" },
   restaurantArea: { ar: "منطقة المطاعم", en: "Restaurant Area", es: "Zona de restaurantes", it: "Area ristoranti", ur: "ریستوران ایریا" },
