@@ -27,19 +27,7 @@ const events: EventItem[] = [
     descKey: "openingDesc",
     status: "live",
     distance: "50م",
-    mapTarget: "المسرح الرئيسي",
-    category: "stage",
-  },
-  {
-    id: 5,
-    titleKey: "showEnded",
-    locationKey: "mainStage",
-    timeAr: "٣:٠٠ م – ٤:٠٠ م",
-    timeEn: "3:00 PM – 4:00 PM",
-    descKey: "openingDesc",
-    status: "ended",
-    distance: "50م",
-    mapTarget: "المسرح الرئيسي",
+    mapTarget: "mainStage", // تم التعديل ليتوافق مع مفاتيح الخريطة
     category: "stage",
   },
   {
@@ -51,33 +39,7 @@ const events: EventItem[] = [
     descKey: "techColoringDesc",
     status: "live",
     distance: "120م",
-    mapTarget: "منطقة الأطفال",
-    category: "stage",
-  },
-  {
-    id: 3,
-    titleKey: "digitalFuture",
-    locationKey: "mainStage",
-    timeAr: "٥:١٥ م – ٦:٠٠ م",
-    timeEn: "5:15 PM – 6:00 PM",
-    descKey: "digitalFutureDesc",
-    status: "soon",
-    distance: "50م",
-    minutesUntil: 10,
-    mapTarget: "المسرح الرئيسي",
-    category: "stage",
-  },
-  {
-    id: 4,
-    titleKey: "digitalServices",
-    locationKey: "mainStage",
-    timeAr: "٦:١٥ م – ٧:٠٠ م",
-    timeEn: "6:15 PM – 7:00 PM",
-    descKey: "digitalServicesDesc",
-    status: "soon",
-    distance: "50م",
-    minutesUntil: 45,
-    mapTarget: "المسرح الرئيسي",
+    mapTarget: "childrenArea",
     category: "stage",
   },
   {
@@ -89,7 +51,7 @@ const events: EventItem[] = [
     descKey: "boothDigitalSolutionsDesc",
     status: "live",
     distance: "60م",
-    mapTarget: "بوث الحلول الرقمية",
+    mapTarget: "digitalSolutions",
     category: "booths",
   },
   {
@@ -101,7 +63,7 @@ const events: EventItem[] = [
     descKey: "boothDataSecurityDesc",
     status: "live",
     distance: "75م",
-    mapTarget: "بوث البيانات والأمن",
+    mapTarget: "dataSecurity",
     category: "booths",
   },
   {
@@ -114,7 +76,7 @@ const events: EventItem[] = [
     status: "soon",
     distance: "90م",
     minutesUntil: 20,
-    mapTarget: "بوث الابتكار والتجربة",
+    mapTarget: "innovationUX",
     category: "booths",
   },
   {
@@ -126,7 +88,7 @@ const events: EventItem[] = [
     descKey: "boothTechFutureDesc",
     status: "live",
     distance: "85م",
-    mapTarget: "بوث المستقبل التقني",
+    mapTarget: "techFuture",
     category: "booths",
   },
 ];
@@ -146,10 +108,10 @@ const EventsList = ({ filterCategory }: EventsListProps) => {
   const navigate = useNavigate();
   const [showAll, setShowAll] = useState(false);
 
-  // التعديل هنا: نستخدم التنقل مع Query Parameter ليتوافق مع كود صفحة الخريطة
   const handleNavigate = (targetName?: string) => {
     if (targetName) {
-      navigate(`/map?target=${encodeURIComponent(targetName)}`);
+      // نرسل الـ target name لكي تستقبله صفحة الخريطة وترسم المسار
+      navigate(`/map?target=${targetName}`);
     } else {
       navigate("/map");
     }
@@ -165,9 +127,9 @@ const EventsList = ({ filterCategory }: EventsListProps) => {
 
   return (
     <>
-      <div className="mt-6 px-5">
+      <div className="mt-6 px-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex items-center justify-between mb-3">
-          <button onClick={() => setShowAll(true)} className="text-sm font-semibold text-secondary">
+          <button onClick={() => setShowAll(true)} className="text-sm font-semibold text-secondary hover:underline">
             {t("viewAll")}
           </button>
           <div className="text-end">
@@ -176,19 +138,21 @@ const EventsList = ({ filterCategory }: EventsListProps) => {
           </div>
         </div>
 
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
           {sortedEvents.map((event) => (
             <div
               key={event.id}
-              className={`flex w-[220px] shrink-0 flex-col rounded-2xl border bg-card p-4 shadow-sm transition-all ${
-                event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20 glow-cyan"
+              className={`flex w-[240px] shrink-0 flex-col rounded-3xl border bg-card/40 backdrop-blur-sm p-4 shadow-lg transition-all ${
+                event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20 hover:border-secondary/50"
               }`}
             >
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground">{event.distance}</span>
-                <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles[event.status]}`}>
+                <span className="text-[10px] text-muted-foreground/70">{event.distance}</span>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${statusStyles[event.status]}`}
+                >
                   {event.status === "live" && (
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse me-1.5" />
                   )}
                   {event.status === "live" && t("now")}
                   {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
@@ -196,31 +160,30 @@ const EventsList = ({ filterCategory }: EventsListProps) => {
                 </span>
               </div>
 
-              <h3 className="text-sm font-bold text-foreground leading-snug h-10 line-clamp-2">{t(event.titleKey)}</h3>
+              <h3 className="text-sm font-bold text-foreground leading-tight h-10 line-clamp-2">{t(event.titleKey)}</h3>
 
-              <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPin className="h-3 w-3 shrink-0" />
-                <span className="truncate">{t(event.locationKey)}</span>
+              <div className="mt-3 space-y-1.5">
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <MapPin className="h-3.5 w-3.5 text-secondary/70" />
+                  <span className="truncate">{t(event.locationKey)}</span>
+                </div>
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5 text-muted-foreground/50" />
+                  <span>{lang === "ar" ? event.timeAr : event.timeEn}</span>
+                </div>
               </div>
-
-              <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3 shrink-0" />
-                <span>{lang === "ar" ? event.timeAr : event.timeEn}</span>
-              </div>
-
-              <p className="mt-2 text-xs text-muted-foreground leading-relaxed line-clamp-2 h-8">{t(event.descKey)}</p>
 
               {event.status !== "ended" ? (
                 <button
                   onClick={() => handleNavigate(event.mapTarget)}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground transition-all hover:opacity-90 active:scale-95"
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold text-black transition-all hover:brightness-110 active:scale-95 shadow-[0_4px_15px_rgba(0,243,255,0.2)]"
                   style={{ background: "var(--gradient-cta)" }}
                 >
-                  <Navigation className="h-4 w-4" />
+                  <Navigation className="h-4 w-4 fill-current" />
                   {t("startRoute")}
                 </button>
               ) : (
-                <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-muted py-2.5 text-sm font-semibold text-muted-foreground">
+                <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-muted/50 py-3 text-sm font-bold text-muted-foreground">
                   {t("ended")}
                 </div>
               )}
@@ -229,65 +192,60 @@ const EventsList = ({ filterCategory }: EventsListProps) => {
         </div>
       </div>
 
-      {/* View All Modal */}
+      {/* مودال عرض الكل - تم تحسين التصميم */}
       {showAll && (
-        <div className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-md overflow-y-auto">
-          <div
-            className="sticky top-0 z-10 flex items-center justify-between px-5 pt-10 pb-4"
-            style={{ background: "var(--gradient-header)" }}
-          >
-            <div className="w-10" />
-            <h1 className="text-lg font-bold text-primary-foreground text-glow">{t("allEvents")}</h1>
+        <div className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-xl overflow-y-auto animate-in fade-in duration-300">
+          <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-12 pb-6 bg-background/80 backdrop-blur-md border-b border-white/5">
             <button
               onClick={() => setShowAll(false)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-secondary/30 bg-secondary/10 text-primary-foreground hover:bg-secondary/20 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-foreground hover:bg-white/10 transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
+            <h1 className="text-xl font-bold text-foreground">{t("allEvents")}</h1>
+            <div className="w-10" />
           </div>
-          <div className="px-5 py-4 space-y-3 pb-10">
+
+          <div className="px-5 py-6 space-y-4 pb-20">
             {sortedEvents.map((event) => (
               <div
                 key={event.id}
-                className={`rounded-2xl border bg-card p-4 shadow-sm ${
-                  event.status === "ended" ? "opacity-50 border-border" : "border-secondary/20"
+                className={`rounded-3xl border bg-card/30 p-5 shadow-sm transition-all ${
+                  event.status === "ended" ? "opacity-50 border-border" : "border-secondary/10"
                 }`}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles[event.status]}`}
-                  >
-                    {event.status === "live" && (
-                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse-live me-1" />
-                    )}
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`rounded-full px-3 py-1 text-[10px] font-bold ${statusStyles[event.status]}`}>
                     {event.status === "live" && t("now")}
                     {event.status === "soon" && event.minutesUntil && t("inMinutes", { n: event.minutesUntil })}
                     {event.status === "ended" && t("ended")}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">{event.distance}</span>
+                  <span className="text-xs text-muted-foreground">{event.distance}</span>
                 </div>
-                <h3 className="text-sm font-bold text-foreground">{t(event.titleKey)}</h3>
-                <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
+                <h3 className="text-md font-bold text-foreground mb-1">{t(event.titleKey)}</h3>
+                <p className="text-xs text-muted-foreground mb-4 line-clamp-2">{t(event.descKey)}</p>
+
+                <div className="flex items-center gap-4 text-xs text-muted-foreground/80 mb-4">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-secondary" />
                     {t(event.locationKey)}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5" />
                     {lang === "ar" ? event.timeAr : event.timeEn}
                   </span>
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground">{t(event.descKey)}</p>
+
                 {event.status !== "ended" && (
                   <button
                     onClick={() => {
                       setShowAll(false);
                       handleNavigate(event.mapTarget);
                     }}
-                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-secondary-foreground active:scale-[0.98] transition-transform"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-bold text-black active:scale-[0.97] transition-all shadow-lg"
                     style={{ background: "var(--gradient-cta)" }}
                   >
-                    <Navigation className="h-4 w-4" />
+                    <Navigation className="h-4 w-4 fill-current" />
                     {t("startRoute")}
                   </button>
                 )}
