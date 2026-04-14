@@ -7,8 +7,32 @@ const SearchBar = () => {
 
   const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
-    console.log("🔥 البحث شغال:", query);
+  const handleSearch = async () => {
+    if (!query) return;
+
+    const res = await fetch("https://elmodels.ngrok.app/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer YOUR_API_KEY",
+      },
+      body: JSON.stringify({
+        model: "nuha-2.0",
+        messages: [
+          {
+            role: "system",
+            content: "اقترح فعاليات في السعودية بشكل مختصر",
+          },
+          {
+            role: "user",
+            content: query,
+          },
+        ],
+      }),
+    });
+
+    const data = await res.json();
+    console.log("🤖 AI:", data.choices[0].message.content);
   };
 
   return (
