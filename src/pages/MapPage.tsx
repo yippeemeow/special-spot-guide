@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, ArrowLeft, Radio } from "lucide-react";
-import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
-import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import VenueMap from "@/components/VenueMap";
 import ChatBot from "@/components/ChatBot";
 import BottomNav from "@/components/BottomNav";
 
-const MapContent = () => {
+const MapPage = () => {
   const { t, isRTL } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
@@ -75,13 +74,5 @@ const MapContent = () => {
     </div>
   );
 };
-
-const MapPage = () => (
-  <AccessibilityProvider>
-    <LanguageProvider>
-      <MapContent />
-    </LanguageProvider>
-  </AccessibilityProvider>
-);
 
 export default MapPage;

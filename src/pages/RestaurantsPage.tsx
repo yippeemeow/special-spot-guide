@@ -1,5 +1,4 @@
-import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
-import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ArrowLeft, Navigation, MapPin } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
@@ -12,7 +11,7 @@ const restaurants = [
   { id: 4, nameKey: "maestro", descKey: "maestroDesc", emoji: "🍕", distance: "70م" },
 ];
 
-const RestaurantsContent = () => {
+const RestaurantsPage = () => {
   const { t, isRTL } = useLanguage();
   const navigate = useNavigate();
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
@@ -68,13 +67,5 @@ const RestaurantsContent = () => {
     </div>
   );
 };
-
-const RestaurantsPage = () => (
-  <AccessibilityProvider>
-    <LanguageProvider>
-      <RestaurantsContent />
-    </LanguageProvider>
-  </AccessibilityProvider>
-);
 
 export default RestaurantsPage;
