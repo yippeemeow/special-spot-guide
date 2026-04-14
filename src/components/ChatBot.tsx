@@ -80,6 +80,7 @@ const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -100,21 +101,59 @@ const ChatBot = () => {
     }
   }, [isOpen, lang]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
 
     const userMsg: Message = { id: Date.now(), text: input, sender: "user" };
-    const answer = getAnswer(input, lang);
-
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      const systemPrompt = lang === "ar" || lang === "ur"
+        ? "أنت مساعد ذكي لفعالية شركة علم للابتكار الرقمي. أجب بشكل مختصر ومفيد عن الفعاليات والمواقع والمطاعم والخدمات والمواعيد. الفعالية من 4:00 م إلى 11:00 م. تضم مسرح رئيسي وبوثات تقنية ومنطقة أطفال ومطاعم (البيك، كودو، شاورمر، مايسترو بيتزا) وخدمات (دورات مياه، مصليات، إسعافات أولية، استعلامات)."
+        : "You are a smart assistant for the Elm Digital Innovation event. Answer briefly about events, locations, restaurants, services, and schedules. The event runs 4:00 PM to 11:00 PM. It includes a main stage, tech booths, children's area, restaurants (Al Baik, Kudu, Shawarmer, Maestro Pizza), and services (restrooms, prayer rooms, first aid, info desk).";
+
+      const res = await fetch("https://elmodels.ngrok.app/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "sk-UIlD4_Pf5iOO8o6_eHNYyg",
+        },
+        body: JSON.stringify({
+          model: "nuha-2.0",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: input },
+          ],
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.choices && data.choices[0]?.message?.content) {
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, text: data.choices[0].message.content, sender: "bot" },
+        ]);
+      } else {
+        // Fallback to local answers
+        const answer = getAnswer(input, lang);
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, text: answer, sender: "bot" },
+        ]);
+      }
+    } catch {
+      // Fallback to local answers on network error
+      const answer = getAnswer(input, lang);
       setMessages((prev) => [
         ...prev,
         { id: Date.now() + 1, text: answer, sender: "bot" },
       ]);
-    }, 500);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
