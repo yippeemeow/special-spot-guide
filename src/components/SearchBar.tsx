@@ -21,7 +21,7 @@ const SearchBar = () => {
         messages: [
           {
             role: "system",
-            content: "اقترح فعاليات في السعودية بشكل مختصر",
+            content: "اقترح فعاليات بشكل مختصر",
           },
           {
             role: "user",
