@@ -19,8 +19,14 @@ const SearchBar = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
-          "ngrok-skip-browser-warning": "true", // سطر ضروري لتجاوز حماية ngrok
+          // الخيار 1: الطريقة القياسية مع Bearer (تأكد من المسافة)
+          Authorization: `Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8`,
+
+          // الخيار 2: بعض السيرفرات المحلية تطلبه بهذا المسمى
+          "api-key": "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+
+          // الخيار 3: لضمان عدم حجب ngrok للطلب
+          "ngrok-skip-browser-warning": "true",
         },
         body: JSON.stringify({
           model: "nuha-2.0",
