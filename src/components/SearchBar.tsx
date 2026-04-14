@@ -15,40 +15,35 @@ const SearchBar = () => {
     setResult("");
 
     try {
-      // ملاحظة: جربنا هنا الرابط المباشر لـ LiteLLM عبر ngrok
+      // تعديل الرابط ليتوافق مع LiteLLM Proxy
       const res = await fetch("https://elmodels.ngrok.app/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // تأكد أن هذا المفتاح هو الـ Secret Key الظاهر في لوحة LiteLLM لديك
-          Authorization: "Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+          // تأكد من نسخ المفتاح "السري" كاملاً من لوحة LiteLLM
+          Authorization: "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg",
           "ngrok-skip-browser-warning": "69420",
         },
         body: JSON.stringify({
           model: "nuha-2.0",
-          messages: [
-            {
-              role: "user",
-              content: query,
-            },
-          ],
+          messages: [{ role: "user", content: query }],
+          stream: false,
         }),
       });
 
       if (res.status === 401) {
-        throw new Error("المفتاح مرفوض (Unauthorized). تأكد من نسخ Secret Key من لوحة LiteLLM.");
+        throw new Error("المفتاح مرفوض (Unauthorized). تأكد من نسخ الـ Secret Key الفعلي وليس الـ ID.");
+      }
+
+      if (!res.ok) {
+        throw new Error(`خطأ من السيرفر: ${res.status}`);
       }
 
       const data = await res.json();
-
-      if (data.choices && data.choices[0]) {
-        setResult(data.choices[0].message.content);
-      } else {
-        setResult("وصل رد فارغ، تأكد من تشغيل الموديل في جهازك.");
-      }
+      setResult(data.choices?.[0]?.message?.content || "وصل رد فارغ من الموديل.");
     } catch (error: any) {
       setResult(`خطأ: ${error.message}`);
-      console.error("❌ Connection Error:", error);
+      console.error("❌ Search Error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -85,10 +80,11 @@ const SearchBar = () => {
       </div>
 
       {result && (
-        <div className="p-4 rounded-xl bg-card/80 border border-secondary/10 text-foreground text-sm shadow-inner animate-in fade-in slide-in-from-top-2">
-          <p className="leading-relaxed whitespace-pre-wrap text-right" dir="rtl">
-            {result}
-          </p>
+        <div
+          className="p-4 rounded-xl bg-card/80 border border-secondary/10 text-foreground text-sm shadow-inner animate-in fade-in slide-in-from-top-2 text-right"
+          dir="rtl"
+        >
+          <p className="leading-relaxed whitespace-pre-wrap font-medium text-white/90">{result}</p>
         </div>
       )}
     </div>
