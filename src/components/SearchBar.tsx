@@ -19,7 +19,7 @@ const SearchBar = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+          Authorization: "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
           "ngrok-skip-browser-warning": "true", // سطر ضروري لتجاوز حماية ngrok
         },
         body: JSON.stringify({
