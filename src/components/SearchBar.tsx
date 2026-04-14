@@ -1,22 +1,68 @@
 import { Search, Mic } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 
 const SearchBar = () => {
   const { t } = useLanguage();
+
+  const [query, setQuery] = useState("");
+  const [response, setResponse] = useState("");
+
+  const sendToAI = async () => {
+    if (!query) return;
+
+    const res = await fetch("https://elmodels.ngrok.app/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+      },
+      body: JSON.stringify({
+        model: "nuha-2.0",
+        messages: [
+          {
+            role: "system",
+            content: "انت مساعد ذكي لمنصة فعاليات اسمها مسارك. اقترح فعاليات بشكل مختصر.",
+          },
+          {
+            role: "user",
+            content: query,
+          },
+        ],
+      }),
+    });
+
+    const data = await res.json();
+    setResponse(data.choices[0].message.content);
+  };
 
   return (
     <div className="-mt-5 px-5">
       <div className="flex items-center gap-3 rounded-2xl border border-secondary/20 bg-card px-4 py-3 shadow-lg glow-cyan backdrop-blur-sm">
         <Search className="h-5 w-5 text-muted-foreground" />
+
         <input
           type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") sendToAI();
+          }}
           placeholder={t("searchPlaceholder")}
           className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
         />
+
+        <button onClick={sendToAI} className="text-secondary">
+          🔍
+        </button>
+
         <button className="text-secondary">
           <Mic className="h-5 w-5" />
         </button>
       </div>
+
+      {/* 🔥 عرض نتيجة AI */}
+      {response && <div className="mt-4 p-3 rounded-xl bg-card text-sm">{response}</div>}
     </div>
   );
 };
