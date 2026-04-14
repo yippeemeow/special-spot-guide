@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface VenueMapProps {
   crowdRadar?: boolean;
+  targetLocation?: string;
 }
 
 const crowdData: Record<string, "low" | "medium" | "high"> = {
