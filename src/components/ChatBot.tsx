@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Bot, X, Send } from "lucide-react";
+import { Bot, X, Send, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
