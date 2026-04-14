@@ -198,6 +198,14 @@ const ChatBot = () => {
                 </div>
               </div>
             ))}
+            {isLoading && (
+              <div className="flex justify-end">
+                <div className="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm bg-muted text-foreground rounded-br-sm flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {lang === "ar" || lang === "ur" ? "جاري التفكير..." : "Thinking..."}
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -205,10 +213,11 @@ const ChatBot = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleSend}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-foreground"
+                disabled={isLoading}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-foreground disabled:opacity-50"
                 style={{ background: "var(--gradient-cta)" }}
               >
-                <Send className="h-4 w-4" />
+                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>
               <input
                 value={input}
