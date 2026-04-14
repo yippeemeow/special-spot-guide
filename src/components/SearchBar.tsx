@@ -32,7 +32,11 @@ const SearchBar = () => {
     });
 
     const data = await res.json();
-    console.log("🤖 AI:", data.choices[0].message.content);
+
+if (data.choices) {
+  console.log("🤖 AI:", data.choices[0].message.content);
+} else {
+  console.log("❌ Error:", data);
   };
 
   return (
