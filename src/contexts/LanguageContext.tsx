@@ -86,6 +86,14 @@ const translations: Translations = {
   allEvents: { ar: "جميع الفعاليات", en: "All Events", es: "Todos los eventos", it: "Tutti gli eventi", ur: "تمام ایونٹس" },
   language: { ar: "اللغة", en: "Language", es: "Idioma", it: "Lingua", ur: "زبان" },
   ageRange: { ar: "العمر", en: "Age", es: "Edad", it: "Età", ur: "عمر" },
+  boothDigitalSolutions: { ar: "عرض الحلول الرقمية", en: "Digital Solutions Demo", es: "Demo de soluciones digitales", it: "Demo soluzioni digitali", ur: "ڈیجیٹل سلوشنز ڈیمو" },
+  boothDigitalSolutionsDesc: { ar: "تجربة تفاعلية لأحدث الحلول الرقمية من علم", en: "Interactive experience of Elm's latest digital solutions", es: "Experiencia interactiva de las últimas soluciones digitales de Elm", it: "Esperienza interattiva delle ultime soluzioni digitali di Elm", ur: "ایلم کے جدید ڈیجیٹل حل کا انٹرایکٹو تجربہ" },
+  boothDataSecurity: { ar: "ورشة البيانات والأمن السيبراني", en: "Data & Cybersecurity Workshop", es: "Taller de datos y ciberseguridad", it: "Workshop dati e cybersicurezza", ur: "ڈیٹا اور سائبر سیکیورٹی ورکشاپ" },
+  boothDataSecurityDesc: { ar: "تعرف على أحدث تقنيات حماية البيانات", en: "Learn about the latest data protection technologies", es: "Aprende sobre las últimas tecnologías de protección de datos", it: "Scopri le ultime tecnologie di protezione dei dati", ur: "ڈیٹا پروٹیکشن کی جدید ٹیکنالوجیز کے بارے میں جانیں" },
+  boothInnovationUX: { ar: "تجربة الابتكار وتصميم المستخدم", en: "Innovation & UX Experience", es: "Experiencia de innovación y UX", it: "Esperienza innovazione e UX", ur: "انوویشن اور UX تجربہ" },
+  boothInnovationUXDesc: { ar: "استكشف أحدث تجارب المستخدم المبتكرة", en: "Explore the latest innovative user experiences", es: "Explora las últimas experiencias de usuario innovadoras", it: "Esplora le ultime esperienze utente innovative", ur: "جدید ترین یوزر ایکسپیرینس دریافت کریں" },
+  boothTechFuture: { ar: "المستقبل التقني - عرض حي", en: "Tech Future - Live Demo", es: "Futuro tecnológico - Demo en vivo", it: "Futuro tecnologico - Demo dal vivo", ur: "ٹیک فیوچر - لائیو ڈیمو" },
+  boothTechFutureDesc: { ar: "شاهد مستقبل التقنية مع عروض حية تفاعلية", en: "See the future of tech with interactive live demos", es: "Vea el futuro de la tecnología con demos interactivas en vivo", it: "Guarda il futuro della tecnologia con demo interattive dal vivo", ur: "انٹرایکٹو لائیو ڈیموز کے ساتھ ٹیکنالوجی کا مستقبل دیکھیں" },
 };
 
 const langLabels: Record<Language, string> = {

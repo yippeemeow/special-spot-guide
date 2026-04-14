@@ -14,33 +14,54 @@ interface EventItem {
   distance: string;
   minutesUntil?: number;
   mapTarget?: string;
+  category: "stage" | "booths";
 }
 
 const events: EventItem[] = [
   {
     id: 1, titleKey: "openingCeremony", locationKey: "mainStage",
     timeAr: "٤:٣٠ م – ٥:٠٠ م", timeEn: "4:30 PM – 5:00 PM",
-    descKey: "openingDesc", status: "live", distance: "50م", mapTarget: "mainStage",
+    descKey: "openingDesc", status: "live", distance: "50م", mapTarget: "mainStage", category: "stage",
   },
   {
     id: 5, titleKey: "showEnded", locationKey: "mainStage",
     timeAr: "٣:٠٠ م – ٤:٠٠ م", timeEn: "3:00 PM – 4:00 PM",
-    descKey: "openingDesc", status: "ended", distance: "50م", mapTarget: "mainStage",
+    descKey: "openingDesc", status: "ended", distance: "50م", mapTarget: "mainStage", category: "stage",
   },
   {
     id: 2, titleKey: "techColoring", locationKey: "childrenArea",
     timeAr: "٤:٠٠ م – ٥:٠٠ م", timeEn: "4:00 PM – 5:00 PM",
-    descKey: "techColoringDesc", status: "live", distance: "120م", mapTarget: "childrenArea",
+    descKey: "techColoringDesc", status: "live", distance: "120م", mapTarget: "childrenArea", category: "stage",
   },
   {
     id: 3, titleKey: "digitalFuture", locationKey: "mainStage",
     timeAr: "٥:١٥ م – ٦:٠٠ م", timeEn: "5:15 PM – 6:00 PM",
-    descKey: "digitalFutureDesc", status: "soon", distance: "50م", minutesUntil: 10, mapTarget: "mainStage",
+    descKey: "digitalFutureDesc", status: "soon", distance: "50م", minutesUntil: 10, mapTarget: "mainStage", category: "stage",
   },
   {
     id: 4, titleKey: "digitalServices", locationKey: "mainStage",
     timeAr: "٦:١٥ م – ٧:٠٠ م", timeEn: "6:15 PM – 7:00 PM",
-    descKey: "digitalServicesDesc", status: "soon", distance: "50م", minutesUntil: 45, mapTarget: "mainStage",
+    descKey: "digitalServicesDesc", status: "soon", distance: "50م", minutesUntil: 45, mapTarget: "mainStage", category: "stage",
+  },
+  {
+    id: 6, titleKey: "boothDigitalSolutions", locationKey: "digitalSolutions",
+    timeAr: "٤:٠٠ م – ١١:٠٠ م", timeEn: "4:00 PM – 11:00 PM",
+    descKey: "boothDigitalSolutionsDesc", status: "live", distance: "60م", mapTarget: "digitalSolutions", category: "booths",
+  },
+  {
+    id: 7, titleKey: "boothDataSecurity", locationKey: "dataSecurity",
+    timeAr: "٤:٠٠ م – ١١:٠٠ م", timeEn: "4:00 PM – 11:00 PM",
+    descKey: "boothDataSecurityDesc", status: "live", distance: "75م", mapTarget: "dataSecurity", category: "booths",
+  },
+  {
+    id: 8, titleKey: "boothInnovationUX", locationKey: "innovationUX",
+    timeAr: "٥:٠٠ م – ١٠:٠٠ م", timeEn: "5:00 PM – 10:00 PM",
+    descKey: "boothInnovationUXDesc", status: "soon", distance: "90م", minutesUntil: 20, mapTarget: "innovationUX", category: "booths",
+  },
+  {
+    id: 9, titleKey: "boothTechFuture", locationKey: "techFuture",
+    timeAr: "٤:٠٠ م – ١١:٠٠ م", timeEn: "4:00 PM – 11:00 PM",
+    descKey: "boothTechFutureDesc", status: "live", distance: "85م", mapTarget: "techFuture", category: "booths",
   },
 ];
 
@@ -50,7 +71,11 @@ const statusStyles = {
   ended: "bg-muted text-muted-foreground",
 };
 
-const EventsList = () => {
+interface EventsListProps {
+  filterCategory?: string;
+}
+
+const EventsList = ({ filterCategory }: EventsListProps) => {
   const { t, lang } = useLanguage();
   const navigate = useNavigate();
   const [showAll, setShowAll] = useState(false);
@@ -59,12 +84,14 @@ const EventsList = () => {
     navigate("/map", { state: { target } });
   };
 
-  const sortedEvents = [...events].sort((a, b) => {
+  const filteredEvents = filterCategory && filterCategory !== "all"
+    ? events.filter((e) => e.category === filterCategory)
+    : events;
+
+  const sortedEvents = [...filteredEvents].sort((a, b) => {
     const order = { live: 0, soon: 1, ended: 2 };
     return order[a.status] - order[b.status];
   });
-
-  const displayEvents = showAll ? sortedEvents : sortedEvents;
 
   return (
     <>
