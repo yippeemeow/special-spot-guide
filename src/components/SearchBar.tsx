@@ -1,66 +1,78 @@
 import { Search, Mic, Loader2 } from "lucide-react";
+
 import { useLanguage } from "@/contexts/LanguageContext";
+
 import { useState } from "react";
 
 const SearchBar = () => {
   const { t } = useLanguage();
+
   const [query, setQuery] = useState("");
-  const [result, setResult] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [result, setResult] = useState(""); // لتخزين رد الذكاء الاصطناعي
+
+  const [isLoading, setIsLoading] = useState(false); // لحالة التحميل
 
   const handleSearch = async () => {
     if (!query || isLoading) return;
 
     setIsLoading(true);
-    setResult("");
+
+    setResult(""); // مسح النتيجة السابقة
 
     try {
-      // السيرفر المحلي أحياناً يتوقع المفتاح في الهيدرز أو في جسم الطلب (Body)
       const res = await fetch("https://elmodels.ngrok.app/v1/chat/completions", {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
-          // نرسل المفتاح بـ 3 طرق مختلفة لضمان أن السيرفر يراه أياً كان إعداده
-          Authorization: "Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+
+          // الخيار 1: الطريقة القياسية مع Bearer (تأكد من المسافة)
+
+          Authorization: `Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8`,
+
+          // الخيار 2: بعض السيرفرات المحلية تطلبه بهذا المسمى
+
           "api-key": "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
-          "x-api-key": "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
-          // تخطي صفحة تحذير ngrok الإجبارية
-          "ngrok-skip-browser-warning": "69420",
+
+          // الخيار 3: لضمان عدم حجب ngrok للطلب
+
+          "ngrok-skip-browser-warning": "true",
         },
+
         body: JSON.stringify({
           model: "nuha-2.0",
-          // نرسل المفتاح داخل الـ body أيضاً كخيار احتياطي للسيرفرات البسيطة
-          api_key: "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+
           messages: [
             {
               role: "system",
+
               content: "اقترح فعاليات بشكل مختصر",
             },
+
             {
               role: "user",
+
               content: query,
             },
           ],
-          stream: false,
         }),
       });
-
-      // التحقق من حالة الرد قبل محاولة قراءته كـ JSON
-      if (res.status === 401) {
-        throw new Error("المفتاح مرفوض من السيرفر (Unauthorized)");
-      }
 
       const data = await res.json();
 
       if (data.choices && data.choices[0]) {
         setResult(data.choices[0].message.content);
+
         console.log("🤖 AI Response:", data.choices[0].message.content);
       } else {
-        setResult("وصل رد من السيرفر لكن بتنسيق غير مدعوم.");
+        setResult("عذراً، لم أتمكن من الحصول على رد.");
+
         console.error("❌ API Error:", data);
       }
-    } catch (error: any) {
-      setResult(`خطأ: ${error.message || "فشل الاتصال بالسيرفر"}`);
+    } catch (error) {
+      setResult("فشل الاتصال بالسيرفر. تأكد من تشغيل ngrok.");
+
       console.error("❌ Connection Error:", error);
     } finally {
       setIsLoading(false);
@@ -88,6 +100,8 @@ const SearchBar = () => {
           disabled={isLoading}
         />
 
+        {/* زر البحث */}
+
         <button onClick={handleSearch} className="text-secondary disabled:opacity-50" disabled={isLoading}>
           {isLoading ? "..." : "🔍"}
         </button>
@@ -96,6 +110,8 @@ const SearchBar = () => {
           <Mic className="h-5 w-5" />
         </button>
       </div>
+
+      {/* صندوق عرض النتائج في حال وجود رد */}
 
       {result && (
         <div className="p-4 rounded-xl bg-card/80 border border-secondary/10 text-foreground text-sm shadow-inner animate-in fade-in slide-in-from-top-2">
