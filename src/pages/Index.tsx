@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import EventHeader from "@/components/EventHeader";
 import SearchBar from "@/components/SearchBar";
 import CategoryTabs from "@/components/CategoryTabs";
@@ -16,33 +14,29 @@ const Index = () => {
   const [category, setCategory] = useState("all");
 
   return (
-    <AccessibilityProvider>
-      <LanguageProvider>
-        <div className="min-h-screen bg-background">
-          <EventHeader />
-          <SearchBar />
-          <CategoryTabs onCategoryChange={setCategory} />
+    <div className="min-h-screen bg-background">
+      <EventHeader />
+      <SearchBar />
+      <CategoryTabs onCategoryChange={setCategory} />
 
-          {(category === "all" || category === "stage" || category === "booths") && (
-            <EventsList filterCategory={category} />
-          )}
-          {(category === "all" || category === "restaurants") && (
-            <RestaurantsList />
-          )}
-          {(category === "all" || category === "kids") && (
-            <ChildrenActivities />
-          )}
-          {(category === "all" || category === "services") && (
-            <ServicesList />
-          )}
+      {(category === "all" || category === "stage" || category === "booths") && (
+        <EventsList filterCategory={category} />
+      )}
+      {(category === "all" || category === "restaurants") && (
+        <RestaurantsList />
+      )}
+      {(category === "all" || category === "kids") && (
+        <ChildrenActivities />
+      )}
+      {(category === "all" || category === "services") && (
+        <ServicesList />
+      )}
 
-          <div className="pb-20" />
-          <BottomNav />
-          <AccessibilityPanel />
-          <ChatBot />
-        </div>
-      </LanguageProvider>
-    </AccessibilityProvider>
+      <div className="pb-20" />
+      <BottomNav />
+      <AccessibilityPanel />
+      <ChatBot />
+    </div>
   );
 };
 
