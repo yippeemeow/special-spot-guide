@@ -5,31 +5,32 @@ import { useState } from "react";
 const SearchBar = () => {
   const { t } = useLanguage();
   const [query, setQuery] = useState("");
-  const [result, setResult] = useState(""); // لتخزين رد الذكاء الاصطناعي
-  const [isLoading, setIsLoading] = useState(false); // لحالة التحميل
+  const [result, setResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
     if (!query || isLoading) return;
 
     setIsLoading(true);
-    setResult(""); // مسح النتيجة السابقة
+    setResult("");
 
     try {
+      // السيرفر المحلي أحياناً يتوقع المفتاح في الهيدرز أو في جسم الطلب (Body)
       const res = await fetch("https://elmodels.ngrok.app/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // الخيار 1: الطريقة القياسية مع Bearer (تأكد من المسافة)
-          Authorization: `Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8`,
-
-          // الخيار 2: بعض السيرفرات المحلية تطلبه بهذا المسمى
+          // نرسل المفتاح بـ 3 طرق مختلفة لضمان أن السيرفر يراه أياً كان إعداده
+          Authorization: "Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8",
           "api-key": "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
-
-          // الخيار 3: لضمان عدم حجب ngrok للطلب
-          "ngrok-skip-browser-warning": "true",
+          "x-api-key": "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
+          // تخطي صفحة تحذير ngrok الإجبارية
+          "ngrok-skip-browser-warning": "69420",
         },
         body: JSON.stringify({
           model: "nuha-2.0",
+          // نرسل المفتاح داخل الـ body أيضاً كخيار احتياطي للسيرفرات البسيطة
+          api_key: "sk-b0899b83-5952-4dd9-8267-7234175a15f8",
           messages: [
             {
               role: "system",
@@ -40,8 +41,14 @@ const SearchBar = () => {
               content: query,
             },
           ],
+          stream: false,
         }),
       });
+
+      // التحقق من حالة الرد قبل محاولة قراءته كـ JSON
+      if (res.status === 401) {
+        throw new Error("المفتاح مرفوض من السيرفر (Unauthorized)");
+      }
 
       const data = await res.json();
 
@@ -49,11 +56,11 @@ const SearchBar = () => {
         setResult(data.choices[0].message.content);
         console.log("🤖 AI Response:", data.choices[0].message.content);
       } else {
-        setResult("عذراً، لم أتمكن من الحصول على رد.");
+        setResult("وصل رد من السيرفر لكن بتنسيق غير مدعوم.");
         console.error("❌ API Error:", data);
       }
-    } catch (error) {
-      setResult("فشل الاتصال بالسيرفر. تأكد من تشغيل ngrok.");
+    } catch (error: any) {
+      setResult(`خطأ: ${error.message || "فشل الاتصال بالسيرفر"}`);
       console.error("❌ Connection Error:", error);
     } finally {
       setIsLoading(false);
@@ -81,7 +88,6 @@ const SearchBar = () => {
           disabled={isLoading}
         />
 
-        {/* زر البحث */}
         <button onClick={handleSearch} className="text-secondary disabled:opacity-50" disabled={isLoading}>
           {isLoading ? "..." : "🔍"}
         </button>
@@ -91,7 +97,6 @@ const SearchBar = () => {
         </button>
       </div>
 
-      {/* صندوق عرض النتائج في حال وجود رد */}
       {result && (
         <div className="p-4 rounded-xl bg-card/80 border border-secondary/10 text-foreground text-sm shadow-inner animate-in fade-in slide-in-from-top-2">
           <p className="leading-relaxed whitespace-pre-wrap">{result}</p>
