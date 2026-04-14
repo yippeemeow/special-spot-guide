@@ -96,6 +96,7 @@ const translations: Translations = {
   boothTechFutureDesc: { ar: "شاهد مستقبل التقنية مع عروض حية تفاعلية", en: "See the future of tech with interactive live demos", es: "Vea el futuro de la tecnología con demos interactivas en vivo", it: "Guarda il futuro della tecnologia con demo interattive dal vivo", ur: "انٹرایکٹو لائیو ڈیموز کے ساتھ ٹیکنالوجی کا مستقبل دیکھیں" },
 };
 
+
 const langLabels: Record<Language, string> = {
   ar: "عربي",
   en: "English",
