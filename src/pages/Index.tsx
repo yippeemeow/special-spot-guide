@@ -14,28 +14,53 @@ const Index = () => {
   const [category, setCategory] = useState("all");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24 rtl" dir="rtl">
+      {/* رأس الصفحة الذي يحتوي على الشعار والتنبيهات */}
       <EventHeader />
-      <SearchBar />
-      <CategoryTabs onCategoryChange={setCategory} />
 
-      {(category === "all" || category === "stage" || category === "booths") && (
-        <EventsList filterCategory={category} />
-      )}
-      {(category === "all" || category === "restaurants") && (
-        <RestaurantsList />
-      )}
-      {(category === "all" || category === "kids") && (
-        <ChildrenActivities />
-      )}
-      {(category === "all" || category === "services") && (
-        <ServicesList />
-      )}
+      {/* شريط البحث المتقدم */}
+      <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-md pb-2">
+        <SearchBar />
+        <CategoryTabs onCategoryChange={setCategory} />
+      </div>
 
-      <div className="pb-20" />
+      <main className="px-1 animate-in fade-in duration-500">
+        {/* قائمة الفعاليات والبوثات */}
+        {(category === "all" || category === "stage" || category === "booths") && (
+          <section className="mt-2">
+            <EventsList filterCategory={category} />
+          </section>
+        )}
+
+        {/* قائمة المطاعم */}
+        {(category === "all" || category === "restaurants") && (
+          <section className="mt-4">
+            <RestaurantsList />
+          </section>
+        )}
+
+        {/* فعاليات الأطفال */}
+        {(category === "all" || category === "kids") && (
+          <section className="mt-4">
+            <ChildrenActivities />
+          </section>
+        )}
+
+        {/* الخدمات العامة (مصلى، دورات مياه، إسعافات) */}
+        {(category === "all" || category === "services") && (
+          <section className="mt-4">
+            <ServicesList />
+          </section>
+        )}
+      </main>
+
+      {/* شريط التنقل السفلي والمكونات العائمة */}
       <BottomNav />
       <AccessibilityPanel />
       <ChatBot />
+
+      {/* مساحة إضافية للسكرول لضمان عدم غياب المحتوى خلف شريط التنقل */}
+      <div className="h-10" />
     </div>
   );
 };
