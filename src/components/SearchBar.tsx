@@ -15,7 +15,7 @@ const SearchBar = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer sk-b0899b83-5952-4dd9-8267-7234175a15f8",
-      },
+      }
       body: JSON.stringify({
         model: "nuha-2.0",
         messages: [
