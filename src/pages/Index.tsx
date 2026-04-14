@@ -24,7 +24,7 @@ const Index = () => {
           <CategoryTabs onCategoryChange={setCategory} />
 
           {(category === "all" || category === "stage" || category === "booths") && (
-            <EventsList />
+            <EventsList filterCategory={category} />
           )}
           {(category === "all" || category === "restaurants") && (
             <RestaurantsList />
