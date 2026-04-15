@@ -12,7 +12,6 @@ interface LiveItem {
 }
 
 const liveItems: LiveItem[] = [
-  // Booths - all running now
   {
     id: "booth1", emoji: "🏢",
     title: { ar: "بوث الحلول الرقمية", en: "Digital Solutions Booth", zh: "数字解决方案展位", es: "Stand de soluciones digitales" },
@@ -41,7 +40,6 @@ const liveItems: LiveItem[] = [
     time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
     mapTarget: "techFuture",
   },
-  // Stage events happening now
   {
     id: "stage1", emoji: "🎤",
     title: { ar: "مستقبل الحلول الرقمية في السعودية", en: "Future of Digital Solutions in KSA", zh: "沙特数字解决方案的未来", es: "Futuro de las soluciones digitales en KSA" },
@@ -56,47 +54,47 @@ const CurrentlyLive = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mt-6 px-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="text-end mb-3">
-        <h2 className="text-lg font-bold text-foreground">الفعاليات الجارية الآن</h2>
-        <p className="text-xs text-muted-foreground">كل ما هو متاح حالياً ({liveItems.length})</p>
+    <div className="mt-4 px-4">
+      <div className="text-end mb-2">
+        <h2 className="text-sm font-bold text-foreground">الفعاليات الجارية الآن</h2>
+        <p className="text-[10px] text-muted-foreground">كل ما هو متاح حالياً ({liveItems.length})</p>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
+      <div className="flex gap-2.5 overflow-x-auto pb-3 no-scrollbar scroll-smooth">
         {liveItems.map((item) => (
           <div
             key={item.id}
-            className="flex w-[200px] shrink-0 flex-col rounded-3xl border border-secondary/20 bg-card/40 backdrop-blur-sm p-4 shadow-lg hover:border-secondary/50 transition-all"
+            className="flex w-[160px] shrink-0 flex-col rounded-2xl border border-secondary/20 bg-card/40 backdrop-blur-sm p-3 shadow-md"
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">{item.emoji}</span>
-              <span className="rounded-full px-2.5 py-1 text-[10px] font-bold bg-secondary text-secondary-foreground glow-cyan">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-foreground animate-pulse me-1.5" />
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-lg">{item.emoji}</span>
+              <span className="rounded-full px-2 py-0.5 text-[8px] font-bold bg-secondary text-secondary-foreground glow-cyan">
+                <span className="inline-block h-1 w-1 rounded-full bg-secondary-foreground animate-pulse me-1" />
                 الآن
               </span>
             </div>
 
-            <h3 className="text-sm font-bold text-foreground leading-tight min-h-[2.5rem] line-clamp-2">
+            <h3 className="text-xs font-bold text-foreground leading-tight min-h-[2rem] line-clamp-2">
               {item.title[lang]}
             </h3>
 
-            <div className="mt-2 space-y-1">
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                <MapPin className="h-3 w-3 text-secondary/70" />
+            <div className="mt-1.5 space-y-0.5">
+              <div className="flex items-center gap-1 text-[9px] text-muted-foreground">
+                <MapPin className="h-2.5 w-2.5 text-secondary/70" />
                 <span>{item.section[lang]}</span>
               </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                <Clock className="h-3 w-3 text-muted-foreground/50" />
+              <div className="flex items-center gap-1 text-[9px] text-muted-foreground">
+                <Clock className="h-2.5 w-2.5 text-muted-foreground/50" />
                 <span>{item.time[lang]}</span>
               </div>
             </div>
 
             <button
               onClick={() => navigate(`/map?target=${item.mapTarget}`)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-bold text-black transition-all hover:brightness-110 active:scale-95 shadow-[0_4px_15px_rgba(0,243,255,0.2)]"
+              className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-bold text-black shadow-[0_4px_15px_rgba(0,243,255,0.2)]"
               style={{ background: "var(--gradient-cta)" }}
             >
-              <Navigation className="h-4 w-4 fill-current" />
+              <Navigation className="h-3 w-3 fill-current" />
               وجّهني
             </button>
           </div>

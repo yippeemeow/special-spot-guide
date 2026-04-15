@@ -20,47 +20,34 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-24 rtl" dir="rtl">
       <EventHeader />
 
-      <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-md pb-2">
+      <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-md pb-1">
         <SearchBar onSearch={setSearchQuery} />
         <CategoryTabs onCategoryChange={setCategory} />
       </div>
 
-      <main className="px-1">
-        {/* الفعاليات الجارية الآن - تظهر فقط في تبويب الكل */}
+      <main>
         {category === "all" && (
-          <section className="mt-2">
-            <CurrentlyLive />
-          </section>
+          <CurrentlyLive />
         )}
 
         {(category === "all" || category === "stage") && (
-          <section className="mt-4">
-            <EventsList searchQuery={searchQuery} />
-          </section>
+          <EventsList searchQuery={searchQuery} />
         )}
 
         {(category === "all" || category === "booths") && (
-          <section className="mt-4">
-            <BoothsList searchQuery={searchQuery} />
-          </section>
+          <BoothsList searchQuery={searchQuery} />
         )}
 
         {(category === "all" || category === "kids") && (
-          <section className="mt-4">
-            <ChildrenActivities searchQuery={searchQuery} />
-          </section>
+          <ChildrenActivities searchQuery={searchQuery} />
         )}
 
         {(category === "all" || category === "restaurants") && (
-          <section className="mt-4">
-            <RestaurantsList searchQuery={searchQuery} />
-          </section>
+          <RestaurantsList searchQuery={searchQuery} />
         )}
 
         {(category === "all" || category === "services") && (
-          <section className="mt-4">
-            <ServicesList searchQuery={searchQuery} />
-          </section>
+          <ServicesList searchQuery={searchQuery} />
         )}
       </main>
 
