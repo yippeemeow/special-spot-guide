@@ -25,7 +25,7 @@ const Index = () => {
         <CategoryTabs onCategoryChange={setCategory} />
       </div>
 
-      <main className="px-1 animate-in fade-in duration-500">
+      <main className="px-1">
         {/* الفعاليات الجارية الآن - تظهر فقط في تبويب الكل */}
         {category === "all" && (
           <section className="mt-2">
