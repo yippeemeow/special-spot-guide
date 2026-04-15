@@ -103,6 +103,48 @@ const ChatBot = () => {
       </button>
     </div>
   );
+  const handleSendMessage = async () => {
+  if (!query.trim() || isLoading) return;
+
+  const userQuery = query;
+  setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
+  setQuery("");
+  setIsLoading(true);
+
+  // تعريف سياق الفعالية (هذا ما سيجعلها مخصصة)
+  const exhibitionContext = `
+    أنتِ "نهى"، المساعدة الذكية الرسمية لمعرض "علم للابتكار". 
+    مهمتك: مساعدة الزوار في معرفة مواقع البوثات والجدول الزمني فقط.
+    بيانات المعرض:
+    1. المسرح الرئيسي: يقدم حفل الافتتاح والعروض الكبرى.
+    2. بوث البيانات والأمن: متخصص في الأمن السيبراني وحماية البيانات.
+    3. بوث الحلول الرقمية: يعرض تقنيات البرمجة والتحول الرقمي.
+    4. منطقة الأطفال: ورش عمل تلوين تقني للأطفال.
+    5. منطقة المطاعم والإسعافات الأولية: متوفرة في الأطراف.
+    قواعد الرد:
+    - إذا سأل المستخدم عن شيء خارج المعرض، اعتذري بلباقة وقولي "أنا هنا لمساعدتك في معرض علم فقط".
+    - اجعلي ردودك قصيرة، مشجعة، وباللهجة السعودية البيضاء.
+  `;
+
+  try {
+    const res = await fetch("https://elmodels.ngrok.app/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg",
+        "ngrok-skip-browser-warning": "69420",
+      },
+      body: JSON.stringify({
+        model: "nuha-2.0",
+        messages: [
+          { role: "system", content: exhibitionContext }, 
+          { role: "user", content: userQuery }
+        ],
+        stream: false,
+      }),
+    });
+
+    const data = await res.json();
 };
 
 export default ChatBot;
