@@ -1,9 +1,18 @@
 import { Search, Mic, Loader2 } from "lucide-react";
 import { useState } from "react";
 
-const SearchBar = () => {
+interface SearchBarProps {
+  onSearch?: (query: string) => void;
+}
+
+const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [query, setQuery] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+
+  const handleChange = (value: string) => {
+    setQuery(value);
+    onSearch?.(value);
+  };
 
   const handleASR = async () => {
     try {
@@ -35,6 +44,7 @@ const SearchBar = () => {
           const data = await res.json();
           if (data.text) {
             setQuery(data.text);
+            onSearch?.(data.text);
           }
         } catch (err) {
           console.error(err);
@@ -59,7 +69,7 @@ const SearchBar = () => {
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
           placeholder="ابحث عن فعاليات..."
           className="flex-1 bg-transparent text-sm text-foreground focus:outline-none"
         />
