@@ -23,7 +23,7 @@ const RestaurantsList = ({ searchQuery }: { searchQuery?: string }) => {
     <div className="mt-6 px-5">
       <h2 className="mb-3 text-lg font-bold text-foreground text-end">{t("restaurants")}</h2>
       <div className="space-y-3">
-        {restaurants.map((r) => (
+        {filtered.map((r) => (
           <div
             key={r.id}
             className="flex items-center gap-3 rounded-2xl border border-primary/15 bg-card p-4 shadow-sm transition-all hover:border-primary/30 hover:glow-primary"

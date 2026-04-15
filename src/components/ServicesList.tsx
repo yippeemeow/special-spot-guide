@@ -11,9 +11,11 @@ const services = [
   { id: 6, nameKey: "information", icon: "ℹ️", distance: "20م", mapTarget: "information" },
 ];
 
-const ServicesList = () => {
+const ServicesList = ({ searchQuery }: { searchQuery?: string }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const q = (searchQuery || "").toLowerCase();
+  const filtered = services.filter((s) => !q || t(s.nameKey).toLowerCase().includes(q));
 
   const handleNavigate = (target: string) => {
     navigate("/map", { state: { target } });

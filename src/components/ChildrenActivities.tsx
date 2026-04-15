@@ -40,9 +40,15 @@ const activities = [
   },
 ];
 
-const ChildrenActivities = () => {
+const ChildrenActivities = ({ searchQuery }: { searchQuery?: string }) => {
   const { t, lang } = useLanguage();
   const navigate = useNavigate();
+  const q = (searchQuery || "").toLowerCase();
+  const filteredActivities = activities.filter((a) => {
+    const title = a.titleKey ? t(a.titleKey) : (a.title ? a.title[lang] : "");
+    const desc = a.descKey ? t(a.descKey) : (a.desc ? a.desc[lang] : "");
+    return !q || title.toLowerCase().includes(q) || desc.toLowerCase().includes(q);
+  });
 
   const handleNavigate = () => {
     navigate("/map", { state: { target: "childrenArea" } });

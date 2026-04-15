@@ -101,24 +101,28 @@ const statusStyles = {
 
 interface EventsListProps {
   filterCategory?: string;
+  searchQuery?: string;
 }
 
-const EventsList = ({ filterCategory }: EventsListProps) => {
+const EventsList = ({ filterCategory, searchQuery }: EventsListProps) => {
   const { t, lang } = useLanguage();
   const navigate = useNavigate();
   const [showAll, setShowAll] = useState(false);
 
   const handleNavigate = (targetName?: string) => {
     if (targetName) {
-      // نرسل الـ target name لكي تستقبله صفحة الخريطة وترسم المسار
       navigate(`/map?target=${targetName}`);
     } else {
       navigate("/map");
     }
   };
 
-  const filteredEvents =
-    filterCategory && filterCategory !== "all" ? events.filter((e) => e.category === filterCategory) : events;
+  const filteredEvents = events.filter((e) => {
+    const categoryMatch = !filterCategory || filterCategory === "all" || e.category === filterCategory;
+    const q = (searchQuery || "").toLowerCase();
+    const searchMatch = !q || t(e.titleKey).toLowerCase().includes(q) || t(e.descKey).toLowerCase().includes(q);
+    return categoryMatch && searchMatch;
+  });
 
   const sortedEvents = [...filteredEvents].sort((a, b) => {
     const order = { live: 0, soon: 1, ended: 2 };
