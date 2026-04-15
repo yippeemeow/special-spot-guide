@@ -1,7 +1,7 @@
 import { Bell, Globe, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useRef, useEffect } from "react";
-import masarkLogo from "@/assets/masark-logo.jpeg";
+import masarkLogo from "@/assets/masark-logo-clean.png";
 
 const EventHeader = () => {
   const { t, lang, setLang, langLabels, allLangs } = useLanguage();
@@ -59,7 +59,7 @@ const EventHeader = () => {
           <img
             src={masarkLogo}
             alt="Masark Logo"
-            className="h-14 w-14 rounded-xl object-cover shadow-lg ring-2 ring-secondary/30"
+            className="h-16 w-16 object-contain drop-shadow-lg"
           />
         </div>
       </div>
