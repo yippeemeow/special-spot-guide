@@ -30,24 +30,23 @@ const ServicesList = ({ searchQuery }: { searchQuery?: string }) => {
   };
 
   return (
-    <div className="mt-6 px-5">
-      <h2 className="mb-3 text-lg font-bold text-foreground text-end">الخدمات</h2>
-      <div className="grid grid-cols-2 gap-3">
+    <div className="mt-4 px-4">
+      <h2 className="mb-2 text-sm font-bold text-foreground text-end">الخدمات</h2>
+      <div className="grid grid-cols-3 gap-2">
         {filtered.map((s) => (
           <button
             key={s.id}
             onClick={() => handleNavigate(s.mapTarget)}
-            className="flex flex-col items-center gap-2 rounded-2xl border border-primary/15 bg-card p-4 shadow-sm transition-all hover:border-primary/30"
+            className="flex flex-col items-center gap-1.5 rounded-xl border border-primary/15 bg-card p-3 shadow-sm"
           >
-            <span className="text-2xl">{s.icon}</span>
-            <span className="text-xs font-semibold text-foreground text-center">{s.name[lang]}</span>
-            <span className="rounded-full px-2.5 py-0.5 text-[10px] font-bold bg-secondary text-secondary-foreground">الآن</span>
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-              <MapPin className="h-3 w-3" />
+            <span className="text-xl">{s.icon}</span>
+            <span className="text-[10px] font-semibold text-foreground text-center leading-tight">{s.name[lang]}</span>
+            <div className="flex items-center gap-0.5 text-[9px] text-muted-foreground">
+              <MapPin className="h-2.5 w-2.5" />
               <span>{s.distance}</span>
             </div>
-            <div className="flex items-center gap-1 text-[10px] font-semibold text-primary">
-              <Navigation className="h-3 w-3" />
+            <div className="flex items-center gap-0.5 text-[9px] font-semibold text-secondary">
+              <Navigation className="h-2.5 w-2.5" />
               <span>وجّهني</span>
             </div>
           </button>

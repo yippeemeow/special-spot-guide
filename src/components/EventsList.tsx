@@ -118,41 +118,41 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
   const renderCard = (event: StageEvent, full = false) => (
     <div
       key={event.id}
-      className={`${full ? "" : "w-[260px] shrink-0"} flex flex-col rounded-3xl border bg-card/40 backdrop-blur-sm p-4 shadow-lg transition-all ${
-        event.statusType === "ended" ? "opacity-50 border-border" : "border-secondary/20 hover:border-secondary/50"
+      className={`${full ? "" : "w-[200px] shrink-0"} flex flex-col rounded-2xl border bg-card/40 backdrop-blur-sm p-3 shadow-md transition-all ${
+        event.statusType === "ended" ? "opacity-50 border-border" : "border-secondary/20"
       }`}
     >
-      <div className="mb-2 flex items-center justify-between">
-        <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${statusStyles[event.statusType]}`}>
+      <div className="mb-1.5 flex items-center justify-between">
+        <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${statusStyles[event.statusType]}`}>
           {event.statusType !== "ended" && (
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-current animate-pulse me-1.5" />
+            <span className="inline-block h-1 w-1 rounded-full bg-current animate-pulse me-1" />
           )}
           {event.status[lang]}
         </span>
       </div>
-      <h3 className="text-sm font-bold text-foreground leading-tight min-h-[2.5rem] line-clamp-2">{event.title[lang]}</h3>
-      <div className="mt-3 space-y-1.5">
-        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-          <MapPin className="h-3.5 w-3.5 text-secondary/70" />
+      <h3 className="text-xs font-bold text-foreground leading-tight min-h-[2rem] line-clamp-2">{event.title[lang]}</h3>
+      <div className="mt-2 space-y-1">
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+          <MapPin className="h-3 w-3 text-secondary/70" />
           <span className="truncate">{event.location[lang]}</span>
         </div>
-        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-          <Clock className="h-3.5 w-3.5 text-muted-foreground/50" />
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+          <Clock className="h-3 w-3 text-muted-foreground/50" />
           <span>{event.time[lang]}</span>
         </div>
       </div>
-      {full && <p className="mt-2 text-xs text-muted-foreground line-clamp-2">{event.desc[lang]}</p>}
+      {full && <p className="mt-1.5 text-[11px] text-muted-foreground line-clamp-2">{event.desc[lang]}</p>}
       {event.statusType !== "ended" ? (
         <button
           onClick={() => handleNavigate(event.mapTarget)}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold text-black transition-all hover:brightness-110 active:scale-95 shadow-[0_4px_15px_rgba(0,243,255,0.2)]"
+          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-bold text-black shadow-[0_4px_15px_rgba(0,243,255,0.2)]"
           style={{ background: "var(--gradient-cta)" }}
         >
-          <Navigation className="h-4 w-4 fill-current" />
+          <Navigation className="h-3.5 w-3.5 fill-current" />
           وجّهني
         </button>
       ) : (
-        <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-muted/50 py-3 text-sm font-bold text-muted-foreground">
+        <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-muted/50 py-2 text-xs font-bold text-muted-foreground">
           {event.status[lang]}
         </div>
       )}
@@ -161,31 +161,31 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
 
   return (
     <>
-      <div className="mt-6 px-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="flex items-center justify-between mb-3">
-          <button onClick={() => setShowAll(true)} className="text-sm font-semibold text-secondary hover:underline">
+      <div className="mt-4 px-4">
+        <div className="flex items-center justify-between mb-2">
+          <button onClick={() => setShowAll(true)} className="text-xs font-semibold text-secondary hover:underline">
             {filtered.length > 0 ? `عرض الكل (${filtered.length})` : ""}
           </button>
           <div className="text-end">
-            <h2 className="text-lg font-bold text-foreground">فعاليات المسرح</h2>
-            <p className="text-xs text-muted-foreground">الجدول الزمني للمسرح الرئيسي</p>
+            <h2 className="text-sm font-bold text-foreground">فعاليات المسرح</h2>
+            <p className="text-[10px] text-muted-foreground">الجدول الزمني للمسرح الرئيسي</p>
           </div>
         </div>
-        <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
+        <div className="flex gap-2.5 overflow-x-auto pb-3 no-scrollbar scroll-smooth">
           {filtered.map((e) => renderCard(e))}
         </div>
       </div>
 
       {showAll && (
-        <div className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-xl overflow-y-auto animate-in fade-in duration-300">
-          <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-12 pb-6 bg-background/80 backdrop-blur-md border-b border-white/5">
-            <button onClick={() => setShowAll(false)} className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-foreground hover:bg-white/10 transition-colors">
-              <X className="h-5 w-5" />
+        <div className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-xl overflow-y-auto">
+          <div className="sticky top-0 z-10 flex items-center justify-between px-4 pt-10 pb-4 bg-background/80 backdrop-blur-md border-b border-border/30">
+            <button onClick={() => setShowAll(false)} className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-foreground">
+              <X className="h-4 w-4" />
             </button>
-            <h1 className="text-xl font-bold text-foreground">جميع فعاليات المسرح</h1>
-            <div className="w-10" />
+            <h1 className="text-base font-bold text-foreground">جميع فعاليات المسرح</h1>
+            <div className="w-8" />
           </div>
-          <div className="px-5 py-6 space-y-4 pb-20">
+          <div className="px-4 py-4 space-y-3 pb-20">
             {filtered.map((e) => renderCard(e, true))}
           </div>
         </div>
