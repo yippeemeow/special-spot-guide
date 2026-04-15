@@ -83,6 +83,9 @@ const ChildrenActivities = ({ searchQuery }: { searchQuery?: string }) => {
   const filtered = activities.filter((a) => {
     if (!q) return true;
     return a.title[lang].toLowerCase().includes(q) || a.desc[lang].toLowerCase().includes(q);
+  }).sort((a, b) => {
+    const order = { soon: 0, later: 1, ended: 2 };
+    return order[a.statusType] - order[b.statusType];
   });
 
   const handleNavigate = () => {
