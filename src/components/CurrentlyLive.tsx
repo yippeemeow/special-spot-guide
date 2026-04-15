@@ -41,56 +41,13 @@ const liveItems: LiveItem[] = [
     time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
     mapTarget: "techFuture",
   },
-  // Restaurants
+  // Stage events happening now
   {
-    id: "rest1", emoji: "🍔",
-    title: { ar: "مطعم كودو", en: "Kudu Restaurant", zh: "Kudu餐厅", es: "Restaurante Kudu" },
-    section: { ar: "المطاعم", en: "Restaurants", zh: "餐厅", es: "Restaurantes" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "restaurantArea",
-  },
-  {
-    id: "rest2", emoji: "🍗",
-    title: { ar: "مطعم البيك", en: "Al Baik", zh: "Al Baik餐厅", es: "Al Baik" },
-    section: { ar: "المطاعم", en: "Restaurants", zh: "餐厅", es: "Restaurantes" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "restaurantArea",
-  },
-  {
-    id: "rest3", emoji: "☕",
-    title: { ar: "كوفي شوب", en: "Coffee Shop", zh: "咖啡店", es: "Cafetería" },
-    section: { ar: "المطاعم", en: "Restaurants", zh: "餐厅", es: "Restaurantes" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "restaurantArea",
-  },
-  // Services
-  {
-    id: "svc1", emoji: "🕌",
-    title: { ar: "مصلى نساء", en: "Women's Prayer", zh: "女祈祷室", es: "Sala de oración mujeres" },
-    section: { ar: "الخدمات", en: "Services", zh: "服务", es: "Servicios" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "womenPrayer",
-  },
-  {
-    id: "svc2", emoji: "🕌",
-    title: { ar: "مصلى رجال", en: "Men's Prayer", zh: "男祈祷室", es: "Sala de oración hombres" },
-    section: { ar: "الخدمات", en: "Services", zh: "服务", es: "Servicios" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "menPrayer",
-  },
-  {
-    id: "svc3", emoji: "🏥",
-    title: { ar: "الإسعافات الأولية", en: "First Aid", zh: "急救站", es: "Primeros auxilios" },
-    section: { ar: "الخدمات", en: "Services", zh: "服务", es: "Servicios" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "firstAid",
-  },
-  {
-    id: "svc4", emoji: "ℹ️",
-    title: { ar: "الاستعلامات", en: "Information", zh: "咨询处", es: "Información" },
-    section: { ar: "الخدمات", en: "Services", zh: "服务", es: "Servicios" },
-    time: { ar: "٤:٠٠ م – ١١:٠٠ م", en: "4:00 PM – 11:00 PM", zh: "下午4:00 – 11:00", es: "4:00 PM – 11:00 PM" },
-    mapTarget: "information",
+    id: "stage1", emoji: "🎤",
+    title: { ar: "مستقبل الحلول الرقمية في السعودية", en: "Future of Digital Solutions in KSA", zh: "沙特数字解决方案的未来", es: "Futuro de las soluciones digitales en KSA" },
+    section: { ar: "المسرح الرئيسي", en: "Main Stage", zh: "主舞台", es: "Escenario principal" },
+    time: { ar: "٥:١٥ م – ٦:٠٠ م", en: "5:15 PM – 6:00 PM", zh: "下午5:15 – 6:00", es: "5:15 PM – 6:00 PM" },
+    mapTarget: "mainStage",
   },
 ];
 
