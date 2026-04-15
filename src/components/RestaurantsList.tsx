@@ -9,9 +9,11 @@ const restaurants = [
   { id: 4, nameKey: "maestro", descKey: "maestroDesc", emoji: "🍕", distance: "70م" },
 ];
 
-const RestaurantsList = () => {
+const RestaurantsList = ({ searchQuery }: { searchQuery?: string }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const q = (searchQuery || "").toLowerCase();
+  const filtered = restaurants.filter((r) => !q || t(r.nameKey).toLowerCase().includes(q) || t(r.descKey).toLowerCase().includes(q));
 
   const handleNavigate = (name: string) => {
     navigate("/map", { state: { target: "restaurantArea", highlight: name } });
