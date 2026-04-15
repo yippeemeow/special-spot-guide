@@ -110,6 +110,9 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
   const filtered = stageEvents.filter((e) => {
     if (!q) return true;
     return e.title[lang].toLowerCase().includes(q) || e.desc[lang].toLowerCase().includes(q) || e.location[lang].toLowerCase().includes(q);
+  }).sort((a, b) => {
+    const order = { soon: 0, later: 1, ended: 2 };
+    return order[a.statusType] - order[b.statusType];
   });
 
   const renderCard = (event: StageEvent, full = false) => (
