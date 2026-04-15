@@ -25,8 +25,8 @@ const CategoryTabs = ({ onCategoryChange }: CategoryTabsProps) => {
   };
 
   return (
-    <div className="mt-4 px-5">
-      <div className="flex gap-2 overflow-x-auto pb-2">
+    <div className="mt-2 px-3">
+      <div className="flex gap-1.5 pb-1">
         {categories.map((cat) => {
           const Icon = cat.icon;
           const isActive = active === cat.id;
@@ -34,14 +34,14 @@ const CategoryTabs = ({ onCategoryChange }: CategoryTabsProps) => {
             <button
               key={cat.id}
               onClick={() => handleClick(cat.id)}
-              className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              className={`flex flex-1 items-center justify-center gap-1 rounded-full px-2 py-1.5 text-xs font-medium ${
                 isActive
-                  ? "text-secondary-foreground shadow-md glow-cyan"
-                  : "bg-card text-muted-foreground border border-border hover:border-secondary/30"
+                  ? "text-secondary-foreground shadow-md"
+                  : "bg-card text-muted-foreground border border-border"
               }`}
               style={isActive ? { background: "var(--gradient-cta)" } : undefined}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-3 w-3" />
               {cat.label}
             </button>
           );
