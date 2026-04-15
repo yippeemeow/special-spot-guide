@@ -15,7 +15,7 @@ const BottomNav = () => {
   const currentPath = location.pathname;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-secondary/15 bg-card/95 backdrop-blur-xl">
+    <div className="fixed bottom-0 z-50 border-t border-secondary/15 bg-card/95 backdrop-blur-xl w-full max-w-[430px] left-1/2 -translate-x-1/2">
       <div className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom)]">
         {navItems.map((item) => {
           const Icon = item.icon;
