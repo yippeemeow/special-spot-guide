@@ -12,6 +12,7 @@ import ChatBot from "@/components/ChatBot";
 
 const Index = () => {
   const [category, setCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <div className="min-h-screen bg-background pb-24 rtl" dir="rtl">
@@ -20,7 +21,7 @@ const Index = () => {
 
       {/* شريط البحث المتقدم */}
       <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-md pb-2">
-        <SearchBar />
+        <SearchBar onSearch={setSearchQuery} />
         <CategoryTabs onCategoryChange={setCategory} />
       </div>
 
@@ -28,28 +29,28 @@ const Index = () => {
         {/* قائمة الفعاليات والبوثات */}
         {(category === "all" || category === "stage" || category === "booths") && (
           <section className="mt-2">
-            <EventsList filterCategory={category} />
+            <EventsList filterCategory={category} searchQuery={searchQuery} />
           </section>
         )}
 
         {/* قائمة المطاعم */}
         {(category === "all" || category === "restaurants") && (
           <section className="mt-4">
-            <RestaurantsList />
+            <RestaurantsList searchQuery={searchQuery} />
           </section>
         )}
 
         {/* فعاليات الأطفال */}
         {(category === "all" || category === "kids") && (
           <section className="mt-4">
-            <ChildrenActivities />
+            <ChildrenActivities searchQuery={searchQuery} />
           </section>
         )}
 
         {/* الخدمات العامة (مصلى، دورات مياه، إسعافات) */}
         {(category === "all" || category === "services") && (
           <section className="mt-4">
-            <ServicesList />
+            <ServicesList searchQuery={searchQuery} />
           </section>
         )}
       </main>
