@@ -7,7 +7,6 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import Index from "./pages/Index.tsx";
 import MapPage from "./pages/MapPage.tsx";
-import RestaurantsPage from "./pages/RestaurantsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -23,8 +22,6 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/map" element={<MapPage />} />
-              <Route path="/restaurants" element={<RestaurantsPage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
