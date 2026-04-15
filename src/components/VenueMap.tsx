@@ -215,14 +215,14 @@ const VenueMap = ({ crowdRadar = false, targetLocation }: VenueMapProps) => {
 
             {/* ===== الخدمات ===== */}
             {/* الصف الأول من الخدمات */}
-            <ServiceRect area="firstAid" x="50" y="170" w="55" h="30" label={t("firstAid")} targetLocation={targetLocation} colors={c("firstAid", serviceFill, serviceStroke)} />
-            <ServiceRect area="menRestroom" x="115" y="170" w="55" h="30" label={t("menRestroom")} targetLocation={targetLocation} colors={c("menRestroom", serviceFill, serviceStroke)} />
-            <ServiceRect area="womenRestroom" x="205" y="170" w="55" h="30" label={t("womenRestroom")} targetLocation={targetLocation} colors={c("womenRestroom", serviceFill, serviceStroke)} />
-            <ServiceRect area="menPrayer" x="283" y="170" w="55" h="30" label={t("menPrayer")} targetLocation={targetLocation} colors={c("menPrayer", serviceFill, serviceStroke)} />
+            <ServiceRect area="firstAid" x={50} y={170} w={55} h={30} label={t("firstAid")} targetLocation={targetLocation} colors={c("firstAid", serviceFill, serviceStroke)} />
+            <ServiceRect area="menRestroom" x={115} y={170} w={55} h={30} label={t("menRestroom")} targetLocation={targetLocation} colors={c("menRestroom", serviceFill, serviceStroke)} />
+            <ServiceRect area="womenRestroom" x={205} y={170} w={55} h={30} label={t("womenRestroom")} targetLocation={targetLocation} colors={c("womenRestroom", serviceFill, serviceStroke)} />
+            <ServiceRect area="menPrayer" x={283} y={170} w={55} h={30} label={t("menPrayer")} targetLocation={targetLocation} colors={c("menPrayer", serviceFill, serviceStroke)} />
 
             {/* الصف الثاني من الخدمات */}
-            <ServiceRect area="information" x="50" y="210" w="55" h="30" label={t("information")} targetLocation={targetLocation} colors={c("information", serviceFill, serviceStroke)} />
-            <ServiceRect area="womenPrayer" x="322" y="210" w="55" h="30" label={t("womenPrayer")} targetLocation={targetLocation} colors={c("womenPrayer", serviceFill, serviceStroke)} />
+            <ServiceRect area="information" x={50} y={210} w={55} h={30} label={t("information")} targetLocation={targetLocation} colors={c("information", serviceFill, serviceStroke)} />
+            <ServiceRect area="womenPrayer" x={322} y={210} w={55} h={30} label={t("womenPrayer")} targetLocation={targetLocation} colors={c("womenPrayer", serviceFill, serviceStroke)} />
 
             {/* ===== أنت هنا ===== */}
             <g className="animate-pulse">
