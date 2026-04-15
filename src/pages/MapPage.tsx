@@ -96,7 +96,7 @@ const MapPage = () => {
         <div className="mx-5 mt-3 rounded-xl bg-secondary/20 border border-secondary/30 p-3 flex items-center justify-center gap-2 animate-bounce-subtle">
           <MapPin className="h-4 w-4 text-secondary" />
           <p className="text-sm font-bold text-secondary-foreground">
-            {t("navigateToLocation")}: <span className="text-white">{target}</span>
+            {t("navigating")} <span className="text-white">{t(target)}</span>
           </p>
         </div>
       )}
