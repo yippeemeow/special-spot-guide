@@ -17,7 +17,7 @@ const EventHeader = () => {
   }, []);
 
   return (
-    <div className="relative overflow-hidden px-5 pb-8 pt-10" style={{ background: "var(--gradient-header)" }}>
+    <div className="relative px-5 pb-8 pt-10" style={{ background: "var(--gradient-header)" }}>
       <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-secondary/10 blur-2xl" />
       <div className="absolute -right-5 top-10 h-24 w-24 rounded-full bg-secondary/10 blur-xl" />
       <div className="absolute right-20 bottom-0 h-32 w-32 rounded-full bg-secondary/5 blur-2xl" />
