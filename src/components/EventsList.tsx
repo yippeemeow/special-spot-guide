@@ -167,8 +167,8 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
             {filtered.length > 0 ? `عرض الكل (${filtered.length})` : ""}
           </button>
           <div className="text-end">
-            <h2 className="text-lg font-bold text-foreground">الفعاليات الجارية الآن</h2>
-            <p className="text-xs text-muted-foreground">الفعاليات القريبة لك</p>
+            <h2 className="text-lg font-bold text-foreground">فعاليات المسرح</h2>
+            <p className="text-xs text-muted-foreground">الجدول الزمني للمسرح الرئيسي</p>
           </div>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">

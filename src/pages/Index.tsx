@@ -2,6 +2,7 @@ import { useState } from "react";
 import EventHeader from "@/components/EventHeader";
 import SearchBar from "@/components/SearchBar";
 import CategoryTabs from "@/components/CategoryTabs";
+import CurrentlyLive from "@/components/CurrentlyLive";
 import EventsList from "@/components/EventsList";
 import RestaurantsList from "@/components/RestaurantsList";
 import ServicesList from "@/components/ServicesList";
