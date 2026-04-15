@@ -25,7 +25,7 @@ const ServicesList = ({ searchQuery }: { searchQuery?: string }) => {
     <div className="mt-6 px-5">
       <h2 className="mb-3 text-lg font-bold text-foreground text-end">{t("services")}</h2>
       <div className="grid grid-cols-2 gap-3">
-        {services.map((s) => (
+        {filtered.map((s) => (
           <button
             key={s.id}
             onClick={() => handleNavigate(s.mapTarget)}

@@ -58,7 +58,7 @@ const ChildrenActivities = ({ searchQuery }: { searchQuery?: string }) => {
     <div className="mt-6 px-5">
       <h2 className="mb-3 text-lg font-bold text-foreground text-end">{t("childrenActivities")}</h2>
       <div className="space-y-3">
-        {activities.map((a) => {
+        {filteredActivities.map((a) => {
           const title = a.titleKey ? t(a.titleKey) : (a.title ? a.title[lang] : "");
           const desc = a.descKey ? t(a.descKey) : (a.desc ? a.desc[lang] : "");
 
