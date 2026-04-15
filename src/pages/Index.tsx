@@ -2,6 +2,7 @@ import { useState } from "react";
 import EventHeader from "@/components/EventHeader";
 import SearchBar from "@/components/SearchBar";
 import CategoryTabs from "@/components/CategoryTabs";
+import CurrentlyLive from "@/components/CurrentlyLive";
 import EventsList from "@/components/EventsList";
 import RestaurantsList from "@/components/RestaurantsList";
 import ServicesList from "@/components/ServicesList";
@@ -25,8 +26,15 @@ const Index = () => {
       </div>
 
       <main className="px-1 animate-in fade-in duration-500">
-        {(category === "all" || category === "stage") && (
+        {/* الفعاليات الجارية الآن - تظهر فقط في تبويب الكل */}
+        {category === "all" && (
           <section className="mt-2">
+            <CurrentlyLive />
+          </section>
+        )}
+
+        {(category === "all" || category === "stage") && (
+          <section className="mt-4">
             <EventsList searchQuery={searchQuery} />
           </section>
         )}
