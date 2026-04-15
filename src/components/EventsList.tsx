@@ -172,7 +172,10 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
           </div>
         </div>
         <div className="flex gap-2.5 overflow-x-auto pb-3 no-scrollbar scroll-smooth">
-          {filtered.map((e) => renderCard(e))}
+          {filtered.slice(0, 2).map((e) => renderCard(e))}
+        </div>
+        <div className="space-y-2.5">
+          {filtered.slice(2).map((e) => renderCard(e, true))}
         </div>
       </div>
 
