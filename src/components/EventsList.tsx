@@ -118,7 +118,7 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
   const renderCard = (event: StageEvent, full = false) => (
     <div
       key={event.id}
-      className={`${full ? "" : "w-[200px] shrink-0"} flex flex-col rounded-2xl border bg-card/40 backdrop-blur-sm p-3 shadow-md transition-all ${
+      className={`flex flex-col rounded-2xl border bg-card/40 backdrop-blur-sm p-3 shadow-md transition-all ${
         event.statusType === "ended" ? "opacity-50 border-border" : "border-secondary/20"
       }`}
     >
@@ -171,8 +171,8 @@ const EventsList = ({ searchQuery }: EventsListProps) => {
             <p className="text-[10px] text-muted-foreground">الجدول الزمني للمسرح الرئيسي</p>
           </div>
         </div>
-        <div className="flex gap-2.5 overflow-x-auto pb-3 no-scrollbar scroll-smooth">
-          {filtered.map((e) => renderCard(e))}
+        <div className="space-y-2.5">
+          {filtered.map((e) => renderCard(e, true))}
         </div>
       </div>
 
