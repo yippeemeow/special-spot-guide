@@ -11,9 +11,11 @@ const services = [
   { id: 6, nameKey: "information", icon: "ℹ️", distance: "20م", mapTarget: "information" },
 ];
 
-const ServicesList = () => {
+const ServicesList = ({ searchQuery }: { searchQuery?: string }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const q = (searchQuery || "").toLowerCase();
+  const filtered = services.filter((s) => !q || t(s.nameKey).toLowerCase().includes(q));
 
   const handleNavigate = (target: string) => {
     navigate("/map", { state: { target } });
@@ -23,7 +25,7 @@ const ServicesList = () => {
     <div className="mt-6 px-5">
       <h2 className="mb-3 text-lg font-bold text-foreground text-end">{t("services")}</h2>
       <div className="grid grid-cols-2 gap-3">
-        {services.map((s) => (
+        {filtered.map((s) => (
           <button
             key={s.id}
             onClick={() => handleNavigate(s.mapTarget)}

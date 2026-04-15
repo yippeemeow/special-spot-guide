@@ -9,9 +9,11 @@ const restaurants = [
   { id: 4, nameKey: "maestro", descKey: "maestroDesc", emoji: "🍕", distance: "70م" },
 ];
 
-const RestaurantsList = () => {
+const RestaurantsList = ({ searchQuery }: { searchQuery?: string }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const q = (searchQuery || "").toLowerCase();
+  const filtered = restaurants.filter((r) => !q || t(r.nameKey).toLowerCase().includes(q) || t(r.descKey).toLowerCase().includes(q));
 
   const handleNavigate = (name: string) => {
     navigate("/map", { state: { target: "restaurantArea", highlight: name } });
@@ -21,7 +23,7 @@ const RestaurantsList = () => {
     <div className="mt-6 px-5">
       <h2 className="mb-3 text-lg font-bold text-foreground text-end">{t("restaurants")}</h2>
       <div className="space-y-3">
-        {restaurants.map((r) => (
+        {filtered.map((r) => (
           <div
             key={r.id}
             className="flex items-center gap-3 rounded-2xl border border-primary/15 bg-card p-4 shadow-sm transition-all hover:border-primary/30 hover:glow-primary"
