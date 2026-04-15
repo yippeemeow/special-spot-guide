@@ -33,7 +33,7 @@ const EventHeader = () => {
             <ChevronDown className="h-3 w-3" />
           </button>
           {showLangMenu && (
-            <div className="absolute top-12 left-0 z-50 min-w-[140px] rounded-xl border border-secondary/20 bg-card shadow-xl overflow-hidden">
+            <div className="absolute top-12 left-0 right-auto z-50 min-w-[160px] rounded-xl border border-secondary/20 bg-card shadow-xl overflow-hidden" style={{ direction: "ltr" }}>
               {allLangs.map((l) => (
                 <button
                   key={l}
