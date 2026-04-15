@@ -15,8 +15,8 @@ const BottomNav = () => {
   const currentPath = location.pathname;
 
   return (
-    <div className="fixed bottom-0 z-50 w-full max-w-[430px] left-1/2 -translate-x-1/2 bg-card border-t border-border/50">
-      <div className="flex items-center justify-around py-2 pb-[max(8px,env(safe-area-inset-bottom))]">
+    <div className="fixed bottom-0 z-50 w-full max-w-[430px] left-1/2 -translate-x-1/2 bg-card border-t border-border/40">
+      <div className="flex items-stretch justify-around py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = item.path === currentPath;

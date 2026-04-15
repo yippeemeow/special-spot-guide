@@ -108,7 +108,7 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-[100] flex flex-col items-start font-sans" dir="rtl">
+    <div className="fixed bottom-[4.5rem] left-4 z-[100] flex flex-col items-start font-sans" dir="rtl">
       {isOpen && (
         <div className="mb-3 w-[300px] bg-card/95 backdrop-blur-2xl border border-secondary/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-secondary p-3 flex justify-between items-center">

@@ -22,7 +22,7 @@ const AccessibilityPanel = () => {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
+        className="fixed bottom-[4.5rem] z-50 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
         style={{ [isAr ? "left" : "right"]: "1rem" }}
         aria-label={isAr ? "إعدادات إمكانية الوصول" : "Accessibility settings"}
       >
