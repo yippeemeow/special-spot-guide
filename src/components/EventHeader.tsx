@@ -1,7 +1,7 @@
 import { Bell, Globe, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useRef, useEffect } from "react";
-import masarkLogo from "@/assets/masark-logo-clean.png";
+import masarkLogo from "@/assets/masark-logo-transparent.png";
 
 const EventHeader = () => {
   const { t, lang, setLang, langLabels, allLangs } = useLanguage();
