@@ -1,35 +1,76 @@
-import { Search, Mic } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { Search, Mic, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 const SearchBar = () => {
-  const { t } = useLanguage();
   const [query, setQuery] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
 
-  const handleSearch = () => {
-    if (!query.trim()) return;
-    // هنا يمكنك إضافة منطق البحث المحلي في القائمة أو تصفية الفعاليات
-    console.log("Searching for:", query);
+  const handleASR = async () => {
+    try {
+      setIsRecording(true);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      const audioChunks: Blob[] = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const formData = new FormData();
+        formData.append("file", audioBlob);
+        formData.append("model", "whisper-1");
+
+        try {
+          const res = await fetch("https://elmodels.ngrok.app/audio/transcriptions", {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer sk-FEAw1F9QdZbtn3RJnR5yfA",
+              "ngrok-skip-browser-warning": "69420",
+            },
+            body: formData,
+          });
+
+          const data = await res.json();
+          if (data.text) {
+            setQuery(data.text);
+          }
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setIsRecording(false);
+        }
+      };
+
+      mediaRecorder.start();
+      setTimeout(() => mediaRecorder.stop(), 3000);
+    } catch (err) {
+      console.error(err);
+      setIsRecording(false);
+    }
   };
 
   return (
     <div className="-mt-5 px-5">
-      <div className="flex items-center gap-3 rounded-2xl border border-secondary/20 bg-card/80 px-4 py-3 shadow-lg backdrop-blur-md transition-all focus-within:border-secondary/50">
+      <div className="flex items-center gap-3 rounded-2xl border border-secondary/20 bg-card/80 px-4 py-3 shadow-lg backdrop-blur-md">
         <Search className="h-5 w-5 text-muted-foreground" />
 
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearch();
-          }}
-          placeholder={t("searchPlaceholder") || "ابحث عن فعاليات، بوثات..."}
-          className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+          placeholder="ابحث عن فعاليات..."
+          className="flex-1 bg-transparent text-sm text-foreground focus:outline-none"
         />
 
-        <button className="text-secondary/60 hover:text-secondary transition-colors">
-          <Mic className="h-5 w-5" />
+        {/* أيقونة المايك المطلوبة */}
+        <button
+          onClick={handleASR}
+          disabled={isRecording}
+          className={`transition-all ${isRecording ? "text-red-500 animate-pulse" : "text-secondary"}`}
+        >
+          {isRecording ? <Loader2 className="h-5 w-5 animate-spin" /> : <Mic className="h-5 w-5" />}
         </button>
       </div>
     </div>
