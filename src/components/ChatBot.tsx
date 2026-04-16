@@ -63,12 +63,14 @@ const ChatBot = () => {
       )}
 
       {/* زر أيقونة نهى المتموضع أسفل نافذة المحادثة مباشرة */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-[0_4px_15px_rgba(0,180,216,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all border-2 border-white/20"
-      >
-        {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
-      </button>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-[0_4px_15px_rgba(0,180,216,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all border-2 border-white/20"
+        >
+          <MessageCircle className="text-[#1A1A2E] h-7 w-7" />
+        </button>
+      )}
     </div>
   );
 };
