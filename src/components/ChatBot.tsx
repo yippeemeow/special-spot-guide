@@ -7,11 +7,20 @@ const ChatBot = () => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "أهلاً بك في منصة مسارك. أنا نهى، كيف يمكنني مساعدتك في العثور على الفعاليات اليوم؟",
+      content:
+        "أهلاً بك في مسارك.. أنا نهى، محللتك الذكية لفعالية علم. عيني على الجدول دائماً لأي تحديث، كيف أقدر أخدمك؟",
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // جدول الفعاليات للمحرك الذكي
+  const eventsTimeline = [
+    { title: "الافتتاح الرسمي", location: "المسرح الرئيسي", time: "16:30" },
+    { title: "مستقبل الحلول الرقمية", location: "المسرح الرئيسي", time: "17:15" },
+    { title: "ورشة الابتكار", location: "المسرح الرئيسي", time: "19:15" },
+    { title: "جلسة الذكاء الاصطناعي", location: "المسرح الرئيسي", time: "20:15" },
+  ];
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -19,9 +28,36 @@ const ChatBot = () => {
     }
   }, [messages]);
 
+  // محرك التوقيت (Interval Timer) - يجعل نهى تتفاعل تلقائياً
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      eventsTimeline.forEach((event) => {
+        const [h, m] = event.time.split(":").map(Number);
+        const eventMinutes = h * 60 + m;
+
+        // تنبيه قبل الفعالية بـ 5 دقائق
+        if (eventMinutes - currentMinutes === 5) {
+          const alertMessage = `نهى هنا! ذكرتكم بأن "${event.title}" بتبدأ بعد 5 دقائق في ${event.location}. لا تفوتكم!`;
+
+          setMessages((prev) => {
+            const lastMsg = prev[prev.length - 1].content;
+            if (lastMsg !== alertMessage) {
+              return [...prev, { role: "assistant", content: alertMessage }];
+            }
+            return prev;
+          });
+        }
+      });
+    }, 60000); // تحقق كل دقيقة
+    return () => clearInterval(timer);
+  }, []);
+
   const handleNavigate = (content: string) => {
     setIsOpen(false);
-    console.log("تفعيل المسار إلى الموقع المذكور في:", content);
+    console.log("تفعيل المسار إلى:", content);
   };
 
   const handleSendMessage = async () => {
@@ -32,11 +68,10 @@ const ChatBot = () => {
     setIsLoading(true);
 
     const exhibitionContext = `
-      أنتِ "نهى"، مساعدة ذكية متخصصة في توجيه الزوار.
-      عندما يطلب المستخدم فعالية معينة (مثل المسرح، بوث، منطقة الأطفال، أو المطاعم):
-      1. قدمي تفاصيل الفعالية باختصار ومهنية.
-      2. تأكدي من ذكر اسم "الموقع" بوضوح في ردك.
-      3. أخبري المستخدم أنه يمكنه الضغط على زر "اتبع المسار" بالأسفل لبدء التوجيه.
+      أنتِ "نهى"، المحللة الذكية لفعالية علم.
+      شخصيتك: ذكية، سريعة البديهة، وتتحدثين بلهجة سعودية بيضاء مهنية.
+      مهمتك: الربط بين استفسار المستخدم والواقع (الوقت، المكان، والفعالية).
+      قاعدة الزر: إذا كان ردك يتضمن توجيهاً لمكان (مسرح، بوث، مطعم، منطقة)، صياغة الرد يجب أن تشمل اسم المكان بوضوح ليظهر زر المسار تلقائياً.
     `;
 
     try {
@@ -59,10 +94,10 @@ const ChatBot = () => {
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.choices?.[0]?.message?.content || "عذراً، لم أتمكن من فهم طلبك." },
+        { role: "assistant", content: data.choices?.[0]?.message?.content || "عذراً، تعثرت في التحليل قليلاً." },
       ]);
     } catch (error) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "نعتذر، حدث خطأ في الاتصال." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "حدث خطأ في الاتصال." }]);
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +108,10 @@ const ChatBot = () => {
       {isOpen && (
         <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center text-[#1A1A2E]">
-            <span className="font-bold text-sm">نهى - المساعد الذكي</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              <span className="font-bold text-sm">نهى | المحللة الفورية</span>
+            </div>
             <button onClick={() => setIsOpen(false)}>
               <X className="h-5 w-5" />
             </button>
@@ -91,6 +129,7 @@ const ChatBot = () => {
                 >
                   {msg.content}
 
+                  {/* الزر يظهر بذكاء بناءً على محتوى الرد */}
                   {msg.role === "assistant" &&
                     (msg.content.includes("المسرح") ||
                       msg.content.includes("بوث") ||
@@ -108,7 +147,7 @@ const ChatBot = () => {
               </div>
             ))}
             {isLoading && (
-              <div className="flex justify-end">
+              <div className="flex justify-end p-2">
                 <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
               </div>
             )}
@@ -120,8 +159,8 @@ const ChatBot = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="اسأل عن أي فعالية..."
-              className="flex-1 bg-white/5 rounded-lg px-4 py-2 text-[13px] text-white focus:outline-none border border-white/10 focus:border-[#00B4D8]/50"
+              placeholder="نهى تحلل استفسارك الآن..."
+              className="flex-1 bg-white/5 rounded-lg px-4 py-2 text-[13px] text-white focus:outline-none border border-white/10"
               disabled={isLoading}
             />
             <button
@@ -137,7 +176,7 @@ const ChatBot = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 border-2 border-white/20"
+        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
       >
         {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
       </button>
