@@ -17,7 +17,7 @@ const ChatBot = () => {
   return (
     <div className="fixed -bottom-2 left-1/2 -translate-x-[200px] z-[100] flex flex-col items-start font-sans md:left-[calc(50%-215px)] md:translate-x-0" dir="rtl">
       {isOpen && (
-        <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-[0_0_20px_rgba(0,180,216,0.2)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="mb-4 w-[280px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-[0_0_20px_rgba(0,180,216,0.2)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
@@ -30,7 +30,7 @@ const ChatBot = () => {
 
           <div
             ref={scrollRef}
-            className="p-4 h-[320px] overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-black/20 no-scrollbar"
+            className="p-4 h-[280px] overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-black/20 no-scrollbar"
           >
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
