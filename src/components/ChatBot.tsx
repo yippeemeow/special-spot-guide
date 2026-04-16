@@ -130,11 +130,15 @@ const ChatBot = () => {
                   {msg.content}
 
                   {/* الزر يظهر بذكاء بناءً على محتوى الرد */}
+                  {/* الزر يظهر بذكاء إذا ذكرت نهى أي مكان أو فعالية */}
                   {msg.role === "assistant" &&
-                    (msg.content.includes("المسرح") ||
+                    (msg.content.includes("مسرح") ||
+                      msg.content.includes("ورشة") ||
                       msg.content.includes("بوث") ||
                       msg.content.includes("منطقة") ||
-                      msg.content.includes("موقع")) && (
+                      msg.content.includes("موقع") ||
+                      msg.content.includes("كودو") ||
+                      msg.content.includes("البيك")) && (
                       <button
                         onClick={() => handleNavigate(msg.content)}
                         className="mt-3 w-full bg-[#00B4D8] text-[#1A1A2E] py-2 rounded-lg font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-[#0096B4] transition-all"
