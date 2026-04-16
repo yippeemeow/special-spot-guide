@@ -23,7 +23,7 @@ const AccessibilityPanel = () => {
       <button
         onClick={() => setIsOpen(true)}
         className="fixed bottom-[8rem] z-50 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
-        style={{ left: "1rem" }}
+        style={{ right: "1rem" }}
         aria-label={isAr ? "إعدادات إمكانية الوصول" : "Accessibility settings"}
       >
         <Accessibility className="h-6 w-6" />
