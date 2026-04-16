@@ -19,15 +19,28 @@ const MapPage = () => {
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
   const [crowdRadar, setCrowdRadar] = useState(false);
 
-  // تفعيل رادار الزحام تلقائياً إذا كان هناك هدف محدد لإظهار "الهيت ماب" فوراً
   useEffect(() => {
     if (target) {
       setCrowdRadar(true);
     }
   }, [target]);
 
+  useEffect(() => {
+    const handleMapMove = (e: any) => {
+      const locationName = e.detail.location;
+      // هنا تضع كود تحريك الكاميرا الخاص بخريطتك
+      // مثال: map.flyTo({ center: [lng, lat] });
+    };
+
+    window.addEventListener("map-navigate", handleMapMove);
+    return () => window.removeEventListener("map-navigate", handleMapMove);
+  }, []);
+
   return (
-    <div className="relative h-full md:h-[812px] min-h-screen md:min-h-0 bg-background pb-24 rtl overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
+    <div
+      className="relative h-full md:h-[812px] min-h-screen md:min-h-0 bg-background pb-24 rtl overflow-y-auto"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       {/* Header */}
       <div
         className="flex items-center justify-between px-5 pt-10 pb-4"
