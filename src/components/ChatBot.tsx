@@ -149,11 +149,11 @@ const ChatBot = () => {
             </button>
           </div>
 
-          <div ref={scrollRef} className="p-4 h-[250px] overflow-y-auto space-y-3 bg-black/10 no-scrollbar">
+          <div ref={scrollRef} className="p-4 h-[250px] overflow-y-auto space-y-3 bg-primary/5 no-scrollbar">
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
                 <div
-                  className={`p-2.5 rounded-2xl text-[11px] max-w-[90%] ${msg.role === "user" ? "bg-secondary text-black font-bold rounded-tl-none" : "bg-white/10 text-white rounded-tr-none"}`}
+                  className={`p-2.5 rounded-2xl text-[11px] max-w-[90%] ${msg.role === "user" ? "bg-secondary text-secondary-foreground font-bold rounded-tl-none" : "bg-primary/15 text-foreground rounded-tr-none"}`}
                 >
                   {msg.content}
                 </div>
@@ -166,7 +166,7 @@ const ChatBot = () => {
             )}
           </div>
 
-          <div className="p-2 border-t border-white/5 flex gap-2 items-center bg-card">
+          <div className="p-2 border-t border-border flex gap-2 items-center bg-card">
             <button
               onClick={handleVoiceInput}
               disabled={isRecording || isLoading}
@@ -180,7 +180,7 @@ const ChatBot = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="اسأل نهى..."
-              className="flex-1 bg-white/5 rounded-xl px-3 py-2 text-[11px] text-white focus:outline-none border border-transparent focus:border-secondary/30"
+              className="flex-1 bg-primary/10 rounded-xl px-3 py-2 text-[11px] text-foreground placeholder:text-muted-foreground focus:outline-none border border-transparent focus:border-secondary/40"
               disabled={isLoading}
             />
             <button
