@@ -27,7 +27,7 @@ const MapPage = () => {
   }, [target]);
 
   return (
-    <div className="relative min-h-screen bg-background pb-24 rtl" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="relative h-full md:h-[812px] min-h-screen md:min-h-0 bg-background pb-24 rtl overflow-y-auto" dir={isRTL ? "rtl" : "ltr"}>
       {/* Header */}
       <div
         className="flex items-center justify-between px-5 pt-10 pb-4"
