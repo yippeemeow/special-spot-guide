@@ -1,16 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { Mic, Send, Loader2, MessageCircle, X } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const ChatBot = () => {
-  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "أهلاً بك! أنا نهى، مساعِدتك الذكية في فعالية علم للابتكار الرقمي. كيف أقدر أساعدك اليوم؟",
+      content: "أهلاً بك في منصة مسارك. أنا نهى، مساعدتك الذكية لفعالية علم للابتكار الرقمي. كيف يمكنني خدمتك الآن؟",
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +24,6 @@ const ChatBot = () => {
     { title: "الختام والتكريم", location: "المسرح الرئيسي", time: "22:15" },
     { title: "فعالية التلوين التقني", location: "منطقة الأطفال", time: "16:00" },
     { title: "نشاط تركيب وبناء للأطفال", location: "منطقة الأطفال", time: "17:15" },
-    { title: "ورشة الأطفال: التقنية ببساطة", location: "منطقة الأطفال", time: "18:15" },
-    { title: "مسابقة أطفال", location: "منطقة الأطفال", time: "19:15" },
-    { title: "ركن الرسم الحر", location: "منطقة الأطفال", time: "20:15" },
-    { title: "نشاط تفاعلي ختامي", location: "منطقة الأطفال", time: "21:15" },
   ];
 
   useEffect(() => {
@@ -42,13 +36,11 @@ const ChatBot = () => {
     const timer = setInterval(() => {
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
       eventsTimeline.forEach((event) => {
         const [h, m] = event.time.split(":").map(Number);
         const eventMinutes = h * 60 + m;
-
         if (eventMinutes - currentMinutes === 5) {
-          const alert = `📢 لا يفوتك!\nباقي 5 دقائق وتبدأ "${event.title}"\n📍 الموقع: ${event.location}`;
+          const alert = `تنويه: ستبدأ فعالية "${event.title}" خلال 5 دقائق في ${event.location}. يمكنكم التوجه للموقع عبر الخريطة.`;
           setMessages((prev) => {
             if (prev[prev.length - 1].content !== alert) {
               return [...prev, { role: "assistant", content: alert }];
@@ -61,37 +53,6 @@ const ChatBot = () => {
     return () => clearInterval(timer);
   }, [messages]);
 
-  const handleVoiceInput = async () => {
-    try {
-      setIsRecording(true);
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      const audioChunks: any[] = [];
-      mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-        const formData = new FormData();
-        formData.append("file", audioBlob);
-        formData.append("model", "whisper-1");
-        const res = await fetch("https://elmodels.ngrok.app/audio/transcriptions", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer sk-FEAw1F9QdZbtn3RJnR5yfA",
-            "ngrok-skip-browser-warning": "69420",
-          },
-          body: formData,
-        });
-        const data = await res.json();
-        if (data.text) setQuery(data.text);
-        setIsRecording(false);
-      };
-      mediaRecorder.start();
-      setTimeout(() => mediaRecorder.stop(), 3000);
-    } catch (err) {
-      setIsRecording(false);
-    }
-  };
-
   const handleSendMessage = async () => {
     if (!query.trim() || isLoading) return;
     const userQuery = query;
@@ -100,16 +61,12 @@ const ChatBot = () => {
     setIsLoading(true);
 
     const exhibitionContext = `
-      أنتِ "نهى"، المساعدة الذكية لمعرض "علم للابتكار". ردي بلهجة سعودية بيضاء خفيفة.
-      مهم جداً: نسقي إجابتك باستخدام الأسطر والنقاط والإيموجي لتكون مريحة جداً للعين ومقسمة بوضوح.
-      
-      المعلومات:
-      - المسرح: 4:30م افتتاح، 5:15م مستقبل الحلول، 6:15م خدمات رقمية، 7:15م ورشة ابتكار، 8:15م ذكاء اصطناعي، 9:15م مسابقة، 10:15م ختام.
-      - منطقة الأطفال: 4م تلوين، 5:15م تركيب، 6:15م ورشة تقنية، 7:15م مسابقة، 8:15م رسم، 9:15م ختامي.
-      - البوثات: الحلول الرقمية، البيانات والأمن، الابتكار، المستقبل التقني.
-      - المطاعم: كودو، البيك، كوفي شوب، تموينات.
-      
-      عند السؤال عن الفعاليات، استعرضيها كقائمة مرتبة.
+      أنتِ "نهى"، المساعدة الذكية الرسمية لفعالية "علم للابتكار". ردي بلهجة سعودية بيضاء مهذبة ومهنية.
+      التنسيق: استخدمي القوائم النقطية والأسطر الواضحة. قللي من الإيموجي واجعلي الردود عملية ومباشرة.
+      المسرح: 4:30م افتتاح، 5:15م مستقبل الحلول، 6:15م خدمات رقمية، 7:15م ورشة ابتكار، 8:15م ذكاء اصطناعي، 9:15م مسابقة، 10:15م ختام.
+      البوثات: الحلول الرقمية، البيانات والأمن، الابتكار، المستقبل التقني.
+      المطاعم: كودو، البيك، كوفي شوب.
+      عند السؤال عن المواقع، قولي: "يمكنكم تتبع المسار الموضح على الخريطة للوصول السريع".
     `;
 
     try {
@@ -132,31 +89,44 @@ const ChatBot = () => {
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.choices?.[0]?.message?.content || "عذراً، ما فهمت عليك." },
+        { role: "assistant", content: data.choices?.[0]?.message?.content || "عذراً، لم أتمكن من فهم الطلب." },
       ]);
     } catch (error) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "حصل خطأ بالاتصال، جرب ثاني مرة." }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "نعتذر، حدث خطأ في الاتصال. يرجى المحاولة لاحقاً." },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="fixed bottom-[4.5rem] left-4 z-[100] flex flex-col items-start font-sans" dir="rtl">
+    <div className="fixed bottom-20 left-6 z-[100] flex flex-col items-start font-sans" dir="rtl">
       {isOpen && (
-        <div className="mb-3 w-[300px] bg-card/95 backdrop-blur-2xl border border-secondary/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <div className="bg-secondary p-3 flex justify-between items-center">
-            <span className="text-black font-bold text-xs text-right">نهى الذكية</span>
-            <button onClick={() => setIsOpen(false)} className="text-black/50 hover:text-black">
-              <X className="h-4 w-4" />
+        <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-[0_0_20px_rgba(0,180,216,0.2)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="bg-[#00B4D8] p-4 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-[#1A1A2E] font-bold text-sm">نهى - المساعد الذكي</span>
+            </div>
+            <button onClick={() => setIsOpen(false)} className="text-[#1A1A2E]/70 hover:text-[#1A1A2E]">
+              <X className="h-5 w-5" />
             </button>
           </div>
 
-          <div ref={scrollRef} className="p-4 h-[300px] overflow-y-auto space-y-4 bg-black/10 no-scrollbar">
+          <div
+            ref={scrollRef}
+            className="p-4 h-[350px] overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-black/20 no-scrollbar"
+          >
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
                 <div
-                  className={`p-3 rounded-2xl text-[13px] leading-relaxed max-w-[90%] whitespace-pre-line ${msg.role === "user" ? "bg-secondary text-black font-bold rounded-tl-none" : "bg-white/15 text-white shadow-sm rounded-tr-none border border-white/5"}`}
+                  className={`p-3 rounded-xl text-[13px] leading-relaxed max-w-[85%] whitespace-pre-line shadow-sm ${
+                    msg.role === "user"
+                      ? "bg-[#00B4D8] text-[#1A1A2E] font-medium rounded-bl-none"
+                      : "bg-[#252545] text-white border border-white/10 rounded-br-none"
+                  }`}
                 >
                   {msg.content}
                 </div>
@@ -164,32 +134,27 @@ const ChatBot = () => {
             ))}
             {isLoading && (
               <div className="flex justify-end">
-                <Loader2 className="h-4 w-4 text-secondary animate-spin" />
+                <div className="bg-[#252545] p-2 rounded-lg border border-white/10">
+                  <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
+                </div>
               </div>
             )}
           </div>
 
-          <div className="p-2 border-t border-white/5 flex gap-2 items-center bg-card">
-            <button
-              onClick={handleVoiceInput}
-              disabled={isRecording || isLoading}
-              className={`${isRecording ? "text-red-500 animate-pulse" : "text-secondary/60 hover:text-secondary"}`}
-            >
-              <Mic className="h-5 w-5" />
-            </button>
+          <div className="p-3 border-t border-white/10 flex gap-2 items-center bg-[#1A1A2E]">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="اسأل نهى..."
-              className="flex-1 bg-white/5 rounded-xl px-3 py-2 text-[12px] text-white focus:outline-none border border-transparent focus:border-secondary/30"
+              placeholder="اكتب سؤالك هنا..."
+              className="flex-1 bg-white/5 rounded-lg px-4 py-2 text-[13px] text-white focus:outline-none border border-white/10 focus:border-[#00B4D8]/50 transition-colors"
               disabled={isLoading}
             />
             <button
               onClick={handleSendMessage}
-              disabled={isLoading}
-              className="bg-secondary p-2 rounded-xl text-black shadow-inner"
+              disabled={isLoading || !query.trim()}
+              className="bg-[#00B4D8] p-2.5 rounded-lg text-[#1A1A2E] transition-transform active:scale-90 disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
             </button>
@@ -199,9 +164,15 @@ const ChatBot = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-secondary rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-2 border-white/20"
+        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-[0_4px_15px_rgba(0,180,216,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all border-2 border-white/20 relative"
       >
-        {isOpen ? <X className="text-black h-6 w-6" /> : <MessageCircle className="text-black h-6 w-6" />}
+        {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
+        {!isOpen && (
+          <span className="absolute -top-1 -right-1 flex h-4 w-4">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-[#6366f1]"></span>
+          </span>
+        )}
       </button>
     </div>
   );
