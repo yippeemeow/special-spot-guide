@@ -102,7 +102,11 @@ const ChatBot = () => {
       setIsLoading(false);
     }
   };
-
+  const handleNavigate = (content: string) => {
+    setIsOpen(false);
+    const event = new CustomEvent("map-navigate", { detail: { location: content } });
+    window.dispatchEvent(event);
+  };
   return (
     <div className="absolute bottom-20 left-4 z-[100] flex flex-col items-start font-sans" dir="rtl">
       {isOpen && (
@@ -128,6 +132,30 @@ const ChatBot = () => {
                   }`}
                 >
                   {msg.content}
+
+                  {messages.map((msg, index) => (
+                    <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
+                      <div className={`p-3 rounded-xl text-[13px] ...`}>
+                        {msg.content}
+
+                        {/* ضعه هنا تماماً */}
+                        {msg.role === "assistant" &&
+                          (msg.content.includes("مسرح") ||
+                            msg.content.includes("ورشة") ||
+                            msg.content.includes("بوث") ||
+                            msg.content.includes("منطقة") ||
+                            msg.content.includes("موقع")) && (
+                            <button
+                              onClick={() => handleNavigate(msg.content)}
+                              className="mt-3 w-full bg-[#00B4D8] text-[#1A1A2E] py-2 rounded-lg font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-[#0096B4] transition-all"
+                            >
+                              <Navigation className="h-3 w-3" />
+                              اتبع المسار في الخريطة
+                            </button>
+                          )}
+                      </div>
+                    </div>
+                  ))}
 
                   {/* الزر يظهر بذكاء بناءً على محتوى الرد */}
                   {/* الزر يظهر بذكاء إذا ذكرت نهى أي مكان أو فعالية */}
