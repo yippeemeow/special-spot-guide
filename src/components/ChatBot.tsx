@@ -22,7 +22,6 @@ const ChatBot = () => {
     }
   }, [messages]);
 
-  // دالة تحويل الصوت (ASR)
   const toggleRecording = async () => {
     if (isRecording) {
       mediaRecorderRef.current?.stop();
@@ -69,7 +68,6 @@ const ChatBot = () => {
     setQuery("");
     setIsLoading(true);
 
-    // سياق النظام المحدث بكل بيانات "مسارك"
     const exhibitionContext = `
 أنتِ "نهى"، المحللة الذكية لفعالية شركة علم للابتكار الرقمي في تطبيق "مسارك".
 شخصيتك: سعودية، ذكية، مرحبة، وتساعدين الزوار بدقة.
