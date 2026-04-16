@@ -15,7 +15,7 @@ const ChatBot = () => {
 
   // تم تعديل الحاوية الرئيسية (bottom-24) لترتفع قليلاً عن شريط التنقل السفلي وتكون واضحة
   return (
-    <div className="fixed bottom-24 left-1/2 -translate-x-[200px] z-[100] flex flex-col items-start font-sans md:left-[calc(50%-215px)] md:translate-x-0" dir="rtl">
+    <div className="fixed bottom-4 left-1/2 -translate-x-[200px] z-[100] flex flex-col items-start font-sans md:left-[calc(50%-215px)] md:translate-x-0" dir="rtl">
       {isOpen && (
         <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-[0_0_20px_rgba(0,180,216,0.2)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center">
