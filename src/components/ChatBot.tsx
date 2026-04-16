@@ -1,30 +1,17 @@
 import { useState, useRef, useEffect } from "react";
-import { Mic, Send, Loader2, MessageCircle, X, Navigation } from "lucide-react"; // إضافة Navigation هنا
+import { Mic, Send, Loader2, MessageCircle, X, Navigation } from "lucide-react";
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "أهلاً بك في منصة مسارك. أنا نهى، مساعدتك الذكية لفعالية علم للابتكار الرقمي. كيف يمكنني خدمتك الآن؟",
+      content: "أهلاً بك في منصة مسارك. أنا نهى، كيف يمكنني مساعدتك في العثور على الفعاليات اليوم؟",
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const eventsTimeline = [
-    { title: "الافتتاح الرسمي", location: "المسرح الرئيسي", time: "16:30" },
-    { title: "مستقبل الحلول الرقمية", location: "المسرح الرئيسي", time: "17:15" },
-    { title: "عرض الخدمات الرقمية", location: "المسرح الرئيسي", time: "18:15" },
-    { title: "ورشة الابتكار في تجربة المستخدم", location: "المسرح الرئيسي", time: "19:15" },
-    { title: "جلسة الذكاء الاصطناعي", location: "المسرح الرئيسي", time: "20:15" },
-    { title: "المسابقة التفاعلية", location: "المسرح الرئيسي", time: "21:15" },
-    { title: "الختام والتكريم", location: "المسرح الرئيسي", time: "22:15" },
-    { title: "فعالية التلوين التقني", location: "منطقة الأطفال", time: "16:00" },
-    { title: "نشاط تركيب وبناء للأطفال", location: "منطقة الأطفال", time: "17:15" },
-  ];
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -32,31 +19,9 @@ const ChatBot = () => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      eventsTimeline.forEach((event) => {
-        const [h, m] = event.time.split(":").map(Number);
-        const eventMinutes = h * 60 + m;
-        if (eventMinutes - currentMinutes === 5) {
-          const alert = `تنويه: ستبدأ فعالية "${event.title}" خلال 5 دقائق في ${event.location}. يمكنكم التوجه للموقع عبر الخريطة.`;
-          setMessages((prev) => {
-            if (prev[prev.length - 1].content !== alert) {
-              return [...prev, { role: "assistant", content: alert }];
-            }
-            return prev;
-          });
-        }
-      });
-    }, 60000);
-    return () => clearInterval(timer);
-  }, [messages]);
-
-  // دالة التعامل مع الزر الجديد
   const handleNavigate = (content: string) => {
     setIsOpen(false);
-    console.log("جاري التوجيه إلى:", content);
+    console.log("تفعيل المسار إلى الموقع المذكور في:", content);
   };
 
   const handleSendMessage = async () => {
@@ -67,12 +32,11 @@ const ChatBot = () => {
     setIsLoading(true);
 
     const exhibitionContext = `
-      أنتِ "نهى"، المساعدة الذكية الرسمية لفعالية "علم للابتكار". ردي بلهجة سعودية بيضاء مهذبة ومهنية.
-      التنسيق: استخدمي القوائم النقطية والأسطر الواضحة. قللي من الإيموجي واجعلي الردود عملية ومباشرة.
-      المسرح: 4:30م افتتاح، 5:15م مستقبل الحلول، 6:15م خدمات رقمية، 7:15م ورشة ابتكار، 8:15م ذكاء اصطناعي، 9:15م مسابقة، 10:15م ختام.
-      البوثات: الحلول الرقمية، البيانات والأمن، الابتكار، المستقبل التقني.
-      المطاعم: كودو، البيك، كوفي شوب.
-      عند السؤال عن المواقع، قولي: "يمكنكم تتبع المسار الموضح على الخريطة للوصول السريع".
+      أنتِ "نهى"، مساعدة ذكية متخصصة في توجيه الزوار.
+      عندما يطلب المستخدم فعالية معينة (مثل المسرح، بوث، منطقة الأطفال، أو المطاعم):
+      1. قدمي تفاصيل الفعالية باختصار ومهنية.
+      2. تأكدي من ذكر اسم "الموقع" بوضوح في ردك.
+      3. أخبري المستخدم أنه يمكنه الضغط على زر "اتبع المسار" بالأسفل لبدء التوجيه.
     `;
 
     try {
@@ -95,13 +59,10 @@ const ChatBot = () => {
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.choices?.[0]?.message?.content || "عذراً، لم أتمكن من فهم الطلب." },
+        { role: "assistant", content: data.choices?.[0]?.message?.content || "عذراً، لم أتمكن من فهم طلبك." },
       ]);
     } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "نعتذر، حدث خطأ في الاتصال. يرجى المحاولة لاحقاً." },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "نعتذر، حدث خطأ في الاتصال." }]);
     } finally {
       setIsLoading(false);
     }
@@ -110,21 +71,15 @@ const ChatBot = () => {
   return (
     <div className="absolute bottom-20 left-4 z-[100] flex flex-col items-start font-sans" dir="rtl">
       {isOpen && (
-        <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-[0_0_20px_rgba(0,180,216,0.2)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-[#00B4D8] p-4 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-[#1A1A2E] font-bold text-sm">نهى - المساعد الذكي</span>
-            </div>
-            <button onClick={() => setIsOpen(false)} className="text-[#1A1A2E]/70 hover:text-[#1A1A2E]">
+        <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="bg-[#00B4D8] p-4 flex justify-between items-center text-[#1A1A2E]">
+            <span className="font-bold text-sm">نهى - المساعد الذكي</span>
+            <button onClick={() => setIsOpen(false)}>
               <X className="h-5 w-5" />
             </button>
           </div>
 
-          <div
-            ref={scrollRef}
-            className="p-4 h-[350px] overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-black/20 no-scrollbar"
-          >
+          <div ref={scrollRef} className="p-4 h-[350px] overflow-y-auto space-y-4 no-scrollbar">
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
                 <div
@@ -136,14 +91,14 @@ const ChatBot = () => {
                 >
                   {msg.content}
 
-                  {/* جزئية الزر الجديدة المضافة هنا */}
                   {msg.role === "assistant" &&
                     (msg.content.includes("المسرح") ||
                       msg.content.includes("بوث") ||
-                      msg.content.includes("منطقة")) && (
+                      msg.content.includes("منطقة") ||
+                      msg.content.includes("موقع")) && (
                       <button
                         onClick={() => handleNavigate(msg.content)}
-                        className="mt-3 w-full bg-[#00B4D8] text-[#1A1A2E] py-2 rounded-lg font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-[#0096B4] transition-colors"
+                        className="mt-3 w-full bg-[#00B4D8] text-[#1A1A2E] py-2 rounded-lg font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-[#0096B4] transition-all"
                       >
                         <Navigation className="h-3 w-3" />
                         اتبع المسار في الخريطة
@@ -154,9 +109,7 @@ const ChatBot = () => {
             ))}
             {isLoading && (
               <div className="flex justify-end">
-                <div className="bg-[#252545] p-2 rounded-lg border border-white/10">
-                  <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
-                </div>
+                <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
               </div>
             )}
           </div>
@@ -167,14 +120,14 @@ const ChatBot = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="اكتب سؤالك هنا..."
-              className="flex-1 bg-white/5 rounded-lg px-4 py-2 text-[13px] text-white focus:outline-none border border-white/10 focus:border-[#00B4D8]/50 transition-colors"
+              placeholder="اسأل عن أي فعالية..."
+              className="flex-1 bg-white/5 rounded-lg px-4 py-2 text-[13px] text-white focus:outline-none border border-white/10 focus:border-[#00B4D8]/50"
               disabled={isLoading}
             />
             <button
               onClick={handleSendMessage}
               disabled={isLoading || !query.trim()}
-              className="bg-[#00B4D8] p-2.5 rounded-lg text-[#1A1A2E] transition-transform active:scale-90 disabled:opacity-50"
+              className="bg-[#00B4D8] p-2.5 rounded-lg text-[#1A1A2E]"
             >
               <Send className="h-4 w-4" />
             </button>
@@ -184,15 +137,9 @@ const ChatBot = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-[0_4px_15px_rgba(0,180,216,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all border-2 border-white/20 relative"
+        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 border-2 border-white/20"
       >
         {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
-        {!isOpen && (
-          <span className="absolute -top-1 -right-1 flex h-4 w-4">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-[#6366f1]"></span>
-          </span>
-        )}
       </button>
     </div>
   );
