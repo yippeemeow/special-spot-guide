@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Mic, Send, Loader2, MessageCircle, X } from "lucide-react";
+import { Mic, Send, Loader2, MessageCircle, X, Navigation } from "lucide-react"; // إضافة Navigation هنا
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +52,12 @@ const ChatBot = () => {
     }, 60000);
     return () => clearInterval(timer);
   }, [messages]);
+
+  // دالة التعامل مع الزر الجديد
+  const handleNavigate = (content: string) => {
+    setIsOpen(false);
+    console.log("جاري التوجيه إلى:", content);
+  };
 
   const handleSendMessage = async () => {
     if (!query.trim() || isLoading) return;
@@ -129,6 +135,20 @@ const ChatBot = () => {
                   }`}
                 >
                   {msg.content}
+
+                  {/* جزئية الزر الجديدة المضافة هنا */}
+                  {msg.role === "assistant" &&
+                    (msg.content.includes("المسرح") ||
+                      msg.content.includes("بوث") ||
+                      msg.content.includes("منطقة")) && (
+                      <button
+                        onClick={() => handleNavigate(msg.content)}
+                        className="mt-3 w-full bg-[#00B4D8] text-[#1A1A2E] py-2 rounded-lg font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-[#0096B4] transition-colors"
+                      >
+                        <Navigation className="h-3 w-3" />
+                        اتبع المسار في الخريطة
+                      </button>
+                    )}
                 </div>
               </div>
             ))}
