@@ -160,7 +160,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
           value={query}
           onChange={(e) => handleChange(e.target.value)}
           onFocus={() => results.length > 0 && setShowResults(true)}
-          placeholder="ابحث... مثال: وين أصلي؟ أو جوعان"
+          placeholder="ابحث..."
           className="flex-1 bg-transparent text-sm text-foreground focus:outline-none"
         />
 
