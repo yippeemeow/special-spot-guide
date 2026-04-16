@@ -48,7 +48,7 @@ const ChatBot = () => {
         const eventMinutes = h * 60 + m;
 
         if (eventMinutes - currentMinutes === 5) {
-          const alert = `📢 بطلنا! باقي 5 دقائق وتبدأ "${event.title}" في ${event.location}. لا تفوتك!`;
+          const alert = `📢 لا يفوتك!\nباقي 5 دقائق وتبدأ "${event.title}"\n📍 الموقع: ${event.location}`;
           setMessages((prev) => {
             if (prev[prev.length - 1].content !== alert) {
               return [...prev, { role: "assistant", content: alert }];
@@ -101,12 +101,15 @@ const ChatBot = () => {
 
     const exhibitionContext = `
       أنتِ "نهى"، المساعدة الذكية لمعرض "علم للابتكار". ردي بلهجة سعودية بيضاء خفيفة.
-      المسرح: 4:30م افتتاح، 5:15م مستقبل الحلول، 6:15م خدمات رقمية، 7:15م ورشة ابتكار، 8:15م ذكاء اصطناعي، 9:15م مسابقة، 10:15م ختام.
-      منطقة الأطفال: 4م تلوين، 5:15م تركيب، 6:15م ورشة تقنية، 7:15م مسابقة، 8:15م رسم، 9:15م ختامي.
-      البوثات: الحلول الرقمية، البيانات والأمن، الابتكار، المستقبل التقني (4م-11م).
-      المطاعم: كودو، البيك، كوفي شوب، تموينات.
-      المرافق: إسعافات، استعلامات، مصليات، دورات مياه.
-      عند السؤال عن مكان وجهيهم للخريطة.
+      مهم جداً: نسقي إجابتك باستخدام الأسطر والنقاط والإيموجي لتكون مريحة جداً للعين ومقسمة بوضوح.
+      
+      المعلومات:
+      - المسرح: 4:30م افتتاح، 5:15م مستقبل الحلول، 6:15م خدمات رقمية، 7:15م ورشة ابتكار، 8:15م ذكاء اصطناعي، 9:15م مسابقة، 10:15م ختام.
+      - منطقة الأطفال: 4م تلوين، 5:15م تركيب، 6:15م ورشة تقنية، 7:15م مسابقة، 8:15م رسم، 9:15م ختامي.
+      - البوثات: الحلول الرقمية، البيانات والأمن، الابتكار، المستقبل التقني.
+      - المطاعم: كودو، البيك، كوفي شوب، تموينات.
+      
+      عند السؤال عن الفعاليات، استعرضيها كقائمة مرتبة.
     `;
 
     try {
@@ -149,11 +152,11 @@ const ChatBot = () => {
             </button>
           </div>
 
-          <div ref={scrollRef} className="p-4 h-[250px] overflow-y-auto space-y-3 bg-primary/5 no-scrollbar">
+          <div ref={scrollRef} className="p-4 h-[300px] overflow-y-auto space-y-4 bg-black/10 no-scrollbar">
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
                 <div
-                  className={`p-2.5 rounded-2xl text-[11px] max-w-[90%] ${msg.role === "user" ? "bg-secondary text-secondary-foreground font-bold rounded-tl-none" : "bg-primary/15 text-foreground rounded-tr-none"}`}
+                  className={`p-3 rounded-2xl text-[13px] leading-relaxed max-w-[90%] whitespace-pre-line ${msg.role === "user" ? "bg-secondary text-black font-bold rounded-tl-none" : "bg-white/15 text-white shadow-sm rounded-tr-none border border-white/5"}`}
                 >
                   {msg.content}
                 </div>
@@ -161,18 +164,18 @@ const ChatBot = () => {
             ))}
             {isLoading && (
               <div className="flex justify-end">
-                <Loader2 className="h-3 w-3 text-secondary animate-spin" />
+                <Loader2 className="h-4 w-4 text-secondary animate-spin" />
               </div>
             )}
           </div>
 
-          <div className="p-2 border-t border-border flex gap-2 items-center bg-card">
+          <div className="p-2 border-t border-white/5 flex gap-2 items-center bg-card">
             <button
               onClick={handleVoiceInput}
               disabled={isRecording || isLoading}
               className={`${isRecording ? "text-red-500 animate-pulse" : "text-secondary/60 hover:text-secondary"}`}
             >
-              <Mic className="h-4 w-4" />
+              <Mic className="h-5 w-5" />
             </button>
             <input
               type="text"
@@ -180,7 +183,7 @@ const ChatBot = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="اسأل نهى..."
-              className="flex-1 bg-primary/10 rounded-xl px-3 py-2 text-[11px] text-foreground placeholder:text-muted-foreground focus:outline-none border border-transparent focus:border-secondary/40"
+              className="flex-1 bg-white/5 rounded-xl px-3 py-2 text-[12px] text-white focus:outline-none border border-transparent focus:border-secondary/30"
               disabled={isLoading}
             />
             <button
