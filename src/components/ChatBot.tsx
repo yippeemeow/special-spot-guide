@@ -154,9 +154,15 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="absolute bottom-20 left-4 z-[100] flex flex-col items-start font-sans" dir="rtl">
+    <div className="fixed top-5 right-5 z-[9999] flex flex-col items-end font-sans" dir="rtl">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
+      >
+        {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
+      </button>
       {isOpen && (
-        <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="mt-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center text-[#1A1A2E]">
             <span className="font-bold text-sm">نهى | محللة مسارك</span>
             <button onClick={() => setIsOpen(false)}>
@@ -234,12 +240,6 @@ const ChatBot = () => {
         </div>
       )}
 
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
-      >
-        {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
-      </button>
     </div>
   );
 };
