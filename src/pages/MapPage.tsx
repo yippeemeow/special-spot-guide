@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import VenueMap from "@/components/VenueMap";
 import ChatBot from "@/components/ChatBot";
 import BottomNav from "@/components/BottomNav";
+import AccessibilityPanel from "@/components/AccessibilityPanel";
 
 const MapPage = () => {
   const { t, isRTL } = useLanguage();
@@ -120,6 +121,7 @@ const MapPage = () => {
       </div>
 
       <BottomNav />
+      <AccessibilityPanel />
       <ChatBot />
     </div>
   );
