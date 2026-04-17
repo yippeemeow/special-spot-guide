@@ -94,13 +94,11 @@ const AccessibilityPanel = () => {
           if (movedRef.current) return;
           setIsOpen(true);
         }}
-        style={{
-          left: position?.x ?? 16,
-          top: position?.y ?? 16,
-          touchAction: "none",
-          zIndex: 9999,
-          visibility: position ? "visible" : "hidden",
-        }}
+        style={
+          position
+            ? { left: position.x, top: position.y, touchAction: "none", zIndex: 9999 }
+            : { right: 16, bottom: 160, touchAction: "none", zIndex: 9999 }
+        }
         className="fixed flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 active:scale-95 cursor-grab active:cursor-grabbing"
         aria-label={isAr ? "إعدادات إمكانية الوصول" : "Accessibility settings"}
       >
