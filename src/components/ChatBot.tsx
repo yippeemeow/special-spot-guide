@@ -42,7 +42,6 @@ const ChatBot = () => {
 
         setIsLoading(true);
         try {
-          // بدلاً من api.openai.com
           const res = await fetch("https://elmodels.ngrok.app/v1/audio/transcriptions", {
             method: "POST",
             headers: {
@@ -58,7 +57,7 @@ const ChatBot = () => {
             if (data.text) setQuery(data.text);
           } else {
             const errorData = await res.json();
-            console.error("OpenAI Error:", errorData);
+            console.error("Error:", errorData);
           }
         } catch (error) {
           console.error("Network Error:", error);
