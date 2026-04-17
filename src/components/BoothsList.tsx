@@ -126,7 +126,20 @@ const BoothsList = ({ searchQuery }: { searchQuery?: string }) => {
 
                 {expandedBooth === booth.id && (
                   <div className="mt-2 space-y-2">
-                    {booth.workshops.map((w) => (
+                    {booth.workshops.map((w) => {
+                      const remaining = w.capacity - w.registered;
+                      const ratio = w.registered / w.capacity;
+                      const isFull = remaining <= 0;
+                      const isAlmostFull = ratio >= 0.75 && !isFull;
+                      const statusColor = isFull
+                        ? "bg-red-500/20 text-red-400 border-red-500/40"
+                        : isAlmostFull
+                        ? "bg-amber-500/20 text-amber-400 border-amber-500/40"
+                        : "bg-green-500/20 text-green-400 border-green-500/40";
+                      const statusLabel = isFull ? "مكتملة" : isAlmostFull ? "شبه ممتلئة" : "متاحة";
+                      const barColor = isFull ? "bg-red-500" : isAlmostFull ? "bg-amber-500" : "bg-green-500";
+
+                      return (
                       <div key={w.id} className="rounded-xl border border-secondary/10 bg-background/50 p-2.5">
                         <div className="flex items-center justify-between mb-1">
                           <span className="rounded-full px-1.5 py-0.5 text-[8px] font-bold bg-secondary/20 text-secondary">
@@ -139,16 +152,40 @@ const BoothsList = ({ searchQuery }: { searchQuery?: string }) => {
                           <Clock className="h-2.5 w-2.5" />
                           <span>{w.time[lang]}</span>
                         </div>
+
+                        {/* حالة المقاعد */}
+                        <div className="mt-2 space-y-1">
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className={`rounded-full border px-1.5 py-0.5 text-[8px] font-bold ${statusColor}`}>
+                              {statusLabel}
+                            </span>
+                            <div className="flex items-center gap-1 text-muted-foreground">
+                              <Users className="h-2.5 w-2.5" />
+                              <span className="font-semibold text-foreground">{w.registered}/{w.capacity}</span>
+                              <span>·</span>
+                              <span>{isFull ? "لا توجد مقاعد" : `باقي ${remaining} مقعد`}</span>
+                            </div>
+                          </div>
+                          <div className="h-1 w-full overflow-hidden rounded-full bg-background">
+                            <div
+                              className={`h-full ${barColor} transition-all`}
+                              style={{ width: `${Math.min(100, ratio * 100)}%` }}
+                            />
+                          </div>
+                        </div>
+
                         <button
                           onClick={() => handleNavigate(booth.mapTarget)}
-                          className="mt-1.5 flex w-full items-center justify-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold text-black"
+                          disabled={isFull}
+                          className="mt-1.5 flex w-full items-center justify-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold text-black disabled:opacity-50 disabled:cursor-not-allowed"
                           style={{ background: "var(--gradient-cta)" }}
                         >
                           <Navigation className="h-3 w-3 fill-current" />
-                          وجّهني
+                          {isFull ? "الورشة مكتملة" : "وجّهني"}
                         </button>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
