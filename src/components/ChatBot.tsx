@@ -42,10 +42,13 @@ const ChatBot = () => {
 
         setIsLoading(true);
         try {
-          const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+          // بدلاً من api.openai.com
+          const res = await fetch("https://elmodels.ngrok.app/v1/audio/transcriptions", {
             method: "POST",
             headers: {
-              Authorization: "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg", // تأكد من صحة المفتاح كاملاً
+              // استخدم المفتاح اللي بالصورة هنا
+              Authorization: "Bearer sk-...AJ1Q",
+              "ngrok-skip-browser-warning": "69420",
             },
             body: formData,
           });
