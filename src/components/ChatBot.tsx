@@ -43,7 +43,7 @@ const ChatBot = () => {
         try {
           const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
             method: "POST",
-            headers: { Authorization: "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg" },
+            headers: { Authorization: "Bearer sk-3EsiB0rLSmv19OoyJ2AJlQ" },
             body: formData,
           });
           const data = await res.json();
