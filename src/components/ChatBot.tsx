@@ -157,7 +157,7 @@ const ChatBot = () => {
   return (
     <div className="fixed left-4 z-[9999] flex flex-col items-start font-sans" style={{ bottom: "calc(80px + env(safe-area-inset-bottom))" }} dir="rtl">
       {isOpen && (
-        <div className="order-2 mt-3 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="order-1 mb-3 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center text-[#1A1A2E]">
             <span className="font-bold text-sm">نهى | محللة مسارك</span>
             <button onClick={() => setIsOpen(false)}>
@@ -237,7 +237,7 @@ const ChatBot = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="order-1 w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
+        className="order-2 w-14 h-14 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
       >
         {isOpen ? <X className="text-[#1A1A2E] h-6 w-6" /> : <MessageCircle className="text-[#1A1A2E] h-7 w-7" />}
       </button>
