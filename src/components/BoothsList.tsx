@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigation, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { Navigation, Clock, ChevronDown, ChevronUp, Users } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,8 @@ interface Workshop {
   time: { ar: string; en: string; zh: string; es: string };
   status: { ar: string; en: string; zh: string; es: string };
   desc: { ar: string; en: string; zh: string; es: string };
+  capacity: number;
+  reserved: number;
 }
 
 interface Booth {
