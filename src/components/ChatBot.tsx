@@ -180,19 +180,27 @@ const ChatBot = () => {
   const shouldShowButton = msg.role === "assistant" && userAskedForDirection && isLocationMentioned;
 
   return (
-    <div key={index} ...>
-       {/* محتوى الرسالة */}
-       {msg.content}
-
-       {/* 4. هنا نستخدم المتغير الجديد لظهور الزر */}
-       {shouldShowButton && (
-         <button onClick={() => handleNavigate(msg.content)} ...>
-            اتبع المسار في الخريطة
-         </button>
-       )}
+    <div
+      key={index}
+      className={`flex flex-col gap-2 max-w-[85%] rounded-2xl px-4 py-2 text-[13px] ${
+        msg.role === "user"
+          ? "bg-[#00B4D8] text-[#1A1A2E] self-end ml-auto"
+          : "bg-white/10 text-white self-start mr-auto"
+      }`}
+    >
+      <span>{msg.content}</span>
+      {shouldShowButton && (
+        <button
+          onClick={() => handleNavigate(msg.content)}
+          className="flex items-center gap-1 mt-1 px-3 py-1.5 bg-[#00B4D8]/20 border border-[#00B4D8]/40 rounded-lg text-[#00B4D8] text-[11px] font-semibold hover:bg-[#00B4D8]/30 transition"
+        >
+          <Navigation className="h-3 w-3" />
+          اتبع المسار في الخريطة
+        </button>
+      )}
     </div>
   );
-})})}
+})}
             {isLoading && (
               <div className="flex justify-end p-2">
                 <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
