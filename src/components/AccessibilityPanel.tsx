@@ -12,7 +12,11 @@ const AccessibilityPanel = () => {
 
   const [position, setPosition] = useState<{ x: number; y: number }>(() => {
     if (typeof window === "undefined") return { x: 16, y: 400 };
-    return { x: window.innerWidth - 64, y: window.innerHeight - 200 };
+    const root = document.getElementById("root");
+    const rect = root?.getBoundingClientRect();
+    const right = rect?.right ?? window.innerWidth;
+    const bottom = rect?.bottom ?? window.innerHeight;
+    return { x: right - 64, y: bottom - 140 };
   });
   const draggingRef = useRef(false);
   const movedRef = useRef(false);
@@ -23,8 +27,14 @@ const AccessibilityPanel = () => {
       if (!draggingRef.current) return;
       movedRef.current = true;
       const size = 48;
-      const x = Math.min(Math.max(0, clientX - offsetRef.current.x), window.innerWidth - size);
-      const y = Math.min(Math.max(0, clientY - offsetRef.current.y), window.innerHeight - size);
+      const root = document.getElementById("root");
+      const rect = root?.getBoundingClientRect();
+      const minX = rect?.left ?? 0;
+      const minY = rect?.top ?? 0;
+      const maxX = (rect?.right ?? window.innerWidth) - size;
+      const maxY = (rect?.bottom ?? window.innerHeight) - size;
+      const x = Math.min(Math.max(minX, clientX - offsetRef.current.x), maxX);
+      const y = Math.min(Math.max(minY, clientY - offsetRef.current.y), maxY);
       setPosition({ x, y });
     };
     const handleMouseMove = (e: MouseEvent) => onMove(e.clientX, e.clientY);
