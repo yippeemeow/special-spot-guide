@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Accessibility, Plus, Minus, RotateCcw, X, Eye } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -10,6 +10,44 @@ const AccessibilityPanel = () => {
 
   const isAr = lang === "ar";
 
+  // Draggable state — initial position: right side, middle height
+  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({
+    x: typeof window !== "undefined" ? window.innerWidth - 60 : 16,
+    y: typeof window !== "undefined" ? window.innerHeight / 2 - 22 : 300,
+  }));
+  const dragState = useRef({ dragging: false, moved: false, offsetX: 0, offsetY: 0 });
+
+  useEffect(() => {
+    const handleMove = (clientX: number, clientY: number) => {
+      if (!dragState.current.dragging) return;
+      dragState.current.moved = true;
+      const x = Math.max(4, Math.min(window.innerWidth - 48, clientX - dragState.current.offsetX));
+      const y = Math.max(4, Math.min(window.innerHeight - 48, clientY - dragState.current.offsetY));
+      setPos({ x, y });
+    };
+    const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    };
+    const onUp = () => {
+      dragState.current.dragging = false;
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchend", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchend", onUp);
+    };
+  }, []);
+
+  const startDrag = (clientX: number, clientY: number) => {
+    dragState.current = { dragging: true, moved: false, offsetX: clientX - pos.x, offsetY: clientY - pos.y };
+  };
+
   const colorModes = [
     { key: "none" as const, label: isAr ? "عادي" : "Normal", color: "bg-primary" },
     { key: "protanopia" as const, label: isAr ? "بروتانوبيا" : "Protanopia", color: "bg-red-400" },
@@ -19,11 +57,17 @@ const AccessibilityPanel = () => {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating draggable button */}
       <button
-        onClick={() => setIsOpen(true)}
-        className="fixed top-1/2 -translate-y-1/2 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
-        style={{ zIndex: 10000 }}
+        onMouseDown={(e) => startDrag(e.clientX, e.clientY)}
+        onTouchStart={(e) => {
+          if (e.touches[0]) startDrag(e.touches[0].clientX, e.touches[0].clientY);
+        }}
+        onClick={() => {
+          if (!dragState.current.moved) setIsOpen(true);
+        }}
+        className="fixed flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 touch-none cursor-grab active:cursor-grabbing"
+        style={{ left: `${pos.x}px`, top: `${pos.y}px`, zIndex: 10001 }}
         aria-label={isAr ? "إعدادات إمكانية الوصول" : "Accessibility settings"}
       >
         <Accessibility className="h-6 w-6" />
