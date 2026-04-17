@@ -45,7 +45,6 @@ const ChatBot = () => {
           const res = await fetch("https://elmodels.ngrok.app/v1/audio/transcriptions", {
             method: "POST",
             headers: {
-              // استخدم المفتاح اللي بالصورة هنا
               Authorization: "Bearer sk-3EsiB0rLSmv19OoyJ2AJlQ",
               "ngrok-skip-browser-warning": "69420",
             },
@@ -65,7 +64,7 @@ const ChatBot = () => {
         } catch (error) {
           console.error("Network Error:", error);
         } finally {
-          setIsLoading(false); // سيختفي التحميل هنا حتى لو فشل الاتصال
+          setIsLoading(false);
           if (stream) stream.getTracks().forEach((track) => track.stop());
         }
       };
@@ -78,8 +77,8 @@ const ChatBot = () => {
 
   const handleSendMessage = async (textOverride = null) => {
     // 1. تحديد النص: إما القادم من التسجيل أو من المربع
-    const messageToSend = typeof textOverride === 'string' ? textOverride : query; 
-    
+    const messageToSend = typeof textOverride === "string" ? textOverride : query;
+
     if (!messageToSend.trim() || isLoading) return;
 
     // 2. تحديث الرسائل في الشاشة
@@ -125,7 +124,7 @@ const ChatBot = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg",
+          Authorization: "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg",
           "ngrok-skip-browser-warning": "69420",
         },
         body: JSON.stringify({
@@ -167,40 +166,40 @@ const ChatBot = () => {
 
           <div ref={scrollRef} className="p-4 h-[350px] overflow-y-auto space-y-4 no-scrollbar text-right">
             {messages.map((msg, index) => {
-  // 1. أولاً: نحدد هل "نهى" ذكرت مكان في ردها؟
-  const isLocationMentioned = msg.content.match(/مسرح|بوث|منطقة|البيك|كودو|مصلى|إسعاف/);
+              // 1. أولاً: نحدد هل "نهى" ذكرت مكان في ردها؟
+              const isLocationMentioned = msg.content.match(/مسرح|بوث|منطقة|البيك|كودو|مصلى|إسعاف/);
 
-  // 2. ثانياً: نحدد هل اليوزر أصلاً سأل عن "توجيه" في الرسالة اللي قبلها؟
-  // (index - 1) يجلب لنا رسالة المستخدم اللي خلت نهى ترد هذا الرد
-  const lastUserMsg = messages[index - 1]?.content || "";
-  const userAskedForDirection = lastUserMsg.match(/وين|كيف|وجهني|طريق|موقع/);
+              // 2. ثانياً: نحدد هل اليوزر أصلاً سأل عن "توجيه" في الرسالة اللي قبلها؟
+              // (index - 1) يجلب لنا رسالة المستخدم اللي خلت نهى ترد هذا الرد
+              const lastUserMsg = messages[index - 1]?.content || "";
+              const userAskedForDirection = lastUserMsg.match(/وين|كيف|وجهني|طريق|موقع/);
 
-  // 3. ثالثاً: نجمع الشروط مع بعض
-  // الزر يظهر فقط إذا: (الرسالة من نهى) و (اليوزر سأل عن اتجاه) و (نهى ذكرت مكان)
-  const shouldShowButton = msg.role === "assistant" && userAskedForDirection && isLocationMentioned;
+              // 3. ثالثاً: نجمع الشروط مع بعض
+              // الزر يظهر فقط إذا: (الرسالة من نهى) و (اليوزر سأل عن اتجاه) و (نهى ذكرت مكان)
+              const shouldShowButton = msg.role === "assistant" && userAskedForDirection && isLocationMentioned;
 
-  return (
-    <div
-      key={index}
-      className={`flex flex-col gap-2 max-w-[85%] rounded-2xl px-4 py-2 text-[13px] ${
-        msg.role === "user"
-          ? "bg-[#00B4D8] text-[#1A1A2E] self-end ml-auto"
-          : "bg-white/10 text-white self-start mr-auto"
-      }`}
-    >
-      <span>{msg.content}</span>
-      {shouldShowButton && (
-        <button
-          onClick={() => handleNavigate(msg.content)}
-          className="flex items-center gap-1 mt-1 px-3 py-1.5 bg-[#00B4D8]/20 border border-[#00B4D8]/40 rounded-lg text-[#00B4D8] text-[11px] font-semibold hover:bg-[#00B4D8]/30 transition"
-        >
-          <Navigation className="h-3 w-3" />
-          اتبع المسار في الخريطة
-        </button>
-      )}
-    </div>
-  );
-})}
+              return (
+                <div
+                  key={index}
+                  className={`flex flex-col gap-2 max-w-[85%] rounded-2xl px-4 py-2 text-[13px] ${
+                    msg.role === "user"
+                      ? "bg-[#00B4D8] text-[#1A1A2E] self-end ml-auto"
+                      : "bg-white/10 text-white self-start mr-auto"
+                  }`}
+                >
+                  <span>{msg.content}</span>
+                  {shouldShowButton && (
+                    <button
+                      onClick={() => handleNavigate(msg.content)}
+                      className="flex items-center gap-1 mt-1 px-3 py-1.5 bg-[#00B4D8]/20 border border-[#00B4D8]/40 rounded-lg text-[#00B4D8] text-[11px] font-semibold hover:bg-[#00B4D8]/30 transition"
+                    >
+                      <Navigation className="h-3 w-3" />
+                      اتبع المسار في الخريطة
+                    </button>
+                  )}
+                </div>
+              );
+            })}
             {isLoading && (
               <div className="flex justify-end p-2">
                 <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
