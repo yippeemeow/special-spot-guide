@@ -53,10 +53,11 @@ const ChatBot = () => {
           });
 
           if (res.ok) {
-            const data = await res.json();
-            if (data.text) setQuery(data.text);
-            if (data.text) {
-  setQuery(data.text);
+  const data = await res.json();
+  if (data.text) {
+    setQuery(data.text);
+    handleSendMessage(data.text); 
+  }
 }
           } else {
             const errorData = await res.json();
@@ -76,11 +77,15 @@ const ChatBot = () => {
     }
   };
 
-  const handleSendMessage = async () => {
-    if (!query.trim() || isLoading) return;
-    const userQuery = query;
-    setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
-    setQuery("");
+  const handleSendMessage = async (textOverride = null) => {
+    // 1. تحديد النص: إما القادم من التسجيل أو من المربع
+    const messageToSend = typeof textOverride === 'string' ? textOverride : query; 
+    
+    if (!messageToSend.trim() || isLoading) return;
+
+    // 2. تحديث الرسائل في الشاشة
+    setMessages((prev) => [...prev, { role: "user", content: messageToSend }]);
+    setQuery(""); // تصفير المربع
     setIsLoading(true);
 
     const exhibitionContext = `
@@ -121,14 +126,14 @@ const ChatBot = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg",
+          "Authorization": "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg",
           "ngrok-skip-browser-warning": "69420",
         },
         body: JSON.stringify({
           model: "nuha-2.0",
           messages: [
             { role: "system", content: exhibitionContext },
-            { role: "user", content: userQuery },
+            { role: "user", content: messageToSend },
           ],
           stream: false,
         }),
@@ -163,33 +168,32 @@ const ChatBot = () => {
 
           <div ref={scrollRef} className="p-4 h-[350px] overflow-y-auto space-y-4 no-scrollbar text-right">
             {messages.map((msg, index) => {
-              const isLocationMentioned = msg.content.match(/مسرح|بوث|منطقة|البيك|كودو|مصلى|إسعاف/);
-              const lastUserMsg = messages[index - 1]?.content || "";
-              const userAskedForDirection = lastUserMsg.match(/وين|كيف|وجهني|طريق|موقع/);
-              const shouldShowButton = msg.role === "assistant" && userAskedForDirection && isLocationMentioned;
+  // 1. أولاً: نحدد هل "نهى" ذكرت مكان في ردها؟
+  const isLocationMentioned = msg.content.match(/مسرح|بوث|منطقة|البيك|كودو|مصلى|إسعاف/);
 
-              return (
-                <div
-                  key={index}
-                  className={`flex flex-col gap-2 max-w-[85%] rounded-2xl px-4 py-2 text-[13px] leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-[#00B4D8] text-[#1A1A2E] self-end mr-auto"
-                      : "bg-white/10 text-white self-start ml-auto"
-                  }`}
-                >
-                  <span>{msg.content}</span>
-                  {shouldShowButton && (
-                    <button
-                      onClick={() => handleNavigate(msg.content)}
-                      className="flex items-center gap-1 bg-[#1A1A2E] text-[#00B4D8] text-xs px-3 py-1.5 rounded-lg border border-[#00B4D8]/40 hover:bg-[#00B4D8] hover:text-[#1A1A2E] transition-colors"
-                    >
-                      <Navigation className="h-3 w-3" />
-                      اتبع المسار في الخريطة
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+  // 2. ثانياً: نحدد هل اليوزر أصلاً سأل عن "توجيه" في الرسالة اللي قبلها؟
+  // (index - 1) يجلب لنا رسالة المستخدم اللي خلت نهى ترد هذا الرد
+  const lastUserMsg = messages[index - 1]?.content || "";
+  const userAskedForDirection = lastUserMsg.match(/وين|كيف|وجهني|طريق|موقع/);
+
+  // 3. ثالثاً: نجمع الشروط مع بعض
+  // الزر يظهر فقط إذا: (الرسالة من نهى) و (اليوزر سأل عن اتجاه) و (نهى ذكرت مكان)
+  const shouldShowButton = msg.role === "assistant" && userAskedForDirection && isLocationMentioned;
+
+  return (
+    <div key={index} ...>
+       {/* محتوى الرسالة */}
+       {msg.content}
+
+       {/* 4. هنا نستخدم المتغير الجديد لظهور الزر */}
+       {shouldShowButton && (
+         <button onClick={() => handleNavigate(msg.content)} ...>
+            اتبع المسار في الخريطة
+         </button>
+       )}
+    </div>
+  );
+})})}
             {isLoading && (
               <div className="flex justify-end p-2">
                 <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
