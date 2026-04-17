@@ -10,14 +10,26 @@ const AccessibilityPanel = () => {
 
   const isAr = lang === "ar";
 
-  const [position, setPosition] = useState<{ x: number; y: number }>(() => {
-    if (typeof window === "undefined") return { x: 16, y: 400 };
-    const root = document.getElementById("root");
-    const rect = root?.getBoundingClientRect();
-    const right = rect?.right ?? window.innerWidth;
-    const bottom = rect?.bottom ?? window.innerHeight;
-    return { x: right - 64, y: bottom - 140 };
-  });
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    const computeInitial = () => {
+      const root = document.getElementById("root");
+      const rect = root?.getBoundingClientRect();
+      const right = rect?.right ?? window.innerWidth;
+      const bottom = rect?.bottom ?? window.innerHeight;
+      const left = rect?.left ?? 0;
+      const size = 48;
+      // Place above bottom nav (~64px) + chatbot area, on the right side
+      setPosition({
+        x: Math.max(left + 16, right - size - 16),
+        y: Math.max(16, bottom - size - 160),
+      });
+    };
+    computeInitial();
+    window.addEventListener("resize", computeInitial);
+    return () => window.removeEventListener("resize", computeInitial);
+  }, []);
   const draggingRef = useRef(false);
   const movedRef = useRef(false);
   const offsetRef = useRef({ x: 0, y: 0 });
@@ -57,6 +69,7 @@ const AccessibilityPanel = () => {
   }, []);
 
   const startDrag = (clientX: number, clientY: number) => {
+    if (!position) return;
     draggingRef.current = true;
     movedRef.current = false;
     offsetRef.current = { x: clientX - position.x, y: clientY - position.y };
@@ -81,7 +94,13 @@ const AccessibilityPanel = () => {
           if (movedRef.current) return;
           setIsOpen(true);
         }}
-        style={{ left: position.x, top: position.y, touchAction: "none", zIndex: 9999 }}
+        style={{
+          left: position?.x ?? 16,
+          top: position?.y ?? 16,
+          touchAction: "none",
+          zIndex: 9999,
+          visibility: position ? "visible" : "hidden",
+        }}
         className="fixed flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 active:scale-95 cursor-grab active:cursor-grabbing"
         aria-label={isAr ? "إعدادات إمكانية الوصول" : "Accessibility settings"}
       >
