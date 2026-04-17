@@ -82,9 +82,6 @@
     direction: rtl;
     margin: 0;
     min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 0;
   }
 
@@ -92,6 +89,16 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
+    position: relative;
+    min-height: 100dvh;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   /* iPhone-style device frame on larger screens */
