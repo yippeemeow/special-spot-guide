@@ -53,12 +53,11 @@ const ChatBot = () => {
           });
 
           if (res.ok) {
-  const data = await res.json();
-  if (data.text) {
-    setQuery(data.text);
-    handleSendMessage(data.text); 
-  }
-}
+            const data = await res.json();
+            if (data.text) {
+              setQuery(data.text);
+              handleSendMessage(data.text);
+            }
           } else {
             const errorData = await res.json();
             console.error("Error:", errorData);
