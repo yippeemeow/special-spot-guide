@@ -119,6 +119,7 @@
       overflow-y: auto;
       overflow-x: hidden;
       position: relative;
+      transform: translateZ(0);
       background: hsl(var(--background));
       box-shadow:
         0 0 0 12px #1a1a1f,
