@@ -139,6 +139,30 @@ const BoothsList = ({ searchQuery }: { searchQuery?: string }) => {
                           <Clock className="h-2.5 w-2.5" />
                           <span>{w.time[lang]}</span>
                         </div>
+                        {(() => {
+                          const available = w.capacity - w.reserved;
+                          const pct = (w.reserved / w.capacity) * 100;
+                          const isFull = available <= 0;
+                          const isLow = !isFull && available <= w.capacity * 0.2;
+                          const barColor = isFull ? "bg-destructive" : isLow ? "bg-orange-400" : "bg-secondary";
+                          const labelColor = isFull ? "text-destructive" : isLow ? "text-orange-400" : "text-secondary";
+                          return (
+                            <div className="mt-1.5">
+                              <div className="flex items-center justify-between text-[9px] mb-1">
+                                <span className={`font-semibold ${labelColor}`}>
+                                  {isFull ? "مكتمل" : `${available} متاح`}
+                                </span>
+                                <div className="flex items-center gap-1 text-muted-foreground">
+                                  <Users className="h-2.5 w-2.5" />
+                                  <span>{w.reserved}/{w.capacity} محجوز</span>
+                                </div>
+                              </div>
+                              <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
+                                <div className={`h-full ${barColor} transition-all`} style={{ width: `${pct}%` }} />
+                              </div>
+                            </div>
+                          );
+                        })()}
                         <button
                           onClick={() => handleNavigate(booth.mapTarget)}
                           className="mt-1.5 flex w-full items-center justify-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold text-black"
