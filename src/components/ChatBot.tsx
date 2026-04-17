@@ -155,9 +155,9 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="absolute bottom-20 left-4 z-[100] flex flex-col items-start font-sans" dir="rtl">
+    <div className="fixed top-4 left-4 z-[200] flex flex-col items-start font-sans" dir="rtl">
       {isOpen && (
-        <div className="mb-4 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="order-2 mt-3 w-[320px] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center text-[#1A1A2E]">
             <span className="font-bold text-sm">نهى | محللة مسارك</span>
             <button onClick={() => setIsOpen(false)}>
