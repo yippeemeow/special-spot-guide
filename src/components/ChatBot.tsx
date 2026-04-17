@@ -35,23 +35,33 @@ const ChatBot = () => {
       const chunks: Blob[] = [];
       mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
       mediaRecorder.onstop = async () => {
-        // بدلاً من wav، استخدم webm
         const audioBlob = new Blob(chunks, { type: "audio/webm" });
+        const formData = new FormData();
         formData.append("file", audioBlob, "audio.webm");
         formData.append("model", "whisper-1");
+
         setIsLoading(true);
         try {
           const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
             method: "POST",
-            headers: { Authorization: "Bearer sk-3EsiB0rLSmv19OoyJ2AJlQ" },
+            headers: {
+              Authorization: "Bearer sk-UIlD4_Pf5iOO8o6_eHNYyg", // تأكد من صحة المفتاح كاملاً
+            },
             body: formData,
           });
-          const data = await res.json();
-          if (data.text) setQuery(data.text);
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.text) setQuery(data.text);
+          } else {
+            const errorData = await res.json();
+            console.error("OpenAI Error:", errorData);
+          }
         } catch (error) {
-          console.error("خطأ ASR:", error);
+          console.error("Network Error:", error);
         } finally {
-          setIsLoading(false);
+          setIsLoading(false); // سيختفي التحميل هنا حتى لو فشل الاتصال
+          if (stream) stream.getTracks().forEach((track) => track.stop());
         }
       };
       mediaRecorder.start();
