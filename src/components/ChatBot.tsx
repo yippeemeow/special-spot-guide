@@ -47,7 +47,7 @@ const ChatBot = () => {
             method: "POST",
             headers: {
               // استخدم المفتاح اللي بالصورة هنا
-              Authorization: "Bearer sk-...AJ1Q",
+              Authorization: "Bearer sk-3EsiB0rLSmv19OoyJ2AJlQ",
               "ngrok-skip-browser-warning": "69420",
             },
             body: formData,
