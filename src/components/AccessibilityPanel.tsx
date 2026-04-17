@@ -69,6 +69,7 @@ const AccessibilityPanel = () => {
   }, []);
 
   const startDrag = (clientX: number, clientY: number) => {
+    if (!position) return;
     draggingRef.current = true;
     movedRef.current = false;
     offsetRef.current = { x: clientX - position.x, y: clientY - position.y };
