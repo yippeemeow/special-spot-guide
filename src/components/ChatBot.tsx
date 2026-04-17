@@ -55,6 +55,9 @@ const ChatBot = () => {
           if (res.ok) {
             const data = await res.json();
             if (data.text) setQuery(data.text);
+            if (data.text) {
+  setQuery(data.text);
+}
           } else {
             const errorData = await res.json();
             console.error("Error:", errorData);
@@ -160,33 +163,32 @@ const ChatBot = () => {
 
           <div ref={scrollRef} className="p-4 h-[350px] overflow-y-auto space-y-4 no-scrollbar text-right">
             {messages.map((msg, index) => {
-              // الكشف عن المواقع لإظهار زر التوجيه
-              const isLocationMentioned = msg.content.match(
-                /مسرح|بوث|منطقة|موقع|البيك|كودو|قاعة|مصلى|إسعاف|استعلامات|طفل|أطفال/,
-              );
+  // 1. أولاً: نحدد هل "نهى" ذكرت مكان في ردها؟
+  const isLocationMentioned = msg.content.match(/مسرح|بوث|منطقة|البيك|كودو|مصلى|إسعاف/);
 
-              return (
-                <div key={index} className={`flex ${msg.role === "user" ? "justify-start" : "justify-end"}`}>
-                  <div
-                    className={`p-3 rounded-xl text-[13px] max-w-[85%] shadow-sm ${
-                      msg.role === "user"
-                        ? "bg-[#00B4D8] text-[#1A1A2E] font-medium"
-                        : "bg-[#252545] text-white border border-white/10"
-                    }`}
-                  >
-                    <div className="whitespace-pre-line">{msg.content}</div>
-                    {msg.role === "assistant" && isLocationMentioned && (
-                      <button
-                        onClick={() => handleNavigate(msg.content)}
-                        className="mt-3 w-full bg-[#00B4D8] text-[#1A1A2E] py-2 rounded-lg font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-[#0096B4] transition-all"
-                      >
-                        <Navigation className="h-3 w-3" /> اتبع المسار في الخريطة
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+  // 2. ثانياً: نحدد هل اليوزر أصلاً سأل عن "توجيه" في الرسالة اللي قبلها؟
+  // (index - 1) يجلب لنا رسالة المستخدم اللي خلت نهى ترد هذا الرد
+  const lastUserMsg = messages[index - 1]?.content || "";
+  const userAskedForDirection = lastUserMsg.match(/وين|كيف|وجهني|طريق|موقع/);
+
+  // 3. ثالثاً: نجمع الشروط مع بعض
+  // الزر يظهر فقط إذا: (الرسالة من نهى) و (اليوزر سأل عن اتجاه) و (نهى ذكرت مكان)
+  const shouldShowButton = msg.role === "assistant" && userAskedForDirection && isLocationMentioned;
+
+  return (
+    <div key={index} ...>
+       {/* محتوى الرسالة */}
+       {msg.content}
+
+       {/* 4. هنا نستخدم المتغير الجديد لظهور الزر */}
+       {shouldShowButton && (
+         <button onClick={() => handleNavigate(msg.content)} ...>
+            اتبع المسار في الخريطة
+         </button>
+       )}
+    </div>
+  );
+})})}
             {isLoading && (
               <div className="flex justify-end p-2">
                 <Loader2 className="h-4 w-4 text-[#00B4D8] animate-spin" />
