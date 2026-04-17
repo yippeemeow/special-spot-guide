@@ -35,9 +35,9 @@ const ChatBot = () => {
       const chunks: Blob[] = [];
       mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(chunks, { type: "audio/wav" });
-        const formData = new FormData();
-        formData.append("file", audioBlob, "audio.wav");
+        // بدلاً من wav، استخدم webm
+        const audioBlob = new Blob(chunks, { type: "audio/webm" });
+        formData.append("file", audioBlob, "audio.webm");
         formData.append("model", "whisper-1");
         setIsLoading(true);
         try {
