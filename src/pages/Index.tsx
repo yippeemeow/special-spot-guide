@@ -17,7 +17,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="relative h-full md:h-[812px] min-h-screen md:min-h-0 bg-background pb-24 rtl overflow-y-auto" dir="rtl">
+    <div className="relative min-h-full bg-background pb-32 rtl" dir="rtl">
       <EventHeader />
 
       <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-md pb-1">

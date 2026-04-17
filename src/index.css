@@ -116,7 +116,8 @@
       height: 812px;
       max-height: calc(100dvh - 48px);
       border-radius: 48px;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
       position: relative;
       background: hsl(var(--background));
       box-shadow:
