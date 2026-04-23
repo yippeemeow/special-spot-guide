@@ -17,20 +17,41 @@ const ChatBot = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   // Draggable position (UI only — does not affect chatbot logic/API)
-  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({
-    x: typeof window !== "undefined" ? 15 : 15,
-    y: typeof window !== "undefined" ? window.innerHeight - 140 : 500,
-  }));
+  // Coordinates are RELATIVE to the mobile frame container, not the viewport
+  const getFrame = () => (typeof document !== "undefined" ? document.getElementById("mobile-frame") : null);
+  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({ x: 15, y: 500 }));
+
+  useEffect(() => {
+    // Initialize position to bottom-left of the mobile frame after mount
+    const frame = getFrame();
+    if (frame) {
+      const rect = frame.getBoundingClientRect();
+      setPos({ x: 15, y: Math.max(20, rect.height - 140) });
+    }
+  }, []);
+
   const dragState = useRef({ dragging: false, moved: false, offsetX: 0, offsetY: 0 });
 
   useEffect(() => {
     const handleMove = (clientX: number, clientY: number) => {
       if (!dragState.current.dragging) return;
-      const dx = clientX - (dragState.current.offsetX + pos.x);
-      const dy = clientY - (dragState.current.offsetY + pos.y);
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragState.current.moved = true;
-      const x = Math.max(4, Math.min(window.innerWidth - 48, clientX - dragState.current.offsetX));
-      const y = Math.max(4, Math.min(window.innerHeight - 48, clientY - dragState.current.offsetY));
+      const frame = getFrame();
+      const rect = frame?.getBoundingClientRect();
+      const frameLeft = rect?.left ?? 0;
+      const frameTop = rect?.top ?? 0;
+      const frameW = rect?.width ?? window.innerWidth;
+      const frameH = rect?.height ?? window.innerHeight;
+
+      // Convert viewport coords to frame-relative coords
+      const relX = clientX - frameLeft - dragState.current.offsetX;
+      const relY = clientY - frameTop - dragState.current.offsetY;
+
+      if (Math.abs(clientX - frameLeft - (dragState.current.offsetX + pos.x)) > 3 ||
+          Math.abs(clientY - frameTop - (dragState.current.offsetY + pos.y)) > 3) {
+        dragState.current.moved = true;
+      }
+      const x = Math.max(4, Math.min(frameW - 48, relX));
+      const y = Math.max(4, Math.min(frameH - 48, relY));
       setPos({ x, y });
     };
     const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
