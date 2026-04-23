@@ -154,7 +154,7 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed z-[9999] flex flex-col items-start font-sans" style={{ bottom: "90px", left: "15px" }} dir="rtl">
+    <div className="fixed z-[9999] flex flex-col-reverse items-start gap-3 font-sans" style={{ bottom: "90px", left: "15px" }} dir="rtl">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-11 h-11 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
@@ -162,7 +162,7 @@ const ChatBot = () => {
         {isOpen ? <X className="text-[#1A1A2E] h-5 w-5" /> : <MessageCircle className="text-[#1A1A2E] h-5 w-5" />}
       </button>
       {isOpen && (
-        <div className="mt-3 w-[300px] max-w-[calc(100vw-30px)] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="w-[300px] max-w-[calc(100vw-30px)] max-h-[calc(100vh-180px)] bg-[#1A1A2E]/95 backdrop-blur-xl border border-[#00B4D8]/30 rounded-2xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className="bg-[#00B4D8] p-4 flex justify-between items-center text-[#1A1A2E]">
             <span className="font-bold text-sm">نهى | محللة مسارك</span>
             <button onClick={() => setIsOpen(false)}>
