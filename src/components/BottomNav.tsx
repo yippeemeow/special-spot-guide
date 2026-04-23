@@ -1,6 +1,7 @@
 import { Home, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { createPortal } from "react-dom";
 
 const BottomNav = () => {
   const { t } = useLanguage();
@@ -13,9 +14,10 @@ const BottomNav = () => {
   ];
 
   const currentPath = location.pathname;
+  const mobileFrame = typeof document !== "undefined" ? document.getElementById("mobile-frame") : null;
 
-  return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-[430px] bg-card border-t border-border/40">
+  const navContent = (
+    <div className="absolute bottom-0 left-0 right-0 z-50 w-full bg-card border-t border-border/40">
       <div className="flex items-stretch justify-around py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -24,7 +26,7 @@ const BottomNav = () => {
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
-              className={`flex flex-col items-center gap-0.5 px-8 py-1 min-w-[72px] transition-colors ${
+              className={`flex min-w-[72px] flex-col items-center gap-0.5 px-8 py-1 transition-colors ${
                 isActive ? "text-secondary" : "text-muted-foreground"
               }`}
             >
@@ -36,6 +38,8 @@ const BottomNav = () => {
       </div>
     </div>
   );
+
+  return mobileFrame ? createPortal(navContent, mobileFrame) : navContent;
 };
 
 export default BottomNav;
