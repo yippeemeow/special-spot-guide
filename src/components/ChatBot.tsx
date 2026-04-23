@@ -17,17 +17,29 @@ const ChatBot = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   // Draggable position (UI only — does not affect chatbot logic/API)
-  // Coordinates are RELATIVE to the mobile frame container, not the viewport
+  // Coordinates are RELATIVE to the mobile frame container
   const getFrame = () => (typeof document !== "undefined" ? document.getElementById("mobile-frame") : null);
-  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({ x: 15, y: 500 }));
+  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 15, y: 500 });
+  const [frameRect, setFrameRect] = useState<{ left: number; top: number; width: number; height: number }>({
+    left: 0, top: 0, width: 0, height: 0,
+  });
 
   useEffect(() => {
-    // Initialize position to bottom-left of the mobile frame after mount
+    const updateFrame = () => {
+      const frame = getFrame();
+      if (!frame) return;
+      const r = frame.getBoundingClientRect();
+      setFrameRect({ left: r.left, top: r.top, width: r.width, height: r.height });
+    };
+    updateFrame();
+    // Set initial bottom-left position once frame is measured
     const frame = getFrame();
     if (frame) {
-      const rect = frame.getBoundingClientRect();
-      setPos({ x: 15, y: Math.max(20, rect.height - 140) });
+      const r = frame.getBoundingClientRect();
+      setPos({ x: 15, y: Math.max(20, r.height - 140) });
     }
+    window.addEventListener("resize", updateFrame);
+    return () => window.removeEventListener("resize", updateFrame);
   }, []);
 
   const dragState = useRef({ dragging: false, moved: false, offsetX: 0, offsetY: 0 });
@@ -42,7 +54,6 @@ const ChatBot = () => {
       const frameW = rect?.width ?? window.innerWidth;
       const frameH = rect?.height ?? window.innerHeight;
 
-      // Convert viewport coords to frame-relative coords
       const relX = clientX - frameLeft - dragState.current.offsetX;
       const relY = clientY - frameTop - dragState.current.offsetY;
 
@@ -216,8 +227,8 @@ const ChatBot = () => {
 
   return (
     <div
-      className="absolute z-[9999] flex flex-col-reverse items-start gap-3 font-sans"
-      style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
+      className="fixed z-[9999] flex flex-col-reverse items-start gap-3 font-sans"
+      style={{ left: `${frameRect.left + pos.x}px`, top: `${frameRect.top + pos.y}px` }}
       dir="rtl"
     >
       <button
