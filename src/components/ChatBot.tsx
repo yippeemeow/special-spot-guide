@@ -154,7 +154,7 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed z-[9999] flex flex-col items-end font-sans" style={{ top: "45px", right: "15px" }} dir="rtl">
+    <div className="fixed z-[9999] flex flex-col items-start font-sans" style={{ bottom: "90px", left: "15px" }} dir="rtl">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-11 h-11 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
