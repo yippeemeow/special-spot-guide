@@ -11,18 +11,32 @@ const AccessibilityPanel = () => {
   const isAr = lang === "ar";
 
   // Draggable state — initial position: right side, middle height
-  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({
-    x: typeof window !== "undefined" ? window.innerWidth - 60 : 16,
-    y: typeof window !== "undefined" ? Math.round(window.innerHeight / 2) : 400,
-  }));
+  // Coordinates are RELATIVE to the mobile frame container, not the viewport
+  const getFrame = () => (typeof document !== "undefined" ? document.getElementById("mobile-frame") : null);
+  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({ x: 0, y: 200 }));
+
+  useEffect(() => {
+    const frame = getFrame();
+    if (frame) {
+      const rect = frame.getBoundingClientRect();
+      setPos({ x: Math.max(4, rect.width - 60), y: Math.round(rect.height / 2) });
+    }
+  }, []);
+
   const dragState = useRef({ dragging: false, moved: false, offsetX: 0, offsetY: 0 });
 
   useEffect(() => {
     const handleMove = (clientX: number, clientY: number) => {
       if (!dragState.current.dragging) return;
       dragState.current.moved = true;
-      const x = Math.max(4, Math.min(window.innerWidth - 48, clientX - dragState.current.offsetX));
-      const y = Math.max(4, Math.min(window.innerHeight - 48, clientY - dragState.current.offsetY));
+      const frame = getFrame();
+      const rect = frame?.getBoundingClientRect();
+      const frameLeft = rect?.left ?? 0;
+      const frameTop = rect?.top ?? 0;
+      const frameW = rect?.width ?? window.innerWidth;
+      const frameH = rect?.height ?? window.innerHeight;
+      const x = Math.max(4, Math.min(frameW - 48, clientX - frameLeft - dragState.current.offsetX));
+      const y = Math.max(4, Math.min(frameH - 48, clientY - frameTop - dragState.current.offsetY));
       setPos({ x, y });
     };
     const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);

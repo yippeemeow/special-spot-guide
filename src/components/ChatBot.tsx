@@ -216,7 +216,7 @@ const ChatBot = () => {
 
   return (
     <div
-      className="fixed z-[9999] flex flex-col-reverse items-start gap-3 font-sans"
+      className="absolute z-[9999] flex flex-col-reverse items-start gap-3 font-sans"
       style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
       dir="rtl"
     >
