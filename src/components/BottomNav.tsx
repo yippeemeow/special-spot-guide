@@ -2,11 +2,17 @@ import { Home, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
+import { useEffect, useState } from "react";
 
 const BottomNav = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileFrame, setMobileFrame] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setMobileFrame(document.getElementById("mobile-frame"));
+  }, []);
 
   const navItems = [
     { id: "map", label: t("map"), icon: MapPin, path: "/map" },
@@ -14,7 +20,6 @@ const BottomNav = () => {
   ];
 
   const currentPath = location.pathname;
-  const mobileFrame = typeof document !== "undefined" ? document.getElementById("mobile-frame") : null;
 
   const navContent = (
     <div className="absolute bottom-0 left-0 right-0 z-50 w-full bg-card border-t border-border/40">
