@@ -16,6 +16,46 @@ const ChatBot = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  // Draggable position (UI only — does not affect chatbot logic/API)
+  const [pos, setPos] = useState<{ x: number; y: number }>(() => ({
+    x: typeof window !== "undefined" ? 15 : 15,
+    y: typeof window !== "undefined" ? window.innerHeight - 140 : 500,
+  }));
+  const dragState = useRef({ dragging: false, moved: false, offsetX: 0, offsetY: 0 });
+
+  useEffect(() => {
+    const handleMove = (clientX: number, clientY: number) => {
+      if (!dragState.current.dragging) return;
+      const dx = clientX - (dragState.current.offsetX + pos.x);
+      const dy = clientY - (dragState.current.offsetY + pos.y);
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragState.current.moved = true;
+      const x = Math.max(4, Math.min(window.innerWidth - 48, clientX - dragState.current.offsetX));
+      const y = Math.max(4, Math.min(window.innerHeight - 48, clientY - dragState.current.offsetY));
+      setPos({ x, y });
+    };
+    const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    };
+    const onUp = () => {
+      dragState.current.dragging = false;
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchend", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchend", onUp);
+    };
+  }, [pos.x, pos.y]);
+
+  const startDrag = (clientX: number, clientY: number) => {
+    dragState.current = { dragging: true, moved: false, offsetX: clientX - pos.x, offsetY: clientY - pos.y };
+  };
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -154,10 +194,20 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed z-[9999] flex flex-col-reverse items-start gap-3 font-sans" style={{ bottom: "90px", left: "15px" }} dir="rtl">
+    <div
+      className="fixed z-[9999] flex flex-col-reverse items-start gap-3 font-sans"
+      style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
+      dir="rtl"
+    >
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-11 h-11 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20"
+        onMouseDown={(e) => startDrag(e.clientX, e.clientY)}
+        onTouchStart={(e) => {
+          if (e.touches[0]) startDrag(e.touches[0].clientX, e.touches[0].clientY);
+        }}
+        onClick={() => {
+          if (!dragState.current.moved) setIsOpen(!isOpen);
+        }}
+        className="w-11 h-11 bg-[#00B4D8] rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border-2 border-white/20 touch-none cursor-grab active:cursor-grabbing"
       >
         {isOpen ? <X className="text-[#1A1A2E] h-5 w-5" /> : <MessageCircle className="text-[#1A1A2E] h-5 w-5" />}
       </button>
