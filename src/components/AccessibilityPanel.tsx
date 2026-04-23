@@ -13,7 +13,7 @@ const AccessibilityPanel = () => {
   // Draggable state — initial position: right side, middle height
   const [pos, setPos] = useState<{ x: number; y: number }>(() => ({
     x: typeof window !== "undefined" ? window.innerWidth - 60 : 16,
-    y: typeof window !== "undefined" ? window.innerHeight / 2 - 22 : 300,
+    y: typeof window !== "undefined" ? window.innerHeight - 160 : 600,
   }));
   const dragState = useRef({ dragging: false, moved: false, offsetX: 0, offsetY: 0 });
 
