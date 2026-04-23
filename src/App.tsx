@@ -19,17 +19,19 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            {/* Mobile frame: constrains entire app to a phone-width column */}
-            <div className="min-h-screen w-full flex justify-center bg-background">
+            {/* Mobile frame: fixed-height phone column; inner content scrolls */}
+            <div className="h-screen w-full flex justify-center bg-background overflow-hidden">
               <div
                 id="mobile-frame"
-                className="relative w-full max-w-[430px] min-h-screen bg-background shadow-2xl overflow-hidden"
+                className="relative w-full max-w-[430px] h-screen bg-background shadow-2xl overflow-hidden"
               >
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/map" element={<MapPage />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <div className="absolute inset-0 overflow-y-auto">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/map" element={<MapPage />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
               </div>
             </div>
           </BrowserRouter>
