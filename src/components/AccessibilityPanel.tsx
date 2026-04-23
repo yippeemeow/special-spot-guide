@@ -80,7 +80,7 @@ const AccessibilityPanel = () => {
         onClick={() => {
           if (!dragState.current.moved) setIsOpen(true);
         }}
-        className="fixed flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 touch-none cursor-grab active:cursor-grabbing"
+        className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 touch-none cursor-grab active:cursor-grabbing"
         style={{ left: `${pos.x}px`, top: `${pos.y}px`, zIndex: 10001 }}
         aria-label={isAr ? "إعدادات إمكانية الوصول" : "Accessibility settings"}
       >
