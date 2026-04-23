@@ -19,11 +19,19 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/map" element={<MapPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            {/* Mobile frame: constrains entire app to a phone-width column */}
+            <div className="min-h-screen w-full flex justify-center bg-background">
+              <div
+                id="mobile-frame"
+                className="relative w-full max-w-[430px] min-h-screen bg-background shadow-2xl overflow-hidden"
+              >
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/map" element={<MapPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>
